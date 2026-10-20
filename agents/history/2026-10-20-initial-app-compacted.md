@@ -7,3 +7,19 @@ Source is I:/Projects/my-maps; suite integration is I:/Projects/one-workspace-ma
 Integrated navigation follow-up: explicit shared-picker trigger suppresses the floating launcher, and compact labelled icon controls keep the managed mobile header within the viewport. Meet also binds its signalling grants to the current authenticated app session. Maps2 and Meet3 supersede the initial previews in Workspace54; do not rewrite published assets/tags.
 
 Final integrated minimum is Workspace54, incorporating the concurrent Clips4 restart repair. Initial Maps1 and Meet2 releases are public; Maps2/Meet3 are the final integrated candidates. Owner installation remains pending.
+
+## Delivery checkpoint
+
+Maps2 source7708ea6 and Meet3 sourceb39d099 are now public in their organization
+repos, each with16 verified release assets including managed-update metadata.
+The normal owner53-to54 update installed both;24 apps and23 services are healthy,
+identity/storage fields were retained, and20 other app versions/packages were
+preserved. Both public routes return the expected unauthenticated login redirect.
+Managed browser SSO was not rechecked because Chrome control could not load its
+request-header policy. Synthetic previews were removed from C after use.
+
+The final combined suite is being superseded by55 to fix inherited
+publication-time release ordering.54's source tag remains immutable and its
+draft is held.55 chooses higher versions and prevents manager downgrades.
+Drive3 and full suite55 binary publication are pending slow uploads; do not
+claim those releases are public from this checkpoint. No paid services enabled.
