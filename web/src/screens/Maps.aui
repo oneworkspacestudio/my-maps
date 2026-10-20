@@ -1,0 +1,83 @@
+Page Maps
+  Row variant=map-layout
+    Stack variant=map-panel
+      Row variant=tabs
+        Button variant=$exploreVariant action=explore "Explore"
+        Button variant=$savedVariant action=saved "Saved"
+        Button variant=$routeVariant action=directions "Directions"
+      If condition=$exploring
+        Row
+          Input name=query placeholder="Search places and addresses" action=search
+          Button action=search aria-label="Search map" "Search"
+        Text variant=caption "Search is sent to the community Photon service."
+        For each=$results
+          Button variant=result action=place item=$item.key
+            Stack
+              Text $item.name
+              Text variant=caption $item.address
+      If condition=$saving
+        Row
+          Heading level=2 "Your places"
+          Spacer
+          Button variant=secondary action=exportPlaces "Export"
+        If condition=$noPlaces
+          Text "Find a place or click the map, then save it to a list."
+        For each=$places
+          Row variant=saved-place
+            Button variant=result action=savedPlace item=$item.id
+              Stack
+                Text $item.name
+                Text variant=caption $item.list
+            Button variant=icon action=deletePlace item=$item.id aria-label="Delete saved place" "×"
+      If condition=$routing
+        Heading level=2 "Directions"
+        Select name=mode options=$modes aria-label="Travel mode"
+        Text variant=caption "Pick places on the map or search, then use Set start / Add stop."
+        For each=$stops
+          Row
+            Text $item.label
+            Spacer
+            Button variant=icon action=removeStop item=$item.key aria-label="Remove stop" "×"
+        Row
+          Button action=route disabled=$notEnoughStops "Find routes"
+          Button variant=secondary action=clearStops "Clear"
+        If condition=$hasRoutes
+          For each=$routes
+            Button variant=$item.variant action=chooseRoute item=$item.key
+              Text $item.summary
+          Row
+            Button variant=secondary action=exportRoute "Export GPX"
+            Button variant=secondary action=navigate $navigationLabel
+          Text variant=caption "Routes are estimates from OpenStreetMap. No live traffic or road-closure feed."
+          For each=$steps
+            Row variant=step
+              Text $item.instruction
+              Spacer
+              Text variant=caption $item.distance
+      If condition=$selected
+        Card variant=place-detail
+          Row
+            Heading level=2 $selected.name
+            Spacer
+            Button variant=icon action=deselect aria-label="Close place details" "×"
+          Text $selected.address
+          Text variant=caption $selected.coordinates
+          Row
+            Button variant=secondary action=start "Set start"
+            Button variant=secondary action=stop "Add stop"
+          Field label="List"
+            Input name=list placeholder="Favourites"
+          Field label="Notes"
+            Input name=notes multiline=true
+          Row
+            Button action=save "Save place"
+            Button variant=secondary action=share "Share"
+      Spacer
+      Link href="https://www.openstreetmap.org/fixthemap" external=true "Improve this map"
+    Section id=map
+  Row variant=map-footer
+    Button variant=secondary action=locate "My location"
+    Button variant=secondary action=measure $measureLabel
+    Text variant=caption $measurement
+    Spacer
+    Link href="https://www.openstreetmap.org/copyright" external=true "© OpenStreetMap contributors"
