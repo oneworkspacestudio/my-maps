@@ -19,3 +19,4 @@
 .card--dialog>.row{position:sticky;top:-24px;background:var(--surface);padding:10px 0;z-index:1}
 #screen-outlet>.card{margin:16px auto;width:min(800px,calc(100% - 32px))}
 @media(max-width:700px){.row--topbar{height:62px;min-height:62px;padding:8px 12px;gap:8px}.row--topbar>.text{display:none}.row--topbar h2{font-size:17px}.row--topbar .button{padding:8px;font-size:12px}.row--topbar>.link{display:flex}.row--map-layout{flex-direction:column-reverse}.map-canvas{min-height:30dvh;flex:1}.stack--map-panel{width:100%;max-width:none;max-height:45dvh;padding:14px 18px;box-shadow:0 -4px 20px #172b3b14}.row--map-footer{padding:8px 12px}.row--map-footer .button{font-size:12px;padding:8px}.row--map-footer .link{font-size:11px}.row--tabs{gap:6px}}
+@media(max-width:700px){.row--topbar .text--desktop-label{display:none}.row--topbar .button{min-width:38px}.row--topbar>.link{padding:6px}.row--topbar>.link:first-child{padding:0}}
