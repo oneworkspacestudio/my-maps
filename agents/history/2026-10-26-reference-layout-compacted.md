@@ -56,3 +56,15 @@ publish owner catalog/ports/secrets. Verify canonical selected-layout parser and
 normal deployed92 preflight before applies. Withhold3 from promoted update channel
 once4 is verified. Public3/source tag remain immutable. Both owner Maps2 versions
 are still unchanged at this checkpoint.
+
+## Maps4 installed; final inherited title fix
+
+Both normal protected2->4 updates completed with manager92 retained and all27
+services healthy. Primary independent audit confirms exact published4 bytes,
+owner config/secrets, all other executable bytes/contracts/packages, served
+JS/CSS/worker and newest recovery manifest. Secondary normal owner UI confirms
+2m20 completion, verified recovery, health and only Maps visible version changed.
+Live read-only screen inspection exposed the inherited static My Tasks tab title
+in web/index.html (also present before this redesign). Maps5 changes it to ASCII
+My Maps. No product JS/CSS/worker or backend/data behavior change; min92 and the
+accepted four-package managed scope remain. Keep4/source91440eb immutable.
