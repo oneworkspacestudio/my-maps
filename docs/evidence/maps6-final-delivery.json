@@ -1,0 +1,48 @@
+{
+  "release": "https://github.com/oneworkspacestudio/my-maps/releases/tag/v0.1.0-preview.6",
+  "sourceCommit": "c632602aac37e7b126b39c2da5a9146a9ad444e9",
+  "executableSHA256": "0ba7ad9e00f390dec5cbcfc347acb43f5f9e20f16300e7b8e68bb5cab0ea32be",
+  "publicAssetsVerified": 17,
+  "anonymousPromotedChannelVerified": true,
+  "phoneRendererRequiresWebGL": false,
+  "faultInjectionChecksPassed": 12,
+  "primary": {
+    "allOtherExecutableBytesRetained": true,
+    "appCount": 28,
+    "exactTestedBinariesInstalled": true,
+    "identityAndCredentialsRetained": true,
+    "managerSHA256": "b1da5df7234ff9b1e743c6b40f0ac9c47964848d227eca66da201255bd64e889",
+    "mapsSHA256": "0ba7ad9e00f390dec5cbcfc347acb43f5f9e20f16300e7b8e68bb5cab0ea32be",
+    "mapsVersion": "0.1.0-preview.6",
+    "normalBackedUpUpdate": true,
+    "otherAppContractsAndPackagesRetained": true,
+    "ownerConfigurationRetained": true,
+    "previousVersion": "0.3.0-preview.92",
+    "version": "0.3.0-preview.92"
+  },
+  "primaryRuntime": {
+    "correctInstalledHTMLTitle": true,
+    "all27ServicesRunning": true,
+    "exactPublishedEXE": true,
+    "normalUpdateComplete": true,
+    "servedJS_CSS_WorkerMatchAcceptedPackage": true,
+    "mapsVersion": "0.1.0-preview.6"
+  },
+  "secondary": {
+    "mapsVersion": "0.1.0-preview.6",
+    "previousMapsVersion": "0.1.0-preview.5",
+    "managerVersion": "0.3.0-preview.92",
+    "normalBackedUpUpdate": true,
+    "onlyMapsVisibleVersionChanged": true,
+    "all27ServicesHealthy": true,
+    "newestVerifiedRecoveryRetained": true,
+    "elapsed": "2m 20s",
+    "publishedPackageValidatedByNormalUpdater": true,
+    "correctInstalledBrowserTitle": true,
+    "servedContentAddressedJS_CSSNamesMatch": true,
+    "independentRemoteDiskCredentialAudit": false,
+    "physicalAndroidTest": false
+  },
+  "namedSyntheticPreviewRemoved": true,
+  "physicalAndroidTest": false
+}

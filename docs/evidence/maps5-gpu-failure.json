@@ -1,0 +1,8 @@
+{
+  "version": "0.1.0-preview.5",
+  "syntheticDataOnly": true,
+  "fault": "WebGL disabled",
+  "uncaughtError": "GPUInitializationError: WebGL2 is required to display this map",
+  "renderedCanvasCount": 0,
+  "renderedTileCount": 0
+}

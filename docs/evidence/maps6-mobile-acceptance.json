@@ -1,0 +1,21 @@
+{
+  "syntheticDataOnly": true,
+  "physicalAndroidTest": false,
+  "checks": [
+    "phone initial map loads real image tiles with WebGL disabled",
+    "synthetic geolocation dot and camera on raster renderer",
+    "real Photon search repositions raster map",
+    "failed phone 3D selection recovers standard map without uncaught errors",
+    "raster pin selection and private note save",
+    "real OSRM route renders as SVG without WebGL; GPX has route points",
+    "phone layout and layers fit 360/390/576 widths",
+    "desktop GPU initialization failure also recovers raster map",
+    "normal desktop vector map still renders real features",
+    "lost WebGL context recovers raster with camera preserved",
+    "stalled vector style/tiles recover after bounded 12-second deadline",
+    "touch devices use reliable raster by default even with working GPU"
+  ],
+  "pageErrors": [],
+  "testedVersion": "0.1.0-preview.6",
+  "testedExecutableSHA256": "0ba7ad9e00f390dec5cbcfc347acb43f5f9e20f16300e7b8e68bb5cab0ea32be"
+}

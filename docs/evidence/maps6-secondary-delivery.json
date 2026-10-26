@@ -1,0 +1,15 @@
+{
+  "mapsVersion": "0.1.0-preview.6",
+  "previousMapsVersion": "0.1.0-preview.5",
+  "managerVersion": "0.3.0-preview.92",
+  "normalBackedUpUpdate": true,
+  "onlyMapsVisibleVersionChanged": true,
+  "all27ServicesHealthy": true,
+  "newestVerifiedRecoveryRetained": true,
+  "elapsed": "2m 20s",
+  "publishedPackageValidatedByNormalUpdater": true,
+  "correctInstalledBrowserTitle": true,
+  "servedContentAddressedJS_CSSNamesMatch": true,
+  "independentRemoteDiskCredentialAudit": false,
+  "physicalAndroidTest": false
+}
