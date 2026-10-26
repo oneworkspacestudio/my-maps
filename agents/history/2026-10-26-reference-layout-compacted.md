@@ -38,3 +38,21 @@ level, duplicate removal/cap60 and separated pins. The last mobile Settings chec
 found an inherited hidden Back link; final CSS restores that explicit link and
 scrolling. Exact packaged binary/asset and complete final QA are required before
 publication; do not claim installation from this source checkpoint.
+
+## Managed publication correction
+
+Maps3 is public and its UI/binary acceptance passed, but the normal92 preflight
+rejected the managed manifest before any owner mutation. Canonical full bundle92
+includes optional maps-contract at docs/MyMaps/compatibility.json; fresh selected
+installations do not register it. The generic optional-document recognizer expects
+docs/Maps/... and correctly refused the mismatch. Do not move an installed file,
+weaken validation, replace a published asset or bypass normal updating.
+
+Maps4 supersedes3, unchanged product JS/CSS/worker and data contract, built with
+Go1.27.3. Managed minimum92; publish exactly the four canonical registered Maps
+program/licence packages. Compatibility JSON remains in the standalone archive.
+Derive document omission from catalog.InstallPackageIDs against public92; never
+publish owner catalog/ports/secrets. Verify canonical selected-layout parser and
+normal deployed92 preflight before applies. Withhold3 from promoted update channel
+once4 is verified. Public3/source tag remain immutable. Both owner Maps2 versions
+are still unchanged at this checkpoint.

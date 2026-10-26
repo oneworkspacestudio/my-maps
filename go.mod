@@ -1,6 +1,6 @@
 module github.com/oneworkspacestudio/my-maps
 
-go 1.27.2
+go 1.27.3
 
 require github.com/oneworkspacestudio/one-workspace v0.3.0-preview.51.0.20261020192506-0578d36ce297
 

@@ -17,7 +17,8 @@ one-time local owner setup. No Docker, Node or Go installation is needed.
 One Workspace installs the app automatically at `/maps/`, configures MyAccounts,
 and stores its private state in the Workspace data folder under `maps`.
 An existing Workspace login starts the normal authenticated SSO flow automatically.
-Standalone accounts are disabled in managed mode.
+Standalone accounts are disabled in managed mode. This managed update requires
+Workspace 0.3.0-preview.92 or newer.
 
 ## Included
 
@@ -80,7 +81,7 @@ See [capability details](docs/FEATURES.md).
 
 ## Build
 
-Go 1.27.2, Node 26, PowerShell 7:
+Go 1.27.3, Node 26, PowerShell 7:
 
 ```powershell
 ./scripts/build.ps1 -Go go -Npm npm.cmd -Output ./dist
