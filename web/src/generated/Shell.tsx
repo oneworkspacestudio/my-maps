@@ -4,24 +4,21 @@ import { Alert, Button, Card, Heading, Icon, Image, Link, Page, Row, Section, Sp
 export function Shell({ data, onAction }: { data: any; onAction: (name: string) => void }) {
   return (
     <Page>
-      <Row variant="topbar">
-        <Link href="#"><Image src={data.logo} alt={data.name} width={38} height={38} /></Link>
-        <Heading level={2}>{data.name}</Heading>
-        <Spacer />
-        <Text variant="caption">{data.user.name}</Text>
-        <Link href="#settings" aria-label="Settings"><Icon name="Settings2" /></Link>
-        <Button variant="icon" onClick={() => onAction("theme")} aria-label="Change appearance"><Icon name="SunMoon" /></Button>
-        {data.workspace && (
-          <Button variant="secondary" onClick={() => onAction("apps")} data-workspace-apps-trigger={true} aria-label="Open Workspace apps">
-            <Icon name="Layers" />
-            <Text variant="desktop-label">Workspace</Text>
-          </Button>
-        )}
-        <Button variant="secondary" onClick={() => onAction("logout")} aria-label="Sign out">
-          <Icon name="LogOut" />
-          <Text variant="desktop-label">Sign out</Text>
-        </Button>
-      </Row>
+      {data.showHeader && (
+        <Row variant="topbar">
+          <Link href="#"><Image src={data.logo} alt={data.name} width={38} height={38} /></Link>
+          <Heading level={2}>{data.name}</Heading>
+          <Spacer />
+          <Link href="#">Back to map</Link>
+          <Button variant="icon" onClick={() => onAction("theme")} aria-label="Change appearance"><Icon name="SunMoon" /></Button>
+          {data.workspace && (
+            <Button variant="secondary" onClick={() => onAction("apps")} data-workspace-apps-trigger={true} aria-label="Open Workspace apps">
+              <Icon name="Layers" />
+              <Text>Workspace</Text>
+            </Button>
+          )}
+        </Row>
+      )}
       {data.error && (
         <Alert tone="error">{data.error}</Alert>
       )}

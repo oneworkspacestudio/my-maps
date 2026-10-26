@@ -1,5 +1,5 @@
-One Workspace my-maps
+One Workspace My Maps
 Copyright 2026 One Workspace contributors.
 Application shell derived from One Workspace My Tasks (Apache-2.0).
-Map renderer: Leaflet (BSD-2-Clause). OpenStreetMap data © OpenStreetMap contributors (ODbL); tiles and community geocoding/routing services have separate usage policies.
-Third-party notices accompany the Windows archive. This product is not affiliated with Google.
+Map renderer: MapLibre GL JS (BSD-3-Clause). Map data: OpenFreeMap, OpenMapTiles and OpenStreetMap contributors (ODbL). Terrain: Mapterhorn open data sources; imagery: NASA GIBS Blue Marble. Provider terms and attribution apply separately to maps, imagery, geocoding, routing, nearby places, weather and air quality.
+Complete dependency licences accompany the Windows archive. This product is not affiliated with Google.

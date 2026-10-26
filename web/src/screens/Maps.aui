@@ -1,83 +1,289 @@
 Page Maps
-  Row variant=map-layout
-    Stack variant=map-panel
-      Row variant=tabs
-        Button variant=$exploreVariant action=explore "Explore"
-        Button variant=$savedVariant action=saved "Saved"
-        Button variant=$routeVariant action=directions "Directions"
-      If condition=$exploring
-        Row
-          Input name=query placeholder="Search places and addresses" action=search
-          Button action=search aria-label="Search map" "Search"
-        Text variant=caption "Search is sent to the community Photon service."
-        For each=$results
-          Button variant=result action=place item=$item.key
-            Stack
+  Stack variant=map-stage
+    Section id=map
+    Stack variant=floating-search
+      Row variant=search-bar
+        Icon name=MapPin size=28
+        Input name=query placeholder="Search here" action=search
+        Button variant=search-icon action=voice aria-label="Search by voice"
+          Icon name=Mic size=24
+        Button variant=search-icon action=coordinates aria-label="Search by coordinates"
+          Icon name=ScanLine size=24
+        Button variant=avatar action=profile aria-label="Account and settings"
+          Text $initial
+      Row variant=category-chips
+        Button variant=chip action=home
+          Icon name=House
+          Text "Home"
+        For each=$categories
+          Button variant=$item.variant action=category item=$item.key
+            Icon name=$item.icon
+            Text $item.title
+    Button variant=layers-control action=layers aria-label="Map layers"
+      Icon name=Layers2 size=26
+    Stack variant=map-controls
+      Button variant=map-control action=compass aria-label="Reset map bearing"
+        Icon name=Compass size=25
+      Button variant=map-control action=locate aria-label="My location"
+        Icon name=LocateFixed size=25
+      Button variant=directions-control action=directions aria-label="Directions"
+        Icon name=Navigation size=26
+    Text variant=map-brand "My Maps"
+    If condition=$measuring
+      Row variant=measure-status
+        Text $measurement
+        Button variant=text action=measure "Done"
+    Stack variant=$sheetVariant
+      Button variant=sheet-handle action=expand aria-label=$expandLabel
+        Section variant=handle-line
+      Row variant=sheet-heading
+        Heading level=1 $title
+        Spacer
+        If condition=$exploring
+          Button variant=weather action=weather aria-label="Local weather"
+            Icon name=CloudSun
+            Text $temperature
+        If condition=$closable
+          Button variant=search-icon action=deselect aria-label="Close place details"
+            Icon name=X
+      Stack variant=sheet-content
+        If condition=$exploring
+          If condition=$hasResults
+            Row variant=results-heading
+              Text variant=caption $resultCaption
+              Spacer
+              Button variant=text action=refresh "Search this area"
+            Row variant=discovery-cards
+              For each=$results
+                Button variant=discovery-card action=place item=$item.key
+                  Stack variant=$item.art
+                    Icon name=$item.icon size=52
+                    Text variant=card-category $item.categoryLabel
+                  Stack variant=card-copy
+                    Heading level=2 $item.name
+                    Text variant=caption $item.address
+                    Text variant=place-meta $item.meta
+            Button variant=see-more action=expand $seeMoreLabel
+          Else
+            Card variant=discover-intro
+              Icon name=Utensils size=32
+              Heading level=2 "Find your local favourites"
+              Text "Discover somewhere to eat, shop or explore around this map."
+              Button variant=pill action=restaurants "Find restaurants"
+          Heading level=2 "Explore nearby"
+          Grid variant=explore-grid columns=2
+            For each=$exploreCategories
+              Button variant=explore-tile action=category item=$item.key
+                Icon name=$item.icon
+                Text $item.title
+          Text variant=caption "Place details from OpenStreetMap. Coverage varies by area."
+        If condition=$saving
+          Text "Your places, all together. Save a place on the map to build your own lists."
+          Row variant=saved-shortcuts
+            Button variant=shortcut action=home
+              Icon name=House
+              Text "Home"
+            Button variant=shortcut action=work
+              Icon name=BriefcaseBusiness
+              Text "Work"
+            Button variant=shortcut action=exportPlaces
+              Icon name=Download
+              Text "Export"
+          If condition=$noPlaces
+            Card variant=empty-places
+              Icon name=Bookmark size=36
+              Heading level=2 "Keep the places you love"
+              Text "Choose a place and tap Save to add it to a list."
+          For each=$places
+            Row variant=saved-place
+              Button variant=result action=savedPlace item=$item.id
+                Icon name=MapPin
+                Stack
+                  Text $item.name
+                  Text variant=caption $item.list
+              Button variant=search-icon action=deletePlace item=$item.id aria-label="Delete saved place"
+                Icon name=Trash2
+        If condition=$contributing
+          Card variant=contribute-intro
+            Icon name=MapPinned size=42
+            Heading level=2 "Help make the map better"
+            Text "Add a missing place or correct details with the OpenStreetMap community."
+            Link variant=button href=$editURL external=true "Edit this area"
+            Link href="https://www.openstreetmap.org/fixthemap" external=true "Report a map problem"
+          Heading level=2 "Your place notes"
+          Text "Choose a place on the map, save it, and add your own private notes."
+          Button variant=pill action=explore "Choose a place"
+        If condition=$routing
+          Row variant=travel-modes
+            For each=$modes
+              Button variant=$item.variant action=mode item=$item.key
+                Icon name=$item.icon
+                Text $item.label
+          Row
+            Icon name=CircleDot
+            Input name=startQuery placeholder="Choose starting point" action=findStart
+            Button variant=search-icon action=findStart aria-label="Find starting point"
+              Icon name=Search
+          Row
+            Icon name=MapPin
+            Input name=endQuery placeholder="Choose destination" action=findEnd
+            Button variant=search-icon action=findEnd aria-label="Find destination"
+              Icon name=Search
+          For each=$routeResults
+            Button variant=result action=routePlace item=$item.key
               Text $item.name
               Text variant=caption $item.address
-      If condition=$saving
-        Row
-          Heading level=2 "Your places"
-          Spacer
-          Button variant=secondary action=exportPlaces "Export"
-        If condition=$noPlaces
-          Text "Find a place or click the map, then save it to a list."
-        For each=$places
-          Row variant=saved-place
-            Button variant=result action=savedPlace item=$item.id
-              Stack
-                Text $item.name
-                Text variant=caption $item.list
-            Button variant=icon action=deletePlace item=$item.id aria-label="Delete saved place" "×"
-      If condition=$routing
-        Heading level=2 "Directions"
-        Select name=mode options=$modes aria-label="Travel mode"
-        Text variant=caption "Pick places on the map or search, then use Set start / Add stop."
-        For each=$stops
-          Row
-            Text $item.label
-            Spacer
-            Button variant=icon action=removeStop item=$item.key aria-label="Remove stop" "×"
-        Row
-          Button action=route disabled=$notEnoughStops "Find routes"
-          Button variant=secondary action=clearStops "Clear"
-        If condition=$hasRoutes
-          For each=$routes
-            Button variant=$item.variant action=chooseRoute item=$item.key
-              Text $item.summary
-          Row
-            Button variant=secondary action=exportRoute "Export GPX"
-            Button variant=secondary action=navigate $navigationLabel
-          Text variant=caption "Routes are estimates from OpenStreetMap. No live traffic or road-closure feed."
-          For each=$steps
-            Row variant=step
-              Text $item.instruction
+          For each=$stops
+            Row variant=stop
+              Text $item.label
               Spacer
-              Text variant=caption $item.distance
-      If condition=$selected
-        Card variant=place-detail
+              Button variant=search-icon action=removeStop item=$item.key aria-label="Remove stop"
+                Icon name=X
           Row
-            Heading level=2 $selected.name
-            Spacer
-            Button variant=icon action=deselect aria-label="Close place details" "×"
-          Text $selected.address
-          Text variant=caption $selected.coordinates
-          Row
-            Button variant=secondary action=start "Set start"
-            Button variant=secondary action=stop "Add stop"
-          Field label="List"
-            Input name=list placeholder="Favourites"
-          Field label="Notes"
-            Input name=notes multiline=true
-          Row
-            Button action=save "Save place"
-            Button variant=secondary action=share "Share"
-      Spacer
-      Link href="https://www.openstreetmap.org/fixthemap" external=true "Improve this map"
-    Section id=map
-  Row variant=map-footer
-    Button variant=secondary action=locate "My location"
-    Button variant=secondary action=measure $measureLabel
-    Text variant=caption $measurement
-    Spacer
-    Link href="https://www.openstreetmap.org/copyright" external=true "© OpenStreetMap contributors"
+            Button variant=pill action=route disabled=$notEnoughStops "Find routes"
+            Button variant=text action=swapStops "Swap"
+            Button variant=text action=clearStops "Clear"
+          Text variant=caption "Or choose places on the map, then tap Set start or Add stop."
+          If condition=$hasRoutes
+            For each=$routes
+              Button variant=$item.variant action=chooseRoute item=$item.key
+                Icon name=Route
+                Text $item.summary
+            Row
+              Button variant=pill action=navigate $navigationLabel
+              Button variant=secondary action=exportRoute "Export GPX"
+            Text variant=caption "Route estimates exclude live traffic and road closures. Follow-location works while this page is open."
+            For each=$steps
+              Row variant=step
+                Icon name=CornerUpRight
+                Text $item.instruction
+                Spacer
+                Text variant=caption $item.distance
+        If condition=$selected
+          Card variant=place-detail
+            Text variant=place-category $selected.categoryLabel
+            Text $selected.address
+            Row variant=place-actions
+              Button variant=pill action=toSelected
+                Icon name=Navigation
+                Text "Directions"
+              Button variant=outline-pill action=save
+                Icon name=Bookmark
+                Text "Save"
+              Button variant=outline-pill action=share
+                Icon name=Share2
+                Text "Share"
+            Divider
+            Row
+              Icon name=MapPin
+              Text $selected.coordinates
+            If condition=$selected.hours
+              Row
+                Icon name=Clock
+                Text $selected.hours
+            If condition=$selected.website
+              Link href=$selected.website external=true "Visit website"
+            If condition=$selected.phone
+              Link href=$selected.callURL $selected.phone
+            If condition=$selected.osm
+              Link href=$selected.osm external=true "Place details on OpenStreetMap"
+            Row
+              Button variant=text action=start "Set start"
+              Button variant=text action=stop "Add stop"
+              Button variant=text action=measure "Measure distance"
+            Field label="List"
+              Input name=list placeholder="Favourites"
+            Field label="Your private notes"
+              Input name=notes multiline=true
+            Button variant=pill action=save "Save place and notes"
+    Row variant=bottom-tabs
+      Button variant=$exploreVariant action=explore
+        Icon name=MapPin size=25
+        Text "Explore"
+      Button variant=$savedVariant action=saved
+        Icon name=Bookmark size=25
+        Text "You"
+      Button variant=$contributeVariant action=contribute
+        Icon name=CirclePlus size=25
+        Text "Contribute"
+  If condition=$layersOpen
+    Card variant=dialog aria-label="Map layers"
+      Row
+        Heading level=2 "Map type"
+        Spacer
+        Button variant=search-icon action=closeOverlay cancel=true aria-label="Close map layers"
+          Icon name=X size=26
+      Grid variant=map-types columns=3
+        For each=$mapTypes
+          Button variant=$item.variant action=mapType item=$item.key aria-pressed=$item.active
+            Section variant=$item.art
+              Icon name=$item.icon size=42
+            Text $item.title
+      Text variant=caption $mapTypeCaption
+      Divider
+      Heading level=2 "Map details"
+      Grid variant=map-details columns=4
+        For each=$detailLayers
+          Button variant=$item.variant action=detailLayer item=$item.key aria-pressed=$item.active
+            Section variant=$item.art
+              Icon name=$item.icon size=38
+            Text $item.title
+      If condition=$layerMessage
+        Alert $layerMessage
+      If condition=$layerURL
+        Link variant=button-secondary href=$layerURL external=true $layerLink
+  If condition=$profileOpen
+    Card variant=dialog aria-label="Account and settings"
+      Row
+        Image src=$logo alt="My Maps" width=32 height=32
+        Heading level=2 "My Maps"
+        Spacer
+        Button variant=search-icon action=closeOverlay aria-label="Close account menu"
+          Icon name=X
+      Row variant=profile-identity
+        Icon name=CircleUserRound size=40
+        Stack
+          Heading level=2 $userName
+          Text variant=caption $userEmail
+      Button variant=menu-item action=saved
+        Icon name=Bookmark
+        Text "Your places"
+      Button variant=menu-item action=measure
+        Icon name=Ruler
+        Text "Measure distance"
+      Button variant=menu-item action=theme
+        Icon name=SunMoon
+        Text "Change appearance"
+      Link variant=menu-item href="#settings"
+        Icon name=Settings2
+        Text "Settings and backups"
+      If condition=$workspace
+        Button variant=menu-item action=apps data-workspace-apps-trigger=true
+          Icon name=Layers
+          Text "Workspace apps"
+      Divider
+      Button variant=menu-item action=logout
+        Icon name=LogOut
+        Text "Sign out"
+      Text variant=caption $versionText
+  If condition=$coordinatesOpen
+    Card variant=dialog aria-label="Find coordinates"
+      Row
+        Heading level=2 "Find coordinates"
+        Spacer
+        Button variant=search-icon action=closeOverlay aria-label="Close coordinates"
+          Icon name=X
+      Text "Enter latitude and longitude to open an exact location."
+      Field label="Coordinates"
+        Input name=coordinates placeholder="50.7829, -0.6731" action=goCoordinates
+      Button variant=pill action=goCoordinates "Show on map"
+  If condition=$weatherOpen
+    Card variant=dialog aria-label="Local conditions"
+      Row
+        Heading level=2 "Local conditions"
+        Spacer
+        Button variant=search-icon action=closeOverlay aria-label="Close conditions"
+          Icon name=X
+      Text $conditions
+      Text variant=caption "Forecast and air-quality models from Open-Meteo and CAMS. Not a local sensor reading."
+      Link href="https://open-meteo.com/" external=true "Weather source and attribution"

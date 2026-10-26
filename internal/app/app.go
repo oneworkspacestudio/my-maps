@@ -41,7 +41,7 @@ func env(k, d string) string {
 }
 func New(h *apphost.Host) (*App, error) {
 	a := &App{H: h, client: &http.Client{Timeout: 20 * time.Second}, photon: env("MYMAPS_GEOCODER", "https://photon.komoot.io"), routing: env("MYMAPS_ROUTER", "https://routing.openstreetmap.de"), tiles: env("MYMAPS_TILES", "https://tile.openstreetmap.org/{z}/{x}/{y}.png")}
-	for _, endpoint := range []string{a.photon, a.routing, a.tiles} {
+	for _, endpoint := range []string{a.photon, a.routing, a.tiles, env("MYMAPS_OVERPASS", "https://overpass-api.de")} {
 		u, e := url.Parse(endpoint)
 		if e != nil || u.Scheme != "https" || u.Host == "" || u.User != nil {
 			return nil, errors.New("map providers must be HTTPS URLs without credentials")
@@ -55,10 +55,13 @@ func New(h *apphost.Host) (*App, error) {
 		return nil, e
 	}
 	h.Mux.HandleFunc("GET /api/config", h.Require(func(w http.ResponseWriter, r *http.Request) {
-		apphost.JSON(w, 200, map[string]any{"tiles": a.tiles, "attribution": "© OpenStreetMap contributors", "geocoder": a.photon, "router": a.routing})
+		apphost.JSON(w, 200, map[string]any{"tiles": a.tiles, "customTiles": os.Getenv("MYMAPS_TILES") != "", "attribution": env("MYMAPS_TILE_ATTRIBUTION", "© OpenStreetMap contributors"), "geocoder": a.photon, "router": a.routing})
 	}))
 	h.Mux.HandleFunc("GET /api/search", h.Require(a.search))
 	h.Mux.HandleFunc("GET /api/reverse", h.Require(a.reverse))
+	h.Mux.HandleFunc("GET /api/nearby", h.Require(a.nearby))
+	h.Mux.HandleFunc("GET /api/map-resource", h.Require(a.mapResource))
+	h.Mux.HandleFunc("GET /api/weather", h.Require(a.weather))
 	h.Mux.HandleFunc("POST /api/route", h.Require(a.route))
 	h.Mux.HandleFunc("GET /api/places", h.Require(a.places))
 	h.Mux.HandleFunc("POST /api/places", h.Require(a.save))
@@ -81,6 +84,9 @@ func coordinate(lat, lon float64) bool {
 	return !math.IsNaN(lat) && !math.IsNaN(lon) && !math.IsInf(lat, 0) && !math.IsInf(lon, 0) && lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180
 }
 func (a *App) fetch(w http.ResponseWriter, r *http.Request, target string) {
+	a.fetchTTL(w, r, target, 24*time.Hour)
+}
+func (a *App) fetchTTL(w http.ResponseWriter, r *http.Request, target string, ttl time.Duration) {
 	key := apphost.Hash(target)
 	var body []byte
 	if a.H.DB.QueryRow("SELECT body FROM provider_cache WHERE key=? AND expires>?", key, time.Now().Unix()).Scan(&body) == nil {
@@ -123,7 +129,7 @@ func (a *App) fetch(w http.ResponseWriter, r *http.Request, target string) {
 	var count int
 	a.H.DB.QueryRow("SELECT count(*) FROM provider_cache").Scan(&count)
 	if count < 5000 {
-		_, _ = a.H.DB.Exec("INSERT OR REPLACE INTO provider_cache VALUES(?,?,?)", key, body, time.Now().Add(24*time.Hour).Unix())
+		_, _ = a.H.DB.Exec("INSERT OR REPLACE INTO provider_cache VALUES(?,?,?)", key, body, time.Now().Add(ttl).Unix())
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(body)
@@ -135,6 +141,10 @@ func (a *App) search(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	v := url.Values{"q": {q}, "limit": {"12"}}
+	if lat, lon, ok := requestCoordinates(r); ok {
+		v.Set("lat", fmt.Sprint(lat))
+		v.Set("lon", fmt.Sprint(lon))
+	}
 	a.fetch(w, r, a.photon+"/api/?"+v.Encode())
 }
 func (a *App) reverse(w http.ResponseWriter, r *http.Request) {
