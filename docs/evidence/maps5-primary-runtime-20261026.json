@@ -1,0 +1,10 @@
+{
+  "mapsVersion": "0.1.0-preview.5",
+  "managerVersion": "0.3.0-preview.92",
+  "all27ServicesRunning": true,
+  "servedJS_CSS_WorkerMatchAcceptedPackage": true,
+  "correctInstalledHTMLTitle": true,
+  "latestRecoveryManifestVerified": true,
+  "recoveryManifestSHA256": "28b7e6627b8b971626ae7a70ca66724ff9be469c247d3823d17188ce79091c74",
+  "normalUpdateComplete": true
+}

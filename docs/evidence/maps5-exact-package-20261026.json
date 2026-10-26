@@ -1,0 +1,23 @@
+{
+  "version": "0.1.0-preview.5",
+  "source": "c655dbeaf9e9e8df790c351e59c29a0c1be7ed38",
+  "allServedAssetsMatch": true,
+  "correctBrowserTitle": true,
+  "layerDialogWorking": true,
+  "assets": [
+    {
+      "name": "index-BhjMa_gT.js",
+      "sha256": "3f249757a6c41d32f7c8ed4987b139e680512993d31eca19442cad87a4e24157"
+    },
+    {
+      "name": "index-CSH1KC1G.css",
+      "sha256": "e73d48f846709d99c4b0b727968c364e22b734fd2a63a728e38a20719a57adb3"
+    },
+    {
+      "name": "maplibre-gl-worker-UMzBwfZH.js",
+      "sha256": "23f22017b7515bc229c0d1c689bcde86cbe08c9f8932ff8be00899a8a2603540"
+    }
+  ],
+  "executableSHA256": "58fb09cd2795c5fe7ced76b2d96f9cc9aad858c458628fcd48d001414fc577f8",
+  "sameProductAssetsAsAccepted3": true
+}

@@ -1,0 +1,38 @@
+{
+  "testedPackage": "0.1.0-preview.4",
+  "sameProductImplementationAndAssetsInFinal5": true,
+  "evidence": {
+    "syntheticDataOnly": true,
+    "viewports": [
+      {
+        "width": 360,
+        "height": 640
+      },
+      {
+        "width": 576,
+        "height": 1152
+      },
+      {
+        "width": 1440,
+        "height": 940
+      }
+    ],
+    "pageErrors": [],
+    "providerChecks": {
+      "photon": true,
+      "osrm": true,
+      "nearbyPlaces": true,
+      "overpass": false
+    },
+    "checks": [
+      "phone map/search/categories/bottom tabs",
+      "layers fit phone",
+      "profile Escape and focus restoration",
+      "exact coordinates and private saved notes",
+      "saved start/end, actual route and written steps",
+      "GPX download contains route points",
+      "actual nearby restaurants and cards",
+      "settings scrolling and return to map"
+    ]
+  }
+}

@@ -68,3 +68,34 @@ Live read-only screen inspection exposed the inherited static My Tasks tab title
 in web/index.html (also present before this redesign). Maps5 changes it to ASCII
 My Maps. No product JS/CSS/worker or backend/data behavior change; min92 and the
 accepted four-package managed scope remain. Keep4/source91440eb immutable.
+
+## Final delivery complete — Maps5
+
+Immutable public v0.1.0-preview.5/source c655dbeaf9e9e8df790c351e59c29a0c1be7ed38.
+All17 public assets match local size/SHA256, anonymous EXE/default promoted channel
+checks pass. Final EXE58fb09cd2795c5fe7ced76b2d96f9cc9aad858c458628fcd48d001414fc577f8.
+Go1.27.3. Registered-layout min92/four-owned-package manifest passes parser and
+normal production preflight. Source/pins/channel promoted;3 explicitly withheld;
+3/4/5 public tags/assets immutable. Accepted productJS/CSS/worker bytes retained.
+
+Both normal protected4->5 updates completed with manager92 unchanged and27
+services healthy on each. Primary exact executable, served JS/CSS/worker/HTML
+MyMaps title, owner configuration/decrypted suite identities/credentials and all
+other app contracts/packages/executable bytes independently audited; retained.
+Newest normal recovery manifest verified. Secondary normal owner updater completed
+all9 stages in2m20, only Maps displayed version changed4->5, newest verified
+recovery kept; independent public health27/Maps5, live browser titleMyMaps and
+content-addressed JS/CSS names match. No independent remote disk/credential audit
+claimed. Earlier2->4 applies were likewise verified, before the inherited title fix.
+
+Only the named synthetic C fixture/PID/port19315 were stopped/removed with path,
+process and reparse checks. Owner installations/recovery retained. User's actual
+secondary Maps tab left open. Actual owner screenshots stay in tooling, not Git.
+Sanitized receipts: docs/evidence/maps5-*.json, functional/provider evidence labels
+its original tested package and identical final assets. No Actions, physical
+GPS/microphone, clean-host/reboot or exhaustive security acceptance claim.
+
+Requested push/release/two-PC installation is complete. Full Google feature/data
+parity remains unimplemented: FEATUREs/README accurately list photos/reviews,
+traffic, Lens, embedded Street View, transit and navigation limits. No fake data,
+paid provider, Google scraping or bypassed update protections were introduced.

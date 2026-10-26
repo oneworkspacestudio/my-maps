@@ -1,0 +1,13 @@
+{
+  "releasedController": "0.3.0-preview.92",
+  "canonicalPublishedCatalogUsed": true,
+  "ownerDataUsedAsFixture": false,
+  "registeredMapsPackageCount": 4,
+  "manifest4ParserAndSelectionPassed": true,
+  "customPortRetained": true,
+  "otherAppContractsAndPackagesRetained": true,
+  "minimumManager92Enforced": true,
+  "manifest3RejectionReproduced": true,
+  "manifestVersion": "0.1.0-preview.5",
+  "manifest5ParserAndSelectionPassed": true
+}

@@ -1,0 +1,17 @@
+{
+  "health": {
+    "app": "maps",
+    "status": "ok",
+    "version": "0.1.0-preview.5"
+  },
+  "screen": {
+    "assets": [
+      "index-BhjMa_gT.js",
+      "index-CSH1KC1G.css",
+      "navigation.js"
+    ],
+    "canvas": true,
+    "search": true,
+    "title": "My Maps"
+  }
+}

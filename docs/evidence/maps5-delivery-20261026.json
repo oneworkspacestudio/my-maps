@@ -1,0 +1,24 @@
+{
+  "maps": "0.1.0-preview.5",
+  "sourceCommit": "c655dbeaf9e9e8df790c351e59c29a0c1be7ed38",
+  "release": "https://github.com/oneworkspacestudio/my-maps/releases/tag/v0.1.0-preview.5",
+  "installedOnBothPCs": true,
+  "bothManagersRetained": "0.3.0-preview.92",
+  "both27ServicesHealthy": true,
+  "bothNormalBackedUpUpdatesComplete": true,
+  "otherAppsAndOwnerSettingsRetained": true,
+  "correctBrowserTitleVerified": true,
+  "publicAssetSizesAndSHA256Verified": 17,
+  "githubActionsUsed": false,
+  "physicalGPS_Microphone_RebootAcceptance": false,
+  "fullGoogleFeatureParity": false,
+  "unavailableGoogleDataFeatures": [
+    "Google photos/reviews/ratings",
+    "Lens",
+    "live traffic",
+    "embedded Google Street View",
+    "transit timetables",
+    "background turn-by-turn navigation"
+  ],
+  "syntheticFixtureCleaned": true
+}

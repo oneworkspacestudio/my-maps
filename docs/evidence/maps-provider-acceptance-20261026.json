@@ -1,0 +1,12 @@
+{
+  "testedPackage": "0.1.0-preview.3",
+  "sameProductImplementationAndAssetsInFinal5": true,
+  "evidence": {
+    "errors": [],
+    "failures": [],
+    "providers": {
+      "airText": "Map type\nDefault\nSatellite\nTerrain\nOpenFreeMap \u00c2\u00b7 OpenMapTiles \u00c2\u00b7 OpenStreetMap\nMap details\nPublic transport\nTraffic\nCycling\nRaised buildings\nStreet View\nWildfires\nAir quality\nEuropean AQI: 24 \u00c2\u00b7 PM2.5: 4 \u00c2\u00b5g/m\u00c2\u00b3 \u00c2\u00b7 2026-10-26T21:00. Model data: Open-Meteo / CAMS.",
+      "weatherText": "Local conditions\n16.6 \u00c2\u00b0C \u00c2\u00b7 Updated 2026-10-26T21:45 (Europe/London).\nForecast and air-quality models from Open-Meteo and CAMS. Not a local sensor reading.\nWeather source and attribution"
+    }
+  }
+}
