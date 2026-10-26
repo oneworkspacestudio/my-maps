@@ -8,3 +8,4 @@
 .grid--explore-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 #screen-outlet:not(:has(.stack--map-stage)){overflow:auto}
 .row--topbar>.link{display:flex}@media(max-width:420px){.row--topbar h2{display:none}}
+.raster-map{z-index:0;background:#f5f3ef}.raster-map .leaflet-control-attribution{font:10px/1.4 "Segoe UI",Arial,sans-serif;color:#37474f;background:#ffffffed;max-width:calc(100vw - 490px)}.raster-map .leaflet-bottom.leaflet-left{left:450px;bottom:50px}.raster-map .leaflet-bottom.leaflet-right{bottom:240px;right:10px}.raster-place-marker,.gps-marker{background:transparent;border:0}.raster-place-marker .place-pin{margin:0}.raster-map .leaflet-pane svg{max-width:none}@media(max-width:700px){.raster-map .leaflet-bottom.leaflet-left{left:12px;bottom:calc(28dvh + 108px)}.raster-map .leaflet-control-attribution{max-width:calc(100vw - 92px);font-size:9px}.raster-map .leaflet-control-zoom{display:none}}

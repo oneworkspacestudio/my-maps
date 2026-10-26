@@ -22,7 +22,7 @@ Workspace 0.3.0-preview.92 or newer.
 
 ## Included
 
-- Full-screen vector map with floating search, category chips, a sliding place sheet,
+- Full-screen map with floating search, category chips, a sliding place sheet,
   Explore / You / Contribute tabs and an account menu.
 - Interactive street map, zoom, rotation, location and dropped pins.
 - Nearby restaurants, shopping, hotels, attractions, parking and fuel.
@@ -41,7 +41,7 @@ Workspace 0.3.0-preview.92 or newer.
 
 ## Open services and limits
 
-The default vector map uses [OpenFreeMap](https://openfreemap.org/quick_start/),
+Phones use OpenStreetMap image tiles without requiring graphics acceleration. Desktop vector maps use [OpenFreeMap](https://openfreemap.org/quick_start/),
 [OpenMapTiles](https://openmaptiles.org/) and OpenStreetMap. Terrain comes from
 [Mapterhorn](https://mapterhorn.com/attribution); regional imagery comes from
 [NASA GIBS](https://nasa-gibs.github.io/gibs-api-docs/). Attribution stays visible.

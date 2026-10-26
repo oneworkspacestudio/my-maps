@@ -11,7 +11,7 @@ My Maps keeps its own name and branding.
 | Nearby discovery | Overpass details; loaded-map fallback during provider outages; no invented ratings/photos |
 | Your places | Private lists, Home/Work list shortcuts, notes and GeoJSON export |
 | Directions | Drive/walk/cycle, up to eight stops, alternatives, steps, GPX, foreground GPS following |
-| Default map | OpenFreeMap vector map; existing custom raster endpoint remains supported |
+| Default map | OpenStreetMap image tiles on phones; OpenFreeMap vector map on desktops; existing custom tile endpoint retained |
 | Satellite | NASA Blue Marble regional 500 m imagery, not street-resolution satellite |
 | Terrain | Mapterhorn elevation/hillshade with open vector cartography |
 | Raised buildings | Mapped building heights and tilted view where available |
@@ -29,3 +29,9 @@ My Maps keeps its own name and branding.
 Google photos, reviews, ratings, Lens and Google data services are not cloned or
 scraped. No paid account, offline map download or background navigation is enabled.
 MapLibre and open data providers retain their own licences and attribution.
+
+Phones use a DOM/image-tile renderer that does not require WebGL. Desktop maps,
+terrain and raised buildings use WebGL2, with automatic standard-map recovery
+if graphics initialization fails, the context is lost or no map renders within
+12 seconds. Search, pins, route lines, measurements and foreground GPS also work
+on the standard map. Loaded-vector POI discovery is available only in vector mode.
