@@ -8,7 +8,7 @@ My Maps keeps its own name and branding.
 | Reference feature | My Maps implementation |
 | --- | --- |
 | Search, pins and place details | Photon address search, exact coordinates, open map labels and nearby POIs |
-| Nearby discovery | Overpass details; loaded-map fallback during provider outages; no invented ratings/photos |
+| Nearby discovery | Photon category search on both renderers, Overpass backup and loaded-vector fallback; no invented ratings/photos |
 | Your places | Private lists, Home/Work list shortcuts, notes and GeoJSON export |
 | Directions | Drive/walk/cycle, up to eight stops, alternatives, steps, GPX, foreground GPS following |
 | Default map | OpenStreetMap image tiles on phones; OpenFreeMap vector map on desktops; existing custom tile endpoint retained |
@@ -35,3 +35,10 @@ terrain and raised buildings use WebGL2, with automatic standard-map recovery
 if graphics initialization fails, the context is lost or no map renders within
 12 seconds. Search, pins, route lines, measurements and foreground GPS also work
 on the standard map. Loaded-vector POI discovery is available only in vector mode.
+
+Searches, nearby categories and selected places keep the map visible with the
+sheet collapsed. Drag or tap its handle to open details; result arrival preserves
+a sheet the user has already opened. The title and count identify current results.
+Public-provider coverage varies; failures show a retry state and empty results
+are distinguished from an unavailable service. Nearby responses are cached for
+one hour and provider requests are spaced rather than rejected for quick clicks.

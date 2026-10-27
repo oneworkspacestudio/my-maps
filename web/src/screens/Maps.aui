@@ -34,11 +34,12 @@ Page Maps
         Text $measurement
         Button variant=text action=measure "Done"
     Stack variant=$sheetVariant
-      Button variant=sheet-handle action=expand aria-label=$expandLabel
+      Button variant=sheet-handle action=expand aria-label=$expandLabel aria-expanded=$sheetExpanded
         Section variant=handle-line
       Row variant=sheet-heading
-        Heading level=1 $title
-        Spacer
+        Stack variant=sheet-title
+          Heading level=1 $title
+          Text variant=sheet-hint $sheetHint
         If condition=$exploring
           Button variant=weather action=weather aria-label="Local weather"
             Icon name=CloudSun
@@ -65,11 +66,16 @@ Page Maps
                     Text variant=place-meta $item.meta
             Button variant=see-more action=expand $seeMoreLabel
           Else
-            Card variant=discover-intro
-              Icon name=Utensils size=32
-              Heading level=2 "Find your local favourites"
-              Text "Discover somewhere to eat, shop or explore around this map."
-              Button variant=pill action=restaurants "Find restaurants"
+            Stack variant=explore-empty
+              If condition=$attempted
+                Text $emptyMessage
+                Button variant=see-more action=refresh "Try again"
+              Else
+                Card variant=discover-intro
+                  Icon name=Utensils size=32
+                  Heading level=2 "Find your local favourites"
+                  Text "Discover somewhere to eat, shop or explore around this map."
+                  Button variant=pill action=restaurants "Find restaurants"
           Heading level=2 "Explore nearby"
           Grid variant=explore-grid columns=2
             For each=$exploreCategories

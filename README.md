@@ -50,9 +50,10 @@ an authenticated, fixed-provider relay; provider credentials are never forwarded
 
 [Photon](https://github.com/komoot/photon) provides address search,
 [FOSSGIS OSRM](https://routing.openstreetmap.de/about.html) provides routes, and
-Overpass provides nearby place details. User-triggered requests are rate limited
-server-wide and cached for 24 hours. If Overpass is unavailable, the app can show
-places in the loaded vector tiles, with a notice that full details are unavailable.
+Photon also provides nearby category search on phones and desktops, with Overpass
+as a backup. Address/route queries are cached for 24 hours, nearby queries for
+one hour. New provider requests wait at a server-wide one-per-second limit.
+A loaded-vector fallback remains available when both nearby providers fail.
 Weather and air quality use [Open-Meteo](https://open-meteo.com/), cached for
 15 minutes. Its free service is for personal/non-commercial installations;
 [provider terms](https://open-meteo.com/en/terms) apply. All public providers are

@@ -87,52 +87,69 @@ func (a *App) fetch(w http.ResponseWriter, r *http.Request, target string) {
 	a.fetchTTL(w, r, target, 24*time.Hour)
 }
 func (a *App) fetchTTL(w http.ResponseWriter, r *http.Request, target string, ttl time.Duration) {
+	body, e := a.providerJSON(r.Context(), target, ttl)
+	if e != nil {
+		if r.Context().Err() == nil {
+			apphost.Problem(w, 502, "The map provider is unavailable. Please try again shortly.")
+		}
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(body)
+}
+
+// Share cached public provider data, never user cookies or credentials. Queue
+// requests at one per second rather than rejecting ordinary fast UI actions.
+func (a *App) providerJSON(ctx context.Context, target string, ttl time.Duration) ([]byte, error) {
 	key := apphost.Hash(target)
 	var body []byte
-	if a.H.DB.QueryRow("SELECT body FROM provider_cache WHERE key=? AND expires>?", key, time.Now().Unix()).Scan(&body) == nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(body)
-		return
+	if a.H != nil && a.H.DB.QueryRow("SELECT body FROM provider_cache WHERE key=? AND expires>?", key, time.Now().Unix()).Scan(&body) == nil {
+		return body, nil
 	}
-	a.mu.Lock()
-	if time.Since(a.last) < time.Second {
+	for {
+		a.mu.Lock()
+		delay := time.Until(a.last.Add(time.Second))
+		if delay <= 0 {
+			a.last = time.Now()
+			a.mu.Unlock()
+			break
+		}
 		a.mu.Unlock()
-		w.Header().Set("Retry-After", "1")
-		apphost.Problem(w, 429, "Please wait a second before the next search or route")
-		return
+		timer := time.NewTimer(delay)
+		select {
+		case <-ctx.Done():
+			timer.Stop()
+			return nil, ctx.Err()
+		case <-timer.C:
+		}
 	}
-	a.last = time.Now()
-	a.mu.Unlock()
-	req, e := http.NewRequestWithContext(r.Context(), "GET", target, nil)
+	req, e := http.NewRequestWithContext(ctx, "GET", target, nil)
 	if e != nil {
-		apphost.Problem(w, 400, "Invalid map request")
-		return
+		return nil, e
 	}
 	req.Header.Set("User-Agent", "OneWorkspace-MyMaps/0.1 (+https://github.com/oneworkspacestudio/my-maps)")
 	req.Header.Set("Accept", "application/json")
 	resp, e := a.client.Do(req)
 	if e != nil {
-		apphost.Problem(w, 502, "The map provider is unavailable. Saved places are still available; retry shortly.")
-		return
+		return nil, e
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
-		apphost.Problem(w, 502, "The community map provider is busy. Please retry later.")
-		return
+		return nil, fmt.Errorf("provider status %d", resp.StatusCode)
 	}
-	body, e = io.ReadAll(io.LimitReader(resp.Body, 4<<20))
-	if e != nil || !json.Valid(body) {
-		apphost.Problem(w, 502, "The map provider returned an incomplete response")
-		return
+	body, e = io.ReadAll(io.LimitReader(resp.Body, (4<<20)+1))
+	if e != nil || len(body) > 4<<20 || !json.Valid(body) {
+		return nil, errors.New("invalid provider JSON")
 	}
-	_, _ = a.H.DB.Exec("DELETE FROM provider_cache WHERE expires<?", time.Now().Unix())
-	var count int
-	a.H.DB.QueryRow("SELECT count(*) FROM provider_cache").Scan(&count)
-	if count < 5000 {
-		_, _ = a.H.DB.Exec("INSERT OR REPLACE INTO provider_cache VALUES(?,?,?)", key, body, time.Now().Add(ttl).Unix())
+	if a.H != nil {
+		_, _ = a.H.DB.Exec("DELETE FROM provider_cache WHERE expires<?", time.Now().Unix())
+		var count int
+		a.H.DB.QueryRow("SELECT count(*) FROM provider_cache").Scan(&count)
+		if count < 5000 {
+			_, _ = a.H.DB.Exec("INSERT OR REPLACE INTO provider_cache VALUES(?,?,?)", key, body, time.Now().Add(ttl).Unix())
+		}
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(body)
+	return body, nil
 }
 func (a *App) search(w http.ResponseWriter, r *http.Request) {
 	q := strings.TrimSpace(r.URL.Query().Get("q"))

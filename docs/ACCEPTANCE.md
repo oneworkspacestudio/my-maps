@@ -28,3 +28,16 @@ preserved camera after simulated context loss and bounded stalled-vector recover
 The normal desktop vector path also renders real features. No uncaught browser
 errors were observed. These are browser fault-injection checks, not a physical
 Android test; the exact cause on the reporting phone is not independently known.
+
+Preview7 checks the map-first search/category flow, actual pointer drags, manual
+expansion while search is pending, retry after a simulated nearby outage, query
+refresh, exact-coordinate validation, private pins/notes and Home shortcut,
+mocked sharing without notes, synthetic GPS, GeoJSON export/delete, actual
+drive/walk/cycle routes and SVG/GPX, route controls, measurement, imagery/layers,
+weather/AQI, contribution links, appearance, Settings and encrypted backup.
+Standalone-user creation and a second account's private-place isolation are
+checked using disposable protected data. All eight nearby categories return
+real Photon results in the phone renderer without WebGL. Tests also cover
+provider failover, malformed upstream data, rate spacing/cancellation and bounds.
+Exact-package and deployed receipts are separate. Physical device permissions,
+GPS/microphone, OS share sheets, reboot and missing Google services are unclaimed.

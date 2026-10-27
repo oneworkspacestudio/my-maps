@@ -11,6 +11,7 @@ export const distance=(a:number[],b:number[])=>{const rad=Math.PI/180,lat=(b[1]-
 export const fmtDistance=(m:number)=>m<1000?Math.round(m)+' m':(m/1000).toFixed(1)+' km';
 export function MapView(p:any){
  const [failed,setFailed]=useState(false),phone=useRef(matchMedia('(any-pointer: coarse)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+ useEffect(()=>{if(failed&&(p.mapType==='terrain'||p.buildings))p.onFallback()},[failed,p.mapType,p.buildings]);
  const raster=failed||(phone.current&&p.mapType!=='terrain'&&!p.buildings);
  const fallback=()=>{setFailed(true);p.onFallback()};
  return React.createElement(raster?RasterMap:VectorMap,{...p,onFallback:fallback});

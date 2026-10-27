@@ -41,10 +41,12 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
           </Row>
         )}
         <Stack variant={data.sheetVariant}>
-          <Button variant="sheet-handle" onClick={() => onAction("expand")} aria-label={data.expandLabel}><Section variant="handle-line" /></Button>
+          <Button variant="sheet-handle" onClick={() => onAction("expand")} aria-label={data.expandLabel} aria-expanded={data.sheetExpanded}><Section variant="handle-line" /></Button>
           <Row variant="sheet-heading">
-            <Heading level={1}>{data.title}</Heading>
-            <Spacer />
+            <Stack variant="sheet-title">
+              <Heading level={1}>{data.title}</Heading>
+              <Text variant="sheet-hint">{data.sheetHint}</Text>
+            </Stack>
             {data.exploring && (
               <Button variant="weather" onClick={() => onAction("weather")} aria-label="Local weather">
                 <Icon name="CloudSun" />
@@ -83,12 +85,21 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                     <Button variant="see-more" onClick={() => onAction("expand")}>{data.seeMoreLabel}</Button>
                   </>
                 ) : (
-                  <Card variant="discover-intro">
-                    <Icon name="Utensils" size={32} />
-                    <Heading level={2}>Find your local favourites</Heading>
-                    <Text>Discover somewhere to eat, shop or explore around this map.</Text>
-                    <Button variant="pill" onClick={() => onAction("restaurants")}>Find restaurants</Button>
-                  </Card>
+                  <Stack variant="explore-empty">
+                    {data.attempted ? (
+                      <>
+                        <Text>{data.emptyMessage}</Text>
+                        <Button variant="see-more" onClick={() => onAction("refresh")}>Try again</Button>
+                      </>
+                    ) : (
+                      <Card variant="discover-intro">
+                        <Icon name="Utensils" size={32} />
+                        <Heading level={2}>Find your local favourites</Heading>
+                        <Text>Discover somewhere to eat, shop or explore around this map.</Text>
+                        <Button variant="pill" onClick={() => onAction("restaurants")}>Find restaurants</Button>
+                      </Card>
+                    )}
+                  </Stack>
                 )}
                 <Heading level={2}>Explore nearby</Heading>
                 <Grid variant="explore-grid" columns={2}>
