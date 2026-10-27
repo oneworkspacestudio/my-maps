@@ -57,3 +57,8 @@ Only active owned fixture: C:/Projects/.cache/maps-depth-20261027, receipt
 I:/Projects/tooling/maps-redesign-20261026/depth-process.json tracks exact binary,
 PID/data/port19315; guarded restart script. Remove this fixture after exact-package
 QA; no older dead PIDs reused. Keep source/release/evidence on I.
+
+Packaging guard correctly refused missing licences in upstream npm tarballs for
+@protomaps/basemaps5.7.2 and pmtiles3.2.1. Exact npm gitHead licence texts are
+vendored under docs/licenses with source URLs/SHA256, including style/schema
+attribution; version/digest-checked build fallback includes them in notices.

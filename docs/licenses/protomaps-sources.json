@@ -1,0 +1,16 @@
+[
+  {
+    "name": "@protomaps/basemaps",
+    "version": "5.7.2",
+    "source": "https://raw.githubusercontent.com/protomaps/basemaps/3ea8293a28131c3dc63f1bb20827bdb8a76df06f/LICENSE.md",
+    "file": "protomaps-basemaps-5.7.2.txt",
+    "sha256": "74f975cfedd168098c43b5cfd6e587e40604684c4ffcec3e90d24b3b09c061b0"
+  },
+  {
+    "name": "pmtiles",
+    "version": "3.2.1",
+    "source": "https://raw.githubusercontent.com/protomaps/PMTiles/d7357088c5b971b6d756a43b798182bb6777043d/LICENSE",
+    "file": "pmtiles-3.2.1.txt",
+    "sha256": "9500fb7d824af20acfb30e32e8350d98ba60525610a91008e91fd83e16da7bb5"
+  }
+]
