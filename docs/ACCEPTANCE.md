@@ -1,4 +1,25 @@
-# Preview evidence
+# Current map-depth candidate
+
+The map-depth revision replaces the public-provider behaviour described in older
+preview evidence below. Current capabilities are in FEATURES.md. A protected,
+disposable NTFS fixture downloaded a real Protomaps local street selection and
+GeoNames UK postcodes, built the local index and rendered without WebGL. Checks
+cover actual E4 6NW suggestions, map-first selection, local nearby categories,
+manual sheet behaviour, restart, cancellation keeping an active pack, replacement
+activation, CSRF/concurrent-start guards, owner/member authorization and private
+place/history isolation. Browser external network requests are blocked and none
+were attempted. Go range/directory/expansion/coverage/search tests pass. No owner
+account or owner records were development fixtures. Public94 manager source/hash
+is checked separately for the actual app-only protected delivery.
+
+This does not claim a physical phone/GPS/share/reboot test, full house-address
+geocoding, an installed OSRM graph or every supported geographic selection tested.
+The local router protocol has separate synthetic acceptance; default routing is
+hidden. No full Google Maps data/feature parity is claimed.
+
+## Historical preview evidence
+
+
 
 The redesign uses the supplied phone screenshots for layout. Its map, floating
 search and category chips, Explore/You/Contribute tabs, place sheet, profile menu

@@ -1,5 +1,5 @@
 // Generated from screens/Maps.aui; edit the AUI source.
-import { Alert, Button, Card, Divider, Field, Grid, Heading, Icon, Image, Input, Link, Page, Row, Section, Spacer, Spinner, Stack, Text } from "@/components/ui"
+import { Button, Card, Divider, Field, Grid, Heading, Icon, Image, Input, Link, Page, Row, Section, Spacer, Spinner, Stack, Text } from "@/components/ui"
 
 export function Maps({ data, onAction }: { data: any; onAction: (name: string) => void }) {
   return (
@@ -31,11 +31,12 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
             ))}
           </Row>
         </Stack>
-        <Button variant="layers-control" onClick={() => onAction("layers")} aria-label="Map layers"><Icon name="Layers2" size={26} /></Button>
+        <Button variant="layers-control" onClick={() => onAction("layers")} aria-label="Map downloads"><Icon name="Download" size={26} /></Button>
         <Stack variant="map-controls">
-          <Button variant="map-control" onClick={() => onAction("compass")} aria-label="Reset map bearing"><Icon name="Compass" size={25} /></Button>
           <Button variant="map-control" onClick={() => onAction("locate")} aria-label="My location"><Icon name="LocateFixed" size={25} /></Button>
-          <Button variant="directions-control" onClick={() => onAction("directions")} aria-label="Directions"><Icon name="Navigation" size={26} /></Button>
+          {data.routingAvailable && (
+            <Button variant="directions-control" onClick={() => onAction("directions")} aria-label="Directions"><Icon name="Navigation" size={26} /></Button>
+          )}
         </Stack>
         <Text variant="map-brand">My Maps</Text>
         {data.measuring && (
@@ -69,14 +70,18 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                 <Text variant="caption">{data.selected.categoryLabel}</Text>
               </Stack>
               <Row variant="quick-actions">
-                <Button variant="pill" onClick={() => onAction("toSelected")}>
-                  <Icon name="CornerUpRight" />
-                  <Text>Directions</Text>
-                </Button>
-                <Button variant="soft-pill" onClick={() => onAction("quickStart")}>
-                  <Icon name="Navigation" />
-                  <Text>Start</Text>
-                </Button>
+                {data.routingAvailable && (
+                  <>
+                    <Button variant="pill" onClick={() => onAction("toSelected")}>
+                      <Icon name="CornerUpRight" />
+                      <Text>Directions</Text>
+                    </Button>
+                    <Button variant="soft-pill" onClick={() => onAction("quickStart")}>
+                      <Icon name="Navigation" />
+                      <Text>Start</Text>
+                    </Button>
+                  </>
+                )}
                 <Button variant="soft-pill" onClick={() => onAction("share")}>
                   <Icon name="Share2" />
                   <Text>Share</Text>
@@ -89,7 +94,7 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
             </>
           )}
           <Stack variant="sheet-content">
-            {data.exploring && (
+            {data.exploringNearby && (
               <>
                 {data.hasResults ? (
                   <>
@@ -141,6 +146,13 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                 </Grid>
                 <Text variant="caption">Place details from OpenStreetMap. Coverage varies by area.</Text>
               </>
+            )}
+            {data.overviewExploring && (
+              <Card>
+                <Heading level={2}>Your local overview</Heading>
+                <Text>Search towns and mapped names, save places, or install street detail for nearby places.</Text>
+                <Button variant="soft-pill" onClick={() => onAction("mapInstall")}>Map downloads</Button>
+              </Card>
             )}
             {data.saving && (
               <>
@@ -400,37 +412,6 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
           </Stack>
         )}
       </Stack>
-      {data.layersOpen && (
-        <Card variant="dialog" aria-label="Map layers">
-          <Row>
-            <Heading level={2}>Map type</Heading>
-            <Spacer />
-            <Button variant="search-icon" onClick={() => onAction("closeOverlay")} cancel={true} aria-label="Close map layers"><Icon name="X" size={26} /></Button>
-          </Row>
-          <Grid variant="map-types" columns={3}>
-            {data.mapTypes.map((item, i) => (
-              <Button key={i} variant={item.variant} onClick={() => onAction("mapType")} item={item.key} aria-pressed={item.active}>
-                <Section variant={item.art}><Icon name={item.icon} size={42} /></Section>
-                <Text>{item.title}</Text>
-              </Button>
-            ))}
-          </Grid>
-          <Text variant="caption">{data.mapTypeCaption}</Text>
-          <Divider />
-          <Heading level={2}>Map details</Heading>
-          <Grid variant="map-details" columns={4}>
-            {data.detailLayers.map((item, i) => (
-              <Button key={i} variant={item.variant} onClick={() => onAction("detailLayer")} item={item.key} aria-pressed={item.active}>
-                <Section variant={item.art}><Icon name={item.icon} size={38} /></Section>
-                <Text>{item.title}</Text>
-              </Button>
-            ))}
-          </Grid>
-          {data.layerMessage && (
-            <Alert>{data.layerMessage}</Alert>
-          )}
-        </Card>
-      )}
       {data.profileOpen && (
         <Card variant="dialog" aria-label="Account and settings">
           <Row>
@@ -449,6 +430,10 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
           <Button variant="menu-item" onClick={() => onAction("saved")}>
             <Icon name="Bookmark" />
             <Text>Your places</Text>
+          </Button>
+          <Button variant="menu-item" onClick={() => onAction("mapInstall")}>
+            <Icon name="Download" />
+            <Text>Map downloads</Text>
           </Button>
           <Button variant="menu-item" onClick={() => onAction("measure")}>
             <Icon name="Ruler" />

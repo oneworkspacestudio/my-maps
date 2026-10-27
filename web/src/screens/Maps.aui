@@ -21,15 +21,14 @@ Page Maps
           Button variant=$item.variant action=category item=$item.key
             Icon name=$item.icon
             Text $item.title
-    Button variant=layers-control action=layers aria-label="Map layers"
-      Icon name=Layers2 size=26
+    Button variant=layers-control action=layers aria-label="Map downloads"
+      Icon name=Download size=26
     Stack variant=map-controls
-      Button variant=map-control action=compass aria-label="Reset map bearing"
-        Icon name=Compass size=25
       Button variant=map-control action=locate aria-label="My location"
         Icon name=LocateFixed size=25
-      Button variant=directions-control action=directions aria-label="Directions"
-        Icon name=Navigation size=26
+      If condition=$routingAvailable
+        Button variant=directions-control action=directions aria-label="Directions"
+          Icon name=Navigation size=26
     Text variant=map-brand "My Maps"
     If condition=$measuring
       Row variant=measure-status
@@ -57,12 +56,13 @@ Page Maps
           Text variant=place-address $selected.address
           Text variant=caption $selected.categoryLabel
         Row variant=quick-actions
-          Button variant=pill action=toSelected
-            Icon name=CornerUpRight
-            Text "Directions"
-          Button variant=soft-pill action=quickStart
-            Icon name=Navigation
-            Text "Start"
+          If condition=$routingAvailable
+            Button variant=pill action=toSelected
+              Icon name=CornerUpRight
+              Text "Directions"
+            Button variant=soft-pill action=quickStart
+              Icon name=Navigation
+              Text "Start"
           Button variant=soft-pill action=share
             Icon name=Share2
             Text "Share"
@@ -70,7 +70,7 @@ Page Maps
             Icon name=Bookmark
             Text $saveLabel
       Stack variant=sheet-content
-        If condition=$exploring
+        If condition=$exploringNearby
           If condition=$hasResults
             Row variant=results-heading
               Text variant=caption $resultCaption
@@ -104,6 +104,11 @@ Page Maps
                 Icon name=$item.icon
                 Text $item.title
           Text variant=caption "Place details from OpenStreetMap. Coverage varies by area."
+        If condition=$overviewExploring
+          Card
+            Heading level=2 "Your local overview"
+            Text "Search towns and mapped names, save places, or install street detail for nearby places."
+            Button variant=soft-pill action=mapInstall "Map downloads"
         If condition=$saving
           Text "Your places, all together. Save a place on the map to build your own lists."
           Row variant=saved-shortcuts
@@ -284,30 +289,6 @@ Page Maps
                 Icon name=ArrowUpRight size=19
             If condition=$searchStatus
               Text variant=caption $searchStatus
-  If condition=$layersOpen
-    Card variant=dialog aria-label="Map layers"
-      Row
-        Heading level=2 "Map type"
-        Spacer
-        Button variant=search-icon action=closeOverlay cancel=true aria-label="Close map layers"
-          Icon name=X size=26
-      Grid variant=map-types columns=3
-        For each=$mapTypes
-          Button variant=$item.variant action=mapType item=$item.key aria-pressed=$item.active
-            Section variant=$item.art
-              Icon name=$item.icon size=42
-            Text $item.title
-      Text variant=caption $mapTypeCaption
-      Divider
-      Heading level=2 "Map details"
-      Grid variant=map-details columns=4
-        For each=$detailLayers
-          Button variant=$item.variant action=detailLayer item=$item.key aria-pressed=$item.active
-            Section variant=$item.art
-              Icon name=$item.icon size=38
-            Text $item.title
-      If condition=$layerMessage
-        Alert $layerMessage
   If condition=$profileOpen
     Card variant=dialog aria-label="Account and settings"
       Row
@@ -324,6 +305,9 @@ Page Maps
       Button variant=menu-item action=saved
         Icon name=Bookmark
         Text "Your places"
+      Button variant=menu-item action=mapInstall
+        Icon name=Download
+        Text "Map downloads"
       Button variant=menu-item action=measure
         Icon name=Ruler
         Text "Measure distance"

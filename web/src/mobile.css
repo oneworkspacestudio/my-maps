@@ -62,7 +62,7 @@
  .row--search-bar{height:52px;padding:4px 5px 4px 13px;gap:4px}.row--search-bar>svg{width:24px}.button--search-entry .text{font-size:19px}
  .button--avatar{width:40px;height:40px}.row--category-chips{width:calc(100vw - 24px)}
  .button--layers-control{top:124px;right:14px;width:44px;height:44px}.stack--map-controls{bottom:calc(var(--map-footer) + 16px);right:14px;gap:10px}
- .stack--map-controls>.button:first-child{display:none}.stack--map-stage:has(.stack--place-summary) .button--directions-control{display:none}
+ .stack--map-stage:has(.stack--place-summary) .button--directions-control{display:none}
  .stack--sheet-peek,.stack--sheet-expanded{top:auto;left:0;bottom:calc(var(--tab-height) + env(safe-area-inset-bottom,0px));width:100%;border-radius:26px 26px 0 0;height:var(--peek-height);min-height:0;box-shadow:0 -2px 10px #26374618}
  .stack--map-stage:not(:has(.row--bottom-tabs))>.stack--sheet-peek{height:calc(var(--peek-height) + env(safe-area-inset-bottom,0px));bottom:0;padding-bottom:env(safe-area-inset-bottom,0px)}
  .stack--sheet-expanded{height:calc(var(--app-height,100dvh) - 118px - var(--tab-height));max-height:calc(var(--app-height,100dvh) - 118px - var(--tab-height))}
@@ -93,3 +93,7 @@
 [data-theme=dark] #screen-outlet .button--pill,[data-theme=dark] #screen-outlet .button--directions-control{background:#007f8b;color:white}
 [data-theme=dark] #screen-outlet .button--tab-active,[data-theme=dark] #screen-outlet .button--layer-active,[data-theme=dark] #screen-outlet .button--mode-active{color:var(--primary)}
 .stack--place-summary>.text--caption{text-transform:capitalize}
+
+.stack--install-page{width:min(760px,100%);margin:0 auto;padding:28px 20px 70px;gap:20px;overflow:auto}.stack--install-page .card{padding:24px;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:22px}.stack--install-page .text{line-height:1.55}.row--install-heading{align-items:flex-start;gap:14px}.row--install-heading>svg{color:var(--primary);flex-shrink:0}.grid--install-coordinates{grid-template-columns:repeat(2,minmax(0,1fr))}.stack--install-page .alert{position:static}.stack--install-page input,.stack--install-page select{width:100%;min-height:46px}.stack--install-page .field{min-width:0}.card--install-progress{border-color:var(--primary)!important}@media(max-width:700px){.stack--install-page{padding:20px 14px 60px}.stack--install-page .card{padding:20px}.row--install-heading h1{font-size:25px}}
+
+.stack--install-page .checkbox{display:flex;align-items:center;gap:12px;justify-content:flex-start;white-space:normal}.stack--install-page .checkbox input{width:22px;height:22px;min-height:22px;flex:0 0 22px;accent-color:#007f8b}.stack--install-page .checkbox span{flex:1;line-height:1.5}

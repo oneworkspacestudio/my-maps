@@ -5,7 +5,7 @@ Page Shell
         Image src=$logo alt=$name width=38 height=38
       Heading level=2 $name
       Spacer
-      Link href="#" "Back to map"
+      Button variant=text action=mapBack "Back to map"
       Button variant=icon action=theme aria-label="Change appearance"
         Icon name=SunMoon
       If condition=$workspace

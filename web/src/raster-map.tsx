@@ -1,14 +1,16 @@
 import React,{useEffect,useRef} from 'react';
 import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import {leafletLayer} from 'protomaps-leaflet';
+(window as any).L=L;
 import type {MapController} from './map-controller';
 import type {Place} from './map';
 
 export function RasterMap(p:any){
- const node=useRef<HTMLDivElement>(null),native=useRef<L.Map|null>(null),latest=useRef(p),previousSatellite=useRef(false),vectorZoom=useRef(12);latest.current=p;
+ const node=useRef<HTMLDivElement>(null),native=useRef<L.Map|null>(null),latest=useRef(p);latest.current=p;
  useEffect(()=>{
-  const saved=p.camera.current,center=saved?.center||(p.selected?[p.selected.lon,p.selected.lat]:[-.09,51.505]);
-  const map=L.map(node.current!,{zoomControl:false,attributionControl:false,preferCanvas:false}).setView([center[1],center[0]],saved?.zoom||(p.selected?15:12));native.current=map;
+  const saved=p.camera.current,center=saved?.center||(p.selected?[p.selected.lon,p.selected.lat]:(p.config.installed?[(p.config.installed.bounds[0]+p.config.installed.bounds[2])/2,(p.config.installed.bounds[1]+p.config.installed.bounds[3])/2]:[-.09,51.505]));
+  const map=L.map(node.current!,{zoomControl:false,attributionControl:false,preferCanvas:false}).setView([center[1],center[0]],saved?.zoom||(p.selected?15:p.config.installed?.maxZoom>10?14:p.config.installed?.maxZoom>6?8:4));native.current=map;
   // SVG/DOM tiles and overlays work without WebGL, including disabled GPU drivers.
   L.control.attribution({position:'bottomleft',prefix:false}).addTo(map);L.control.zoom({position:'bottomright'}).addTo(map);
   const controller:MapController={renderer:'raster',native:map,getCenter:()=>{const c=map.getCenter();return {lat:c.lat,lng:c.lng,toArray:()=>[c.lng,c.lat]}},getZoom:()=>map.getZoom(),getBearing:()=>0,getPitch:()=>0,
@@ -23,18 +25,18 @@ export function RasterMap(p:any){
  },[]);
  useEffect(()=>{
   const map=native.current;if(!map)return;let reported=false;
-  const satellite=p.mapType==='satellite';
-  const url=satellite?'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg':p.config.tiles;
-  // Escape only after Leaflet expands z/x/y, preserving configured tile URLs.
-  const layer=L.tileLayer('',{tileSize:256,maxZoom:satellite?8:19,attribution:satellite?'Imagery: NASA Blue Marble (500 m)':'',detectRetina:false});
-  layer.getTileUrl=(coords:L.Coords)=>p.base+'/api/map-resource?url='+encodeURIComponent(L.Util.template(url,{z:coords.z,x:coords.x,y:coords.y}));
-  const attribution=document.createElement('span');attribution.textContent=satellite?'Imagery: NASA Blue Marble (500 m)':p.config.attribution;
-  const credit=!satellite&&!p.config.customTiles?'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>':attribution.innerHTML;map.attributionControl?.addAttribution(credit);
-  layer.on('tileerror',()=>{if(!reported){reported=true;latest.current.onError('Map tiles could not load. Check your connection, then move or reload the map.')}});
+  const attribution=document.createElement('span');attribution.textContent=p.config.attribution;
+  let layer:L.Layer;
+  if(p.config.local){
+   layer=leafletLayer({url:p.config.localTiles,flavor:'light',lang:'en',maxDataZoom:p.config.installed.maxZoom,levelDiff:0,noWrap:true,attribution:attribution.innerHTML,maxZoom:19} as any) as unknown as L.Layer;
+  }else{
+   const raster=L.tileLayer('',{tileSize:256,maxZoom:19,attribution:attribution.innerHTML,detectRetina:false});
+   raster.getTileUrl=(coords:L.Coords)=>p.base+'/api/map-resource?url='+encodeURIComponent(L.Util.template(p.config.tiles,{z:coords.z,x:coords.x,y:coords.y}));layer=raster;
+  }
+  layer.on('tileerror',()=>{if(!reported){reported=true;latest.current.onError('The local map could not be read. Retry or check Map downloads.')}});
   layer.on('load',()=>latest.current.onReady());layer.addTo(map);
-  if(satellite){vectorZoom.current=map.getZoom();map.setZoom(Math.min(8,map.getZoom()))}else if(previousSatellite.current)map.setZoom(vectorZoom.current);previousSatellite.current=satellite;
-  return()=>{layer.remove();map.attributionControl?.removeAttribution(credit)};
- },[p.mapType]);
+  return()=>{layer.remove()};
+ },[p.config.installed?.id]);
  useEffect(()=>{
   const map=native.current;if(!map)return;const group=L.layerGroup().addTo(map),unique=new Map<string,Place>();
   for(const x of [...(p.selected?[p.selected]:[]),...p.stops,...p.places])if(!unique.has(x.lat+','+x.lon))unique.set(x.lat+','+x.lon,x);

@@ -29,67 +29,25 @@ func (a *App) nearby(w http.ResponseWriter, r *http.Request) {
 		apphost.Problem(w, 400, "Choose a location on the map first")
 		return
 	}
-	filters := map[string]string{
-		"restaurants": `["amenity"~"^(restaurant|cafe|fast_food|pub|bar)$"]`,
-		"shopping":    `["shop"]["name"]`,
-		"hotels":      `["tourism"~"^(hotel|guest_house|hostel|motel)$"]`,
-		"attractions": `["tourism"~"^(attraction|museum|viewpoint|gallery)$"]`,
-		"fuel":        `["amenity"="fuel"]`,
-		"parking":     `["amenity"="parking"]`,
-		"transit":     `["public_transport"~"^(station|platform|stop_position)$"]`,
-		"cycling":     `["amenity"~"^(bicycle_parking|bicycle_rental|bicycle_repair_station)$"]`,
+	if a.photon == "" && a.maps != nil {
+		a.maps.localNearby(w, r, lat, lon, r.URL.Query().Get("category"))
+		return
 	}
-	filter, ok := filters[r.URL.Query().Get("category")]
-	if !ok {
+	if _, ok := nearbyTags[r.URL.Query().Get("category")]; !ok {
 		apphost.Problem(w, 400, "Choose a nearby category")
 		return
 	}
-	// Photon offers bounded reverse/category search independently of the map
-	// renderer. Explicit Overpass installations keep their configured priority.
-	key := r.URL.Query().Get("category")
-	providers := []string{"photon", "overpass"}
-	if env("MYMAPS_OVERPASS", "") != "" {
-		providers = []string{"overpass", "photon"}
+	ctx, cancel := context.WithTimeout(r.Context(), 6*time.Second)
+	defer cancel()
+	elements, err := a.photonNearby(ctx, lat, lon, r.URL.Query().Get("category"))
+	if err == nil {
+		if elements == nil {
+			elements = []nearbyElement{}
+		}
+		apphost.JSON(w, 200, map[string]any{"elements": elements, "source": "local-photon"})
+		return
 	}
-	for _, provider := range providers {
-		ctx, cancel := context.WithTimeout(r.Context(), 6*time.Second)
-		var elements []nearbyElement
-		var err error
-		if provider == "photon" {
-			elements, err = a.photonNearby(ctx, lat, lon, key)
-		} else {
-			query := fmt.Sprintf(`[out:json][timeout:5];nwr(around:2500,%.3f,%.3f)%s;out center tags 60;`, lat, lon, filter)
-			var body []byte
-			body, err = a.providerJSON(ctx, env("MYMAPS_OVERPASS", "https://overpass-api.de")+"/api/interpreter?data="+url.QueryEscape(query), time.Hour)
-			if err == nil {
-				var result struct {
-					Elements *[]nearbyElement `json:"elements"`
-				}
-				err = json.Unmarshal(body, &result)
-				if err == nil {
-					if result.Elements == nil {
-						err = fmt.Errorf("invalid nearby element collection")
-					} else {
-						elements = *result.Elements
-					}
-				}
-			}
-		}
-		cancel()
-		if r.Context().Err() != nil {
-			return
-		}
-		if err == nil {
-			if elements == nil {
-				elements = []nearbyElement{}
-			}
-			if len(elements) > 60 {
-				elements = elements[:60]
-			}
-			apphost.JSON(w, 200, map[string]any{"elements": elements, "source": provider})
-			return
-		}
-	}
+
 	apphost.Problem(w, 502, "Nearby places are temporarily unavailable. Move the map or try again shortly.")
 }
 
@@ -176,11 +134,7 @@ func geoDistance(lat, lon, otherLat, otherLon float64) float64 {
 	return 12742000 * math.Asin(math.Sqrt(math.Min(1, x)))
 }
 
-var resourceHosts = map[string]bool{
-	"tiles.openfreemap.org":   true,
-	"tiles.mapterhorn.com":    true,
-	"gibs.earthdata.nasa.gov": true,
-}
+var resourceHosts = map[string]bool{}
 
 func validMapResource(raw string) bool {
 	u, err := url.Parse(raw)

@@ -41,25 +41,24 @@ func TestNearbyPhotonIndependentOfRenderer(t *testing.T) {
 	r.Header.Set("Cookie", "private=synthetic")
 	w := httptest.NewRecorder()
 	a.nearby(w, r)
-	if w.Code != 200 || !strings.Contains(w.Body.String(), `"source":"photon"`) || !strings.Contains(w.Body.String(), "Synthetic cafe") || strings.Contains(w.Body.String(), "Wrong category") || strings.Contains(w.Body.String(), "Too far") {
+	if w.Code != 200 || !strings.Contains(w.Body.String(), `"source":"local-photon"`) || !strings.Contains(w.Body.String(), "Synthetic cafe") || strings.Contains(w.Body.String(), "Wrong category") || strings.Contains(w.Body.String(), "Too far") {
 		t.Fatalf("unexpected result: %d %s", w.Code, w.Body.String())
 	}
 }
 
-func TestNearbyProviderFailoverRetainsWayCenter(t *testing.T) {
-	t.Setenv("MYMAPS_OVERPASS", "")
+func TestNearbyDoesNotFallBackToPublicData(t *testing.T) {
 	calls := 0
-	a := &App{photon: "https://photon.example", client: &http.Client{Transport: providerTransport(func(r *http.Request) (*http.Response, error) {
+	a := &App{photon: "http://127.0.0.1:12345", client: &http.Client{Transport: providerTransport(func(r *http.Request) (*http.Response, error) {
 		calls++
-		if calls == 1 {
-			return providerResponse(`{}`, 503), nil
+		if r.URL.Host != "127.0.0.1:12345" {
+			t.Fatal("public fallback attempted")
 		}
-		return providerResponse(`{"elements":[{"type":"way","id":7,"center":{"lat":51.5,"lon":-0.1},"tags":{"name":"Synthetic shop","shop":"bakery"}}]}`, 200), nil
+		return providerResponse(`{}`, 503), nil
 	})}}
 	w := httptest.NewRecorder()
 	a.nearby(w, httptest.NewRequest("GET", "/api/nearby?lat=51.5&lon=-0.1&category=shopping", nil))
-	if calls != 2 || w.Code != 200 || !strings.Contains(w.Body.String(), `"source":"overpass"`) || !strings.Contains(w.Body.String(), `"center":{"lat":51.5`) || strings.Contains(w.Body.String(), `"lat":0`) {
-		t.Fatalf("failover/way center lost: %d %s", w.Code, w.Body.String())
+	if calls != 1 || w.Code != 502 {
+		t.Fatal("failed local service should fail once, without public fallback")
 	}
 }
 

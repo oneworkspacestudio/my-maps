@@ -11,6 +11,7 @@ var schemas = []string{
  CREATE TABLE provider_cache(key TEXT PRIMARY KEY,body BLOB NOT NULL,expires INTEGER NOT NULL);`,
 	`CREATE TABLE recent_places(owner TEXT NOT NULL,entry_key TEXT NOT NULL,body BLOB NOT NULL,updated INTEGER NOT NULL,PRIMARY KEY(owner,entry_key));
  CREATE INDEX recent_places_owner ON recent_places(owner,updated);`,
+	`CREATE TABLE map_install_config(singleton INTEGER PRIMARY KEY CHECK(singleton=1),pack TEXT NOT NULL,sha256 TEXT NOT NULL,routing TEXT NOT NULL DEFAULT '');`,
 }
 
 func migrate(h *apphost.Host) error {

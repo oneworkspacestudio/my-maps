@@ -2,97 +2,68 @@
 
 # My Maps
 
-Explore the world from One Workspace. A portable Windows **Maps.exe** with the
-Workspace design system, MyAccounts sign-in, saved places and open-data directions.
-Built on [MapLibre](https://maplibre.org/), OpenFreeMap and OpenStreetMap, without a paid API key.
-
-![My Maps desktop](docs/assets/desktop.png)
-
-## Use it
+Keep your maps and places on your own server. Choose a small world overview,
+regional detail or a local street map, then browse and search that downloaded data
+without a public map service or Google data.
 
 Download the Windows ZIP from [Releases](https://github.com/oneworkspacestudio/my-maps/releases),
-extract it into a dedicated NTFS folder and run **Maps.exe**. Its browser opens a
-one-time local owner setup. No Docker, Node or Go installation is needed.
+extract it into a dedicated NTFS folder and run **Maps.exe**. A browser opens for
+local owner setup. One Workspace installs it at `/maps/` with MyAccounts sign-in.
+No Node, Go or Docker installation is required to run Maps.
 
-One Workspace installs the app automatically at `/maps/`, configures MyAccounts,
-and stores its private state in the Workspace data folder under `maps`.
-An existing Workspace login starts the normal authenticated SSO flow automatically.
-Standalone accounts are disabled in managed mode. This managed update requires
-Workspace 0.3.0-preview.92 or newer.
+## Choose your map
 
-## Included
+The first screen asks the server owner to choose coverage and detail. Other users
+share that map and keep their own saved places and recent searches private.
+You can change coverage later through **Map downloads** (the download icon on
+the map or the account menu).
 
-The mobile search/place revision below is working source, not a new public release.
-Existing installations remain on preview.8 until a subsequent verified update.
+- **Overview:** the smallest level, with towns and main roads; available worldwide.
+- **Regional:** more roads and place names across the UK, Europe or a local area.
+- **Streets:** local roads and nearby places for an area with a 1–100 km radius.
+- **UK postcodes:** an optional search index within the chosen coverage.
 
-<p><img src="docs/assets/mobile-search.png" width="240" alt="Mobile search UI with synthetic records"> <img src="docs/assets/mobile-place.png" width="240" alt="Compact place actions on a synthetic test map"></p>
+Check the download size before installing. The screen also shows the free space
+needed for indexing and safe replacement. Oversized choices are rejected with
+smaller-area guidance. Downloads are optional; updating the app does not download
+an entire country. Each server chooses its own coverage. A previous map remains
+available during installation or cancellation.
 
-These UI previews use synthetic test data.
+![Local map download choices](docs/assets/map-depth.png)
 
-- Full-screen map with floating search, category chips, a sliding place sheet,
-  Explore / You / Contribute tabs and an account menu.
-- Full-screen search with address suggestions, private recent searches and Home/Work shortcuts.
-- Compact place actions: Directions, Start, Save and Share before opening details.
-- Interactive street map, zoom, rotation, location and dropped pins.
-- Nearby restaurants, shopping, hotels, attractions, parking and fuel.
-- Map-type and detail picker, raised buildings and open terrain.
-- Regional NASA satellite imagery (500 m resolution).
-- Nearby transport stops and cycling facilities.
-- Exact-coordinate search.
-- Place/address search and reverse lookup, when you type or submit a search, or choose a map point.
-- Private saved lists, notes, favourites and deletion.
-- Share links containing a place name and coordinates, without private notes.
-- Driving, cycling and walking directions, up to eight stops, alternatives,
-  distance/time estimates and written route steps.
-- Follow your location and measure distances.
-- GeoJSON saved-place and GPX route downloads.
-- Light/dark theme, mobile layout, Workspace launcher, encrypted backups.
+## Explore and save
 
-## Open services and limits
+Use full-screen search, recent places, Home/Work shortcuts, category chips and
+exact coordinates. Searching selects a place with a compact sheet, keeping the
+map visible. Drag or tap the handle to open details. Save private lists and notes,
+share coordinates without notes, export places as GeoJSON and measure distances.
+Maps works without WebGL and offers light/dark appearance, Workspace navigation
+and encrypted backups.
 
-**Current hosting boundary:** the application and private places are self-hosted,
-but the default map, address and routing providers below are public services.
-This is not yet a fully self-hosted map stack. The self-hosting correction is
-in progress; geographic coverage must be selected before provisioning local data.
-My Search federates private Workspace content, while My AI includes SearXNG web
-search. Neither replaces a geographic index or routing graph. The bundled My AI
-search configuration currently includes Google; Maps does not use it.
+Nearby results come from the installed map. Coverage and detail affect what is
+searchable; this includes mapped names, roads, larger towns and selected UK
+postcodes, rather than every house address. Optional driving directions, stops,
+steps, alternatives, GPX and foreground location following require a separately
+hosted local OSRM driving service. Directions and Start are hidden until connected.
 
-Phones use OpenStreetMap image tiles without requiring graphics acceleration. Desktop vector maps use [OpenFreeMap](https://openfreemap.org/quick_start/),
-[OpenMapTiles](https://openmaptiles.org/) and OpenStreetMap. Terrain comes from
-[Mapterhorn](https://mapterhorn.com/attribution); regional imagery comes from
-[NASA GIBS](https://nasa-gibs.github.io/gibs-api-docs/). Attribution stays visible.
-There are no offline downloads or tile prefetch jobs. Map resources pass through
-an authenticated, fixed-provider relay; provider credentials are never forwarded.
+## Data and privacy
 
-[Photon](https://github.com/komoot/photon) provides address search,
-[FOSSGIS OSRM](https://routing.openstreetmap.de/about.html) provides routes, and
-Photon also provides nearby category search on phones and desktops, with Overpass
-as a backup. Address/route queries are cached for 24 hours, nearby queries for
-one hour. New provider requests wait at a server-wide one-per-second limit.
-A loaded-vector fallback remains available when both nearby providers fail.
-All public providers are best effort and can restrict usage.
+[OpenStreetMap](https://www.openstreetmap.org/copyright) / [Protomaps](https://docs.protomaps.com/basemaps/downloads)
+provide the downloadable map, and [GeoNames](https://www.geonames.org/export/)
+provides town names and optional UK postcodes. These sources are contacted when
+you check and install a download. Map browsing, search and nearby results then
+use files and an index on your server, with no public fallback. Attribution and
+[data licences](docs/DATA-LICENSES.md) apply. Private places and history remain
+account-isolated. Device location is requested only by explicit location actions.
 
-Search text and requested coordinates go to the selected providers. Location is
-requested only when you press My location or Follow my location. Saved places
-and notes stay on your server. Browser cloud speech recognition is removed.
+Maps does not use Google APIs or My AI's web-search engine. Workspace My Search
+indexes private app content; geographic search uses the installed map index.
+Unsupported imagery, terrain/3D, weather, traffic, Street View, voice/Lens,
+ratings/photos/reviews and live transit controls are removed. The supplied Google
+Maps images inform the layout; full feature parity is not claimed.
 
-The layout follows the supplied Google Maps references, but this release does
-**not provide full Google Maps feature parity**. There is no Google place-photo,
-review or rating feed, Lens, live traffic, transit timetable, cycle-network overlay,
-embedded Street View, live fire overlay, background navigation, voice guidance
-or offline map package. Unavailable traffic, street-imagery and fire controls
-are removed, along with external weather and air-quality calls.
-Satellite imagery is regional NASA Blue Marble, not street-resolution imagery.
-Raised buildings depend on mapped heights. Location following is not turn-by-turn
-navigation. Routes exclude live congestion and road closures.
-
-Administrators can use `MYMAPS_GEOCODER` (Photon HTTPS base), `MYMAPS_ROUTER`
-(FOSSGIS-compatible base) and `MYMAPS_OVERPASS` (HTTPS base). Existing `MYMAPS_TILES`
-XYZ URLs remain supported as the Default raster map; `MYMAPS_TILE_ATTRIBUTION`
-sets their attribution. Terrain and raised buildings use the open vector data.
-Use suitably provisioned or self-hosted services for larger installations.
-See [capability details](docs/FEATURES.md).
+See [capabilities and local-service setup](docs/FEATURES.md) and
+[verification limits](docs/ACCEPTANCE.md). Managed updates require Workspace92+.
 
 ## Build
 

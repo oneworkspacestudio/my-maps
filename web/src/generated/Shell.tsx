@@ -9,7 +9,7 @@ export function Shell({ data, onAction }: { data: any; onAction: (name: string) 
           <Link href="#"><Image src={data.logo} alt={data.name} width={38} height={38} /></Link>
           <Heading level={2}>{data.name}</Heading>
           <Spacer />
-          <Link href="#">Back to map</Link>
+          <Button variant="text" onClick={() => onAction("mapBack")}>Back to map</Button>
           <Button variant="icon" onClick={() => onAction("theme")} aria-label="Change appearance"><Icon name="SunMoon" /></Button>
           {data.workspace && (
             <Button variant="secondary" onClick={() => onAction("apps")} data-workspace-apps-trigger={true} aria-label="Open Workspace apps">

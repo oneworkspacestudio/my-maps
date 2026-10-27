@@ -23,6 +23,7 @@ type App struct {
 	mu                     sync.Mutex
 	last                   time.Time
 	photon, routing, tiles string
+	maps                   *mapManager
 }
 type Place struct {
 	ID      string  `json:"id"`
@@ -41,19 +42,35 @@ func env(k, d string) string {
 	return d
 }
 func New(h *apphost.Host) (*App, error) {
-	a := &App{H: h, client: &http.Client{Timeout: 20 * time.Second}, photon: env("MYMAPS_GEOCODER", "https://photon.komoot.io"), routing: env("MYMAPS_ROUTER", "https://routing.openstreetmap.de"), tiles: env("MYMAPS_TILES", "https://tile.openstreetmap.org/{z}/{x}/{y}.png")}
-	for _, endpoint := range []string{a.photon, a.routing, a.tiles, env("MYMAPS_OVERPASS", "https://overpass-api.de")} {
-		if !validProviderEndpoint(endpoint) {
-			return nil, errors.New("map providers require HTTPS or a literal HTTP loopback address, without credentials")
+	a := &App{H: h, client: &http.Client{Timeout: 20 * time.Second, CheckRedirect: func(next *http.Request, via []*http.Request) error {
+		if len(via) > 3 || next.URL.Host != via[0].URL.Host || next.URL.Scheme != via[0].URL.Scheme || next.URL.User != nil {
+			return errors.New("map service redirected outside its local origin")
+		}
+		return nil
+	}}, photon: env("MYMAPS_GEOCODER", ""), routing: env("MYMAPS_ROUTER", ""), tiles: env("MYMAPS_TILES", "")}
+	for _, endpoint := range []string{a.photon, a.routing, a.tiles} {
+		if endpoint != "" && !localMapEndpoint(endpoint) {
+			return nil, errors.New("map services must run at a literal loopback address; use map downloads for self-hosted data")
 		}
 	}
-	tile, _ := url.Parse(a.tiles)
-	h.Config.ImageOrigins = []string{"https://" + tile.Host}
+	h.Config.ImageOrigins = nil
 	if e := migrate(h); e != nil {
 		return nil, e
 	}
+	var e error
+	a.maps, e = newMapManager(a)
+	if e != nil {
+		return nil, e
+	}
 	h.Mux.HandleFunc("GET /api/config", h.Require(func(w http.ResponseWriter, r *http.Request) {
-		apphost.JSON(w, 200, map[string]any{"tiles": a.tiles, "customTiles": os.Getenv("MYMAPS_TILES") != "", "attribution": env("MYMAPS_TILE_ATTRIBUTION", "© OpenStreetMap contributors"), "geocoder": a.photon, "router": a.routing})
+		a.maps.mu.RLock()
+		defer a.maps.mu.RUnlock()
+		info := a.maps.info
+		attribution := env("MYMAPS_TILE_ATTRIBUTION", "© OpenStreetMap contributors · GeoNames (CC BY4.0)")
+		if info != nil && info.Choice.Postcodes {
+			attribution += " · Contains Royal Mail data ©2022"
+		}
+		apphost.JSON(w, 200, map[string]any{"ready": info != nil || a.tiles != "", "local": info != nil, "installed": info, "canInstall": apphost.Current(r).User.Role == "owner", "localTiles": h.Base + "/api/local/tiles/{z}/{x}/{y}?v=" + packID(info), "nearbyAvailable": info != nil && info.Nearby || a.photon != "", "routingAvailable": a.maps.routing != "", "tiles": a.tiles, "customTiles": a.tiles != "", "attribution": attribution, "geocoder": a.photon})
 	}))
 	h.Mux.HandleFunc("GET /api/search", h.Require(a.search))
 	h.Mux.HandleFunc("GET /api/reverse", h.Require(a.reverse))
@@ -66,7 +83,22 @@ func New(h *apphost.Host) (*App, error) {
 	h.Mux.HandleFunc("GET /api/recents", h.Require(a.recents))
 	h.Mux.HandleFunc("POST /api/recents", h.Require(a.remember))
 	h.Mux.HandleFunc("DELETE /api/recents", h.Require(a.clearRecents))
+	h.Mux.HandleFunc("GET /api/map-install", h.Require(a.maps.status))
+	h.Mux.HandleFunc("POST /api/map-install/plan", h.Owner(a.maps.makePlan))
+	h.Mux.HandleFunc("POST /api/map-install/start", h.Owner(a.maps.install))
+	h.Mux.HandleFunc("POST /api/map-install/cancel", h.Owner(a.maps.cancelInstall))
+	h.Mux.HandleFunc("POST /api/map-install/routing", h.Owner(a.maps.setRouting))
+	h.Mux.HandleFunc("GET /api/local/tiles/{z}/{x}/{y}", h.Require(a.maps.tile))
 	return a, nil
+}
+
+func localMapEndpoint(endpoint string) bool {
+	u, err := url.Parse(endpoint)
+	if err != nil || !validProviderEndpoint(endpoint) {
+		return false
+	}
+	ip := net.ParseIP(u.Hostname())
+	return ip != nil && ip.IsLoopback()
 }
 
 func validProviderEndpoint(endpoint string) bool {
@@ -78,6 +110,7 @@ func validProviderEndpoint(endpoint string) bool {
 	return u.Scheme == "https" || (u.Scheme == "http" && ip != nil && ip.IsLoopback())
 }
 func (a *App) Run(ctx context.Context) error {
+	defer a.maps.close()
 	ticker := time.NewTicker(time.Hour)
 	defer ticker.Stop()
 	for {
@@ -166,6 +199,10 @@ func (a *App) search(w http.ResponseWriter, r *http.Request) {
 		apphost.Problem(w, 400, "Enter a place or address (2–200 characters)")
 		return
 	}
+	if a.photon == "" {
+		a.maps.localSearch(w, r, q)
+		return
+	}
 	v := url.Values{"q": {q}, "limit": {"12"}}
 	if lat, lon, ok := requestCoordinates(r); ok {
 		v.Set("lat", fmt.Sprint(lat))
@@ -183,6 +220,10 @@ func (a *App) reverse(w http.ResponseWriter, r *http.Request) {
 		apphost.Problem(w, 400, "Invalid coordinates")
 		return
 	}
+	if a.photon == "" {
+		a.maps.localReverse(w, r, lat, lon)
+		return
+	}
 	a.fetch(w, r, fmt.Sprintf("%s/reverse?lat=%f&lon=%f", a.photon, lat, lon))
 }
 func (a *App) route(w http.ResponseWriter, r *http.Request) {
@@ -193,8 +234,8 @@ func (a *App) route(w http.ResponseWriter, r *http.Request) {
 	if !apphost.Decode(w, r, &in) {
 		return
 	}
-	if in.Mode != "car" && in.Mode != "bike" && in.Mode != "foot" {
-		apphost.Problem(w, 400, "Choose driving, cycling or walking")
+	if in.Mode != "car" {
+		apphost.Problem(w, 400, "This local service supports driving")
 		return
 	}
 	if len(in.Points) < 2 || len(in.Points) > 8 {
@@ -209,7 +250,17 @@ func (a *App) route(w http.ResponseWriter, r *http.Request) {
 		}
 		pts = append(pts, fmt.Sprintf("%.6f,%.6f", p[0], p[1]))
 	}
-	a.fetch(w, r, a.routing+"/routed-"+in.Mode+"/route/v1/driving/"+strings.Join(pts, ";")+"?overview=full&steps=true&geometries=geojson&alternatives=true")
+	router := a.routing
+	if a.maps != nil {
+		a.maps.mu.RLock()
+		router = a.maps.routing
+		a.maps.mu.RUnlock()
+	}
+	if router == "" {
+		apphost.Problem(w, 503, "Connect a local routing service in Map downloads first")
+		return
+	}
+	a.fetch(w, r, strings.TrimRight(router, "/")+"/route/v1/driving/"+strings.Join(pts, ";")+"?overview=full&steps=true&geometries=geojson&alternatives=true")
 }
 func (a *App) places(w http.ResponseWriter, r *http.Request) {
 	rows, e := a.H.DB.Query("SELECT id,name,address,lat,lon,list,notes FROM places WHERE owner=? ORDER BY list,name", apphost.Current(r).User.ID)
@@ -283,4 +334,11 @@ func (a *App) remove(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	apphost.JSON(w, 200, map[string]bool{"ok": true})
+}
+
+func packID(info *MapInfo) string {
+	if info == nil {
+		return ""
+	}
+	return info.ID
 }

@@ -1,0 +1,46 @@
+{
+  "candidateOnly": true,
+  "realOpenData": true,
+  "ownerDataAsFixture": false,
+  "webglDisabled": true,
+  "externalBrowserRequests": [],
+  "browserErrors": [],
+  "passedGroups": [
+    "Pack reopened after a native restart with installed metadata intact",
+    "Actual E4 6NW local postcode suggestion selects a compact place while unconfigured Directions/Start stay hidden",
+    "Local Restaurants category returns valid data or truthful empty results, with collapsed sheet",
+    "Local Shopping category returns valid data or truthful empty results, with collapsed sheet",
+    "Local Hotels category returns valid data or truthful empty results, with collapsed sheet",
+    "Local Things to do category returns valid data or truthful empty results, with collapsed sheet",
+    "Local Petrol category returns valid data or truthful empty results, with collapsed sheet",
+    "Local Parking category returns valid data or truthful empty results, with collapsed sheet",
+    "Native CSRF, concurrent start rejection and cancellation retain the previous working map",
+    "Replacement download installs tiles plus real postcode/name index and atomically switches to the new pack",
+    "Public router and unavailable loopback router rejected; no false connected state",
+    "Member cannot change map install settings; shared pack does not expose owner saved places or recents"
+  ],
+  "actualLocalPack": {
+    "maxZoom": 14,
+    "tiles": 203,
+    "features": 2471,
+    "bytes": 22392832
+  },
+  "planningOnly": [
+    {
+      "coverage": "world",
+      "depth": "overview",
+      "downloadBytes": 48454859,
+      "requiredBytes": 1788133488,
+      "tiles": 5461
+    },
+    {
+      "coverage": "uk",
+      "depth": "region",
+      "downloadBytes": 74912694,
+      "requiredBytes": 2417704112,
+      "tiles": 2853
+    }
+  ],
+  "physicalPhoneTest": false,
+  "routerGraphBundled": false
+}

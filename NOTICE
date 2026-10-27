@@ -1,5 +1,6 @@
 One Workspace My Maps
 Copyright 2026 One Workspace contributors.
 Application shell derived from One Workspace My Tasks (Apache-2.0).
-Map renderer: MapLibre GL JS (BSD-3-Clause). Map data: OpenFreeMap, OpenMapTiles and OpenStreetMap contributors (ODbL). Terrain: Mapterhorn open data sources; imagery: NASA GIBS Blue Marble. Provider terms and attribution apply separately to maps, imagery, geocoding, routing and nearby places.
+Map rendering: Leaflet (BSD-2-Clause), Protomaps Leaflet (BSD-3-Clause), bundled dependencies licensed separately.
+Optional downloaded map: Protomaps / OpenStreetMap contributors (ODbL Produced Work). Local names/postcode index: derived from selected map features and GeoNames (CC BY4.0). UK postcodes contain Royal Mail data; Royal Mail copyright and database right2022. See docs/DATA-LICENSES.md for source and licence links.
 Complete dependency licences accompany the Windows archive. This product is not affiliated with Google.

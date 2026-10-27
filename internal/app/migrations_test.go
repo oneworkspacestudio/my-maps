@@ -35,7 +35,7 @@ func TestMigrationUpgradeRestartAndFutureRefusal(t *testing.T) {
 	if _, err = db.Exec("INSERT INTO recent_places VALUES('synthetic-owner','k','{}',1)"); err != nil {
 		t.Fatal(err)
 	}
-	if _, err = db.Exec("INSERT INTO host_migrations VALUES(3,'future')"); err != nil {
+	if _, err = db.Exec("INSERT INTO host_migrations VALUES(4,'future')"); err != nil {
 		t.Fatal(err)
 	}
 	if err = migrate(h); err == nil {

@@ -1,0 +1,144 @@
+Page MapInstall
+
+  Stack variant=install-page
+
+    Row variant=install-heading
+
+      Icon name=MapPinned size=32
+
+      Stack
+
+        Heading level=1 "Your map, your server"
+
+        Text variant=caption "Choose how much of the world to keep locally."
+
+    If condition=$installed
+
+      Card
+
+        Heading level=2 "Installed map"
+
+        Text $installedLabel
+
+        Text variant=caption $installedSize
+
+        Button variant=pill action=openMap "Open map"
+
+    Card
+
+      Heading level=2 "Choose your coverage"
+
+      Text "Data downloads only when you choose Install. Browsing, place search and nearby results then stay on this server."
+
+      If condition=$owner
+
+        Field label="Coverage"
+
+          Select name=coverage options=$coverages
+
+        If condition=$area
+
+          Grid columns=2 variant=install-coordinates
+
+            Field label="Centre latitude"
+
+              Input name=lat type=number min=-80 max=80 step=0.0001
+
+            Field label="Centre longitude"
+
+              Input name=lon type=number min=-180 max=180 step=0.0001
+
+          Field label="Radius in kilometres (1–100)"
+
+            Input name=radius type=number min=1 max=100
+
+        Field label="Map detail"
+
+          Select name=depth options=$depths
+
+        Text variant=caption $depthText
+
+        If condition=$postcodeChoice
+
+          Checkbox name=postcodes label="Include UK postcode search within this coverage"
+
+        Text variant=caption "Place search includes mapped names and roads, larger towns and optional UK postcodes. This does not include every house address. Street detail provides the most nearby places."
+
+        If condition=$canPlan
+
+          Button variant=pill action=plan "Check download size"
+
+      Else
+
+        Text "The Workspace owner chooses and installs coverage for everyone on this server. Ask the owner to open Map downloads."
+
+    If condition=$plan
+
+      Card
+
+        Heading level=2 "Ready to download"
+
+        Text $planLabel
+
+        Text $downloadLabel
+
+        Text $spaceLabel
+
+        Text variant=caption "The storage allowance includes indexing and room for safe installation. The existing map remains available until the new one is ready."
+
+        Button variant=pill action=install "Install selected map"
+
+    If condition=$progress
+
+      Card variant=install-progress
+
+        Row
+
+          If condition=$working
+
+            Spinner
+
+          Heading level=2 $phaseLabel
+
+        Text $progressMessage
+
+        Text variant=caption $progressBytes
+
+        If condition=$cancelAllowed
+
+          Button variant=soft-pill action=cancel cancel=true "Cancel download"
+
+    If condition=$owner
+
+      Card
+
+        Heading level=2 "Local directions (optional)"
+
+        Text "Connect an OSRM driving service running on this machine. Directions and Start appear when it is connected."
+
+        Field label="Local routing URL"
+
+          Input name=router placeholder="http://127.0.0.1:5000"
+
+        Row
+
+          Button variant=soft-pill action=connectRouter "Connect routing"
+
+          Button variant=text action=disconnectRouter "Disconnect"
+
+        Text variant=caption $routerStatus
+
+    Card
+
+      Heading level=2 "Open data, stored locally"
+
+      Text "Map data: OpenStreetMap and Protomaps. Town names and UK postcodes: GeoNames. These sources are contacted for your chosen download; there is no Google data or public browsing fallback."
+
+      Text variant=caption "UK postcodes contain Royal Mail data. Royal Mail copyright and database right 2022."
+      Link href="https://www.openstreetmap.org/copyright" external=true "OpenStreetMap data licence"
+
+      Link href="https://www.geonames.org/export/" external=true "GeoNames data licence"
+
+      Link href="#settings" "Settings and encrypted backups"
+
+      Button variant=text action=logout "Sign out"

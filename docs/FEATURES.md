@@ -1,70 +1,72 @@
-# Map capabilities
+# Map capabilities and install depth
 
-The phone layout follows the supplied reference: floating search and category
-chips, a full-screen map, right-side controls, a draggable/clickable place sheet,
-and Explore, You and Contribute tabs. Desktop uses a floating place panel.
-My Maps keeps its own name and branding.
-
-| Reference feature | My Maps implementation |
+| Feature | Local implementation |
 | --- | --- |
-| Search, pins and place details | Photon address search, exact coordinates, open map labels and nearby POIs |
-| Nearby discovery | Photon category search on both renderers, Overpass backup and loaded-vector fallback; no invented ratings/photos |
-| Your places | Private lists, Home/Work list shortcuts, notes and GeoJSON export |
-| Directions | Drive/walk/cycle, up to eight stops, alternatives, steps, GPX, foreground GPS following |
-| Default map | OpenStreetMap image tiles on phones; OpenFreeMap vector map on desktops; existing custom tile endpoint retained |
-| Satellite | NASA Blue Marble regional 500 m imagery, not street-resolution satellite |
-| Terrain | Mapterhorn elevation/hillshade with open vector cartography |
-| Raised buildings | Mapped building heights and tilted view where available |
-| Transport stops | Nearby stops/stations |
-| Cycle facilities | Nearby cycle parking/hire/repair |
-| Traffic | Removed: no self-hosted traffic service |
-| Street View | Removed: external-service shortcut |
-| Wildfires | Removed: external-service shortcut |
-| Air quality | Removed: external-service dependency |
-| Weather | Removed: external-service dependency |
-| Voice search | Removed: browser speech can depend on a cloud provider |
-| Coordinates | Exact latitude/longitude lookup with a location icon |
-| Contribute | OpenStreetMap edit/report links and private saved-place notes |
+| Basemap | Bundled Leaflet + Protomaps Canvas renderer, local SQLite MVT tiles, no WebGL required |
+| Depth | Overview z0–6; regional z0–10; streets z0–14 with overzoom to19 |
+| Coverage | World overview; UK/Europe overview or regional; user-chosen local area at all depths |
+| Search | Local SQLite FTS index of mapped names/roads, GeoNames towns, optional UK postcodes |
+| Nearby | Named POIs in the installed maximum-detail tiles; truthful empty results when absent |
+| Place sheet | Compact after search; manual pointer drag or keyboard/tap handle reveals details |
+| Private places | Account-isolated lists, Home/Work, notes, deletion and GeoJSON export |
+| Search history | Account-isolated recent queries/places, bounded20, Clear all |
+| Share | Place name and coordinates only; private notes excluded |
+| Driving | Optional loopback OSRM driving service, up to8 stops, alternatives/steps/GPX |
+| Location | Explicit device request, foreground following; no background navigation or voice guidance |
+| Removed | Public imagery/terrain/3D, weather/AQI, traffic, Street View, voice/Lens, reviews/photos/ratings, walking/cycling modes without local graphs |
 
-Google photos, reviews, ratings, Lens and Google data services are not cloned or
-scraped. No paid account, offline map download or background navigation is enabled.
-MapLibre and open data providers retain their own licences and attribution.
+## Installing or changing data
 
-Phones use a DOM/image-tile renderer that does not require WebGL. Desktop maps,
-terrain and raised buildings use WebGL2, with automatic standard-map recovery
-if graphics initialization fails, the context is lost or no map renders within
-12 seconds. Search, pins, route lines, measurements and foreground GPS also work
-on the standard map. Loaded-vector POI discovery is available only in vector mode.
+Only the server owner can prepare/start/cancel a download or configure routing.
+All signed-in users can browse the installed pack. Choose a download at first run
+or from the download icon/account menu. Choose coverage, depth and optional UK
+postcodes; check the plan, then explicitly Install. Changing a choice invalidates
+the previous plan. Plans expire after20 minutes; restarting the app requires a new
+plan. The displayed transfer size covers selected compressed tiles and GeoNames
+ZIPs; free space is a conservative allowance for SQLite/indexing and safe staging.
+A one-tile margin at each zoom avoids blank edges around the requested bounds.
+Local-area radius defines a surrounding bounding box. Beyond the downloaded
+coverage, additional streets/places are unavailable; choose a larger area to expand.
+World street detail and an entire-country street graph are not bundled.
 
-Searches, nearby categories and selected places keep the map visible with the
-sheet collapsed. Drag or tap its handle to open details; result arrival preserves
-a sheet the user has already opened. The title and count identify current results.
-Public-provider coverage varies; failures show a retry state and empty results
-are distinguished from an unavailable service. Nearby responses are cached for
-one hour and provider requests are spaced rather than rejected for quick clicks.
+The installer reads bounded PMTiles v3 ranges from a recent Protomaps daily build
+and downloads fixed GeoNames ZIP sources. It checks exact byte ranges, lengths,
+stable ETags, archive/expansion limits and staging storage. It records a local
+pack SHA256. This subset is not a verification of the planet archive's full-file
+BLAKE3 digest. ZIPs are streamed without extracting filesystem paths. The new pack
+is staged, indexed and activated atomically; failure/cancellation keeps the old
+pack. A completed replacement removes only its previous active map pack. Settings,
+saved places and recents stay in the app database. Encrypted/native backups include
+installed map packs, so larger selections also increase backup size.
 
-The source cleanup above is not released yet. Public map/geocoder/router defaults
-still exist; local tiles, geographic index and routing data are required before
-claiming a fully self-hosted installation. No Google data is used by the Maps
-provider implementation, and Maps does not call My AI's Google-enabled SearXNG.
+No coverage download runs automatically during a software update. An installation
+without local data shows the chooser rather than a blank map or public fallback.
+Download progress/cancel is available in Map downloads. An interrupted staging file
+is cleaned on restart. Refresh the plan and retry after a failed source download.
+Data is a snapshot; install a fresh selection to update it. There is no automatic
+planet sync, transit timetable, street-photo source or arbitrary-download URL.
 
-## Mobile search and place revision (working source)
+## Optional local services
 
-The supplied phone references and the [Google Maps Android search/list flow](https://support.google.com/maps/answer/9948049?co=GENIE.Platform%3DAndroid&hl=en) inform the layout only; Maps does not call a Google data API.
-Home uses a 112px peek above 64px navigation at phone sizes. Categories use a 136px
-peek; selected places use 210px with navigation hidden. Directions, Start, Share
-and Save are immediately available; dragging reveals private notes and details.
-Address search selects its first matching place in the collapsed view; choosing
-a suggestion, recent or saved place also opens that compact view. A manual
-expansion during a pending search is retained. Giant decorative result art is
-replaced by compact place rows. Search has an autofocus editor, Home/Work,
-local saved matches, provider suggestions, private bounded recents and Clear all.
-Native browser Back closes search. Visual viewport changes reserve keyboard space.
-Start requests location explicitly, routes from it, then follows in the foreground;
-permission failures explain manual Directions. This is not voice guidance.
+In Map downloads, connect a literal loopback OSRM URL, e.g.
+`http://127.0.0.1:5000`. A compatible nearest-driving response is required before
+saving it. A driving graph must already exist on this server; installing and
+building arbitrary routing graphs is outside this map-pack installer. Route API
+is standard `/route/v1/driving/…`. Directions/Start and the drive mode appear only
+when configured; no public routing fallback or synthetic journey is supplied.
+Disconnect hides them. Location following runs only while the page is open.
 
-Recent history is stored per immutable app account in schema 2, capped at 20 entries,
-with validated query/place kinds and native Origin/CSRF authorization. Private notes
-and passive device locations are excluded. Upgrade/restart preserve saved places;
-a schema downgrade requires the normal compatible backup. Public-provider defaults
-still remain: the separate fully-local map-data provisioning is not complete.
+Advanced administrators may set `MYMAPS_GEOCODER` to a local Photon base,
+`MYMAPS_ROUTER` to a local OSRM base or `MYMAPS_TILES` to a local XYZ raster URL.
+Only literal loopback IP URLs are accepted (no credentials). The attribution env
+`MYMAPS_TILE_ATTRIBUTION` accompanies custom tiles. Public/default external
+providers and `MYMAPS_OVERPASS` are removed. Legacy remote provider configuration
+must be changed to a local service or unset before startup. Redirects cannot leave
+the configured local origin. Browsers only contact the app origin for map assets.
+A browser still needs access to this server; this is server-hosted data, not a
+service-worker map download to a disconnected phone.
+
+Database schema3 upgrades saved places/history from schemas1/2 without replacing
+owner records. An older executable refuses a newer schema; use the normal compatible
+backup recovery rather than downgrading the executable in place. The managed app
+keeps four registered program/license packages and a minimum Workspace92 contract.
