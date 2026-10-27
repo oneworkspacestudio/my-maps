@@ -34,3 +34,34 @@ tracks app; do not lose provider PID when restarting (original provider stays).
 Stop exact task-owned services and remove only this guarded fixture after QA.
 Screenshots contain only synthetic names. Source/release/receipts stay under
 I:/Projects/tooling/maps-redesign-20261026. Source9 receipt/tag/ZIP immutable.
+
+## Preview10 released and primary installed
+
+Immutable source5ed357b2d5c4a59397703d48fe2498f1f536c8f7, all17 public assets sizes/
+SHA256 and anonymous executable download verified. Accepted/public/installed EXE
+SHAa6caa386520de445cf52cabd62ca4dbbfb0991f8b2712d4ec5407ec98c6078ec. Official
+channel/pin/default promotion3699323, anonymously checked; all other pins/prior
+rows/withholdings retained. Exact packaged12 UI groups + Go tests/vet + AUI/TS/Vite
+and public92/93/94 parser checks pass. Modal dark Cancel contrast fixed and checked;
+recent Save control added. Selected metadata refresh handles a demoted shortcut.
+No Actions, schema bump, public provider or owner functional fixture.
+
+Primary normal Maps9->10 protected update completed with exact public94 controller,
+29catalog apps/28healthy services, manager94 retained. Other app contracts/packages/
+EXE bytes, owner configuration and decrypted identities compared in memory/matched.
+Live Maps health10, HTML title and JS/CSS/executable hashes verified. Newest verified
+recovery update-20261027T195656-d8d8f547eb4a retained by normal updater cleanup.
+Do not repeat primary install. No country/map data automatically downloaded.
+
+Secondary normal MyAccounts sign-in still required in Chrome3/tab585734409; fresh
+updates login marked handoff, user asked asynchronously and no reply received.
+No secondary apply submitted. Last93/Maps8/MyAI14 is historical, not a fresh read.
+After user sign-in, inspect fresh updater versions/state and install ONLY Maps10
+via normal backed-up flow; preserve all other pending updates. Never bypass auth
+or reuse an OAuth callback/state. Current user phone screenshots predate10; do not
+claim its secondary deployment until verified. Primary is complete.
+
+Protected owned C fixture maps-save-20261027, exact app and Python provider PIDs,
+ports19315/19316 stopped/removed with executable/command/path/reparse guards. Safe
+restart script now preserves provider tracking. Source/release/receipt artifacts
+remain in task tooling on I; docs/evidence/saved-lists-20261027.json is sanitized.

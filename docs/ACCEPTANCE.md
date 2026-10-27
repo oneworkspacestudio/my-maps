@@ -1,3 +1,22 @@
+# Saved-list preview10 evidence
+
+Exact packaged preview10 passed12 isolated saved-list groups with WebGL disabled
+and local synthetic providers: direct Home/Work search, native dropdown/default
+Favourites, save/cancel/reuse, previous-shortcut/note retention, custom list creation,
+inline validation and keyboard-sized Save reachability, search/nearby/recent controls,
+reload/dark contrast and account isolation. Go tests cover transactional shortcut
+replacement/failure rollback/foreign IDs and private notes. Go tests/vet and AUI/TS/
+Vite pass. Public Workspace92/93/94 parsers accept its four registered packages/min92.
+No new data schema. No owner records were used as development fixtures.
+
+All17 public assets/digests and anonymous EXE/channel verified. Primary normal
+Maps9-to10 protected update completed with exact accepted bytes/served JS/CSS and
+28healthy services; other app contracts/packages/EXE bytes and owner configuration/
+identities retained. Secondary remains pending normal MyAccounts sign-in, with no
+secondary update submitted. Named C fixture/processes/ports19315/19316 were stopped
+and removed. No physical phone/keyboard/OS permission or Google parity claim.
+See docs/evidence/saved-lists-20261027.json.
+
 # Map-depth preview9 evidence
 
 The map-depth revision replaces the public-provider behaviour described in older
