@@ -1,5 +1,5 @@
 {
-  "candidateOnly": true,
+  "candidateOnly": false,
   "realOpenData": true,
   "ownerDataAsFixture": false,
   "webglDisabled": true,
@@ -42,5 +42,40 @@
     }
   ],
   "physicalPhoneTest": false,
-  "routerGraphBundled": false
+  "routerGraphBundled": false,
+  "release": {
+    "version": "0.1.0-preview.9",
+    "sourceCommit": "35cca4a136821a7210ac9b9a948d770087aa42a4",
+    "url": "https://github.com/oneworkspacestudio/my-maps/releases/tag/v0.1.0-preview.9",
+    "all17AssetsVerified": true,
+    "anonymousExecutableAndChannelVerified": true,
+    "executableSHA256": "b2352e87b92a75af677c33f0a1024eae1bf94901cc56f04e983b4192c17d9ab4",
+    "public92_93_94ParsersPassed": true,
+    "officialPromotion": "efca08a"
+  },
+  "primary": {
+    "mapsVersion": "0.1.0-preview.9",
+    "servedJS_CSS_MatchAcceptedPackage": true,
+    "exactPublishedEXE": true,
+    "correctInstalledHTMLTitle": true,
+    "normalUpdateComplete": true,
+    "managerVersion": "0.3.0-preview.94",
+    "all28ServicesRunning": true,
+    "allOtherExecutableBytesRetained": true,
+    "appCount": 29,
+    "exactTestedBinariesInstalled": true,
+    "identityAndCredentialsRetained": true,
+    "managerSHA256": "1936c1e8b96e2e0cb51fe713c687dd961399fd8da1eae6cb9df1ff48278ad76e",
+    "mapsSHA256": "b2352e87b92a75af677c33f0a1024eae1bf94901cc56f04e983b4192c17d9ab4",
+    "normalBackedUpUpdate": true,
+    "otherAppContractsAndPackagesRetained": true,
+    "ownerConfigurationRetained": true,
+    "previousVersion": "0.3.0-preview.94",
+    "version": "0.3.0-preview.94"
+  },
+  "secondary": {
+    "installed": false,
+    "reason": "Normal owner MyAccounts sign-in required; fresh updater sign-in tab left open. No secondary update submitted."
+  },
+  "protectedFixtureStoppedAndRemoved": true
 }

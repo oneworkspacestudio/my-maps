@@ -1,4 +1,4 @@
-# Current map-depth candidate
+# Map-depth preview9 evidence
 
 The map-depth revision replaces the public-provider behaviour described in older
 preview evidence below. Current capabilities are in FEATURES.md. A protected,
@@ -16,6 +16,14 @@ This does not claim a physical phone/GPS/share/reboot test, full house-address
 geocoding, an installed OSRM graph or every supported geographic selection tested.
 The local router protocol has separate synthetic acceptance; default routing is
 hidden. No full Google Maps data/feature parity is claimed.
+
+Preview9 was published from35cca4a with all17 assets/digests and anonymous
+executable/channel verification. Exact packaged EXE passed12 real-data groups;
+public92/93/94 managed-layout parser tests pass. Primary normal backed-up Maps-only
+update completed, exact served assets/EXE/version9 and28healthy services verified,
+all other app bytes/settings/identities retained. Secondary update is pending normal
+owner MyAccounts sign-in; no secondary installation is claimed. Named protected
+fixture/PID/port19315 was stopped and removed. See docs/evidence/map-depth-20261027.json.
 
 ## Historical preview evidence
 

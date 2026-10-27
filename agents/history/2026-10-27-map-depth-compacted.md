@@ -62,3 +62,46 @@ Packaging guard correctly refused missing licences in upstream npm tarballs for
 @protomaps/basemaps5.7.2 and pmtiles3.2.1. Exact npm gitHead licence texts are
 vendored under docs/licenses with source URLs/SHA256, including style/schema
 attribution; version/digest-checked build fallback includes them in notices.
+
+## Published and primary installed; secondary sign-in pending
+
+Release9 immutable source35cca4a136821a7210ac9b9a948d770087aa42a4, all17 public
+asset sizes/digests and anonymous EXE verified. Accepted/public/primary EXE SHA
+b2352e87b92a75af677c33f0a1024eae1bf94901cc56f04e983b4192c17d9ab4.
+Official channel promotionefca08a is anonymously visible on main; other pins,
+historical rows and withholdings preserved. Exact native packaged bytes pass12
+real-data groups, actual download/cancel/replacement plus browser/local assertions.
+Public92/93/94 manifest parsers pass. No Actions. Missing upstream npm licence
+texts are pinned to exact npm gitHead with verified bytes and -text attributes;
+packager keeps licence metadata separate from commit identity. Final build path
+is build-release9-ready; older failed/preliminary staging must not be published.
+
+Primary normal Maps-only8->9 protected update completed with public94 controller.
+29catalog apps/28running services, manager94/MyAI15 and every other app contract,
+package and executable byte preserved; owner configuration and decrypted identity
+settings compared only in memory and matched. Newest verified recovery:
+C:/tmp/workspace/Private/backups/update-20261027T164148-425bd09170cb.
+Runtime health/version9, exact EXE and served JS/CSS hashes/title verified. No
+owner functional fixtures or arbitrary country-data download performed. Users
+choose map coverage/depth after opening Maps. No local OSRM graph is bundled.
+
+Secondary still presents normal MyAccounts sign-in on the freshly navigated
+workspace-2/updates tab585734409 in Chrome3. It is marked handoff. User asked to
+sign in asynchronously; no answer received/no secondary apply submitted. Last
+known secondary manager93/Maps8/MyAI14 is historical, not fresh installed evidence.
+After user signs in, inspect fresh updater versions/state, check published updates,
+select only Maps9 and use normal backed-up install. Preserve other pending app
+updates, do not upgrade manager/MyAI implicitly or bypass sign-in. If state expired,
+start at fresh workspace-2 root/updates, never reuse OAuth callbacks/tokens.
+Primary installation is complete; do not repeat it. Additional owner live Maps UI
+checks need authorized sign-in; runtime/accepted package proofs already pass.
+
+Exact owned protected C fixture maps-depth-20261027/PID/port19315 was stopped and
+removed with path/executable/reparse guards. Sanitized receipts remain in tooling
+and docs/evidence/map-depth-20261027.json. No preview process is left. Continue
+secondary installation only when normal authentication becomes available.
+
+Advanced follow-up outside default/UI connection path: a routing service supplied
+only via MYMAPS_ROUTER before the first pack can be superseded by the empty routing
+field inserted with that first pack on restart. Persisted UI router connections are
+retained. Keep this edge case explicit if extending administrator env seeding.
