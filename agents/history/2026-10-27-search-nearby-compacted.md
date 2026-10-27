@@ -35,3 +35,20 @@ Final7 source/build/exact-package repeat/public release/channel and both normal
 Maps-only backed-up installs pending. Revalidate mutable owner versions. Never
 use owner data as fixtures, replace public assets/tags, bypass updater or use
 GitHub Actions. Preserve other apps/config/identities and newest recovery.
+
+## Final visible-pin correction / Maps8 target
+
+Exact7 passed17 groups and was published immutable, but final screen review found
+all3 petrol pins outside the unobscured phone map: DOM marker count was insufficient
+acceptance. No7 promotion was pushed and neither owner installed7. Restore only
+our unpublished7 pin/default/index edits; explicitly withhold7, preserving assets.
+Final8 fits actual nearby bounds with top controls/collapsed-sheet padding and
+adds assertions for an on-screen pin in every main category. Do not auto-expand.
+Candidate/exact8 must repeat18 groups before publication. Both owner Maps remain6.
+
+Both PCs have since moved to manager93/MyAI14 through the completed separate
+gateway task. Primary manager bytes match public93. Preserve these newer versions;
+use guarded helper built from hash-verified public93 source (sdk93-source), never
+old92 controller. Registered four-package/min92 metadata remains compatible;
+canonical92 fixture passed both released92 and93 parser code. All other pins and
+withholdings, including MyAI12/13, must stay. Final8 delivery remains pending.

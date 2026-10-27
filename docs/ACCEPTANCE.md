@@ -41,3 +41,10 @@ real Photon results in the phone renderer without WebGL. Tests also cover
 provider failover, malformed upstream data, rate spacing/cancellation and bounds.
 Exact-package and deployed receipts are separate. Physical device permissions,
 GPS/microphone, OS share sheets, reboot and missing Google services are unclaimed.
+
+Final8 adds a visibility assertion: category pins must lie inside the unobscured
+phone map, including sparse categories such as petrol stations. Bounds now fit
+the returned places with space for search controls and the collapsed sheet.
+The earlier7 check counted marker DOM nodes and missed off-screen pins. Public7
+was never promoted/installed and remains immutable, explicitly withheld in favour
+of8. Do not treat DOM marker count alone as map visibility acceptance.
