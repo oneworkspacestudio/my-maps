@@ -22,7 +22,7 @@ function VectorMap(p:any){
  useEffect(()=>{
   let reported=false;
   let map:GLMap;
-  try{map=new GLMap({container:node.current!,style:defaultStyle as any,center:[-.09,51.505],zoom:12,...(p.selected?{center:[p.selected.lon,p.selected.lat] as [number,number],zoom:15}:{}),...p.camera.current,attributionControl:false,transformRequest:(url:string)=>url.startsWith('https://')?{url:p.base+'/api/map-resource?url='+encodeURIComponent(url)}:{url}})}catch{latest.current.onFallback();return}
+  try{map=new GLMap({container:node.current!,style:defaultStyle as any,center:[-.09,51.505],zoom:12,...(p.selected?{center:[p.selected.lon,p.selected.lat] as [number,number],zoom:15}:{}),...p.camera.current,attributionControl:false,transformRequest:(url:string)=>/^https?:/.test(url)?{url:p.base+'/api/map-resource?url='+encodeURIComponent(url)}:{url}})}catch{latest.current.onFallback();return}
   native.current=map;const controller=vectorController(map);p.mapRef.current=controller;
   // A style may load while its worker/tiles never render. Recover that blank
   // canvas as well as GPU creation/context failures; never wait indefinitely.

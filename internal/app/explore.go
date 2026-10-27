@@ -176,19 +176,6 @@ func geoDistance(lat, lon, otherLat, otherLon float64) float64 {
 	return 12742000 * math.Asin(math.Sqrt(math.Min(1, x)))
 }
 
-func (a *App) weather(w http.ResponseWriter, r *http.Request) {
-	lat, lon, ok := requestCoordinates(r)
-	if !ok {
-		apphost.Problem(w, 400, "Choose a location for the weather")
-		return
-	}
-	if r.URL.Query().Get("air") == "1" {
-		a.fetchTTL(w, r, fmt.Sprintf("https://air-quality-api.open-meteo.com/v1/air-quality?latitude=%.2f&longitude=%.2f&current=european_aqi,pm2_5,pm10&timezone=auto", lat, lon), 15*time.Minute)
-		return
-	}
-	a.fetchTTL(w, r, fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%.2f&longitude=%.2f&current=temperature_2m,weather_code&timezone=auto", lat, lon), 15*time.Minute)
-}
-
 var resourceHosts = map[string]bool{
 	"tiles.openfreemap.org":   true,
 	"tiles.mapterhorn.com":    true,

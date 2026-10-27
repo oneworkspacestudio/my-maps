@@ -1,5 +1,5 @@
 // Generated from screens/Maps.aui; edit the AUI source.
-import { Alert, Button, Card, Divider, Field, Grid, Heading, Icon, Image, Input, Link, Page, Row, Section, Spacer, Stack, Text } from "@/components/ui"
+import { Alert, Button, Card, Divider, Field, Grid, Heading, Icon, Image, Input, Link, Page, Row, Section, Spacer, Spinner, Stack, Text } from "@/components/ui"
 
 export function Maps({ data, onAction }: { data: any; onAction: (name: string) => void }) {
   return (
@@ -9,16 +9,20 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
         <Stack variant="floating-search">
           <Row variant="search-bar">
             <Icon name="MapPin" size={28} />
-            <Input name="query" placeholder="Search here" onClick={() => onAction("search")} />
-            <Button variant="search-icon" onClick={() => onAction("voice")} aria-label="Search by voice"><Icon name="Mic" size={24} /></Button>
-            <Button variant="search-icon" onClick={() => onAction("coordinates")} aria-label="Search by coordinates"><Icon name="ScanLine" size={24} /></Button>
-            <Button variant="avatar" onClick={() => onAction("profile")} aria-label="Account and settings"><Text>{data.initial}</Text></Button>
+            <Button variant="search-entry" onClick={() => onAction("openSearch")} aria-label="Search places"><Text>{data.searchText}</Text></Button>
+            {data.showSearchReset ? (
+              <Button variant="search-icon" onClick={() => onAction("clearSearch")} aria-label="Clear search"><Icon name="X" size={24} /></Button>
+            ) : (
+              <Button variant="avatar" onClick={() => onAction("profile")} aria-label="Account and settings"><Text>{data.initial}</Text></Button>
+            )}
           </Row>
           <Row variant="category-chips">
-            <Button variant="chip" onClick={() => onAction("home")}>
-              <Icon name="House" />
-              <Text>Home</Text>
-            </Button>
+            {data.showTabs && (
+              <Button variant="chip" onClick={() => onAction("home")}>
+                <Icon name="House" />
+                <Text>Home</Text>
+              </Button>
+            )}
             {data.categories.map((item, i) => (
               <Button key={i} variant={item.variant} onClick={() => onAction("category")} item={item.key}>
                 <Icon name={item.icon} />
@@ -43,20 +47,47 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
         <Stack variant={data.sheetVariant}>
           <Button variant="sheet-handle" onClick={() => onAction("expand")} aria-label={data.expandLabel} aria-expanded={data.sheetExpanded}><Section variant="handle-line" /></Button>
           <Row variant="sheet-heading">
+            {data.routing && (
+              <Button variant="search-icon" onClick={() => onAction("clearSearch")} aria-label="Back to map"><Icon name="ArrowLeft" /></Button>
+            )}
             <Stack variant="sheet-title">
               <Heading level={1}>{data.title}</Heading>
               <Text variant="sheet-hint">{data.sheetHint}</Text>
             </Stack>
-            {data.exploring && (
-              <Button variant="weather" onClick={() => onAction("weather")} aria-label="Local weather">
-                <Icon name="CloudSun" />
-                <Text>{data.temperature}</Text>
-              </Button>
-            )}
             {data.closable && (
-              <Button variant="search-icon" onClick={() => onAction("deselect")} aria-label="Close place details"><Icon name="X" /></Button>
+              <>
+                <Button variant="round-action" onClick={() => onAction("save")} aria-label="Save place"><Icon name="Bookmark" /></Button>
+                <Button variant="round-action" onClick={() => onAction("share")} aria-label="Share place"><Icon name="Share2" /></Button>
+                <Button variant="search-icon" onClick={() => onAction("deselect")} aria-label="Close place details"><Icon name="X" /></Button>
+              </>
             )}
           </Row>
+          {data.selected && (
+            <>
+              <Stack variant="place-summary">
+                <Text variant="place-address">{data.selected.address}</Text>
+                <Text variant="caption">{data.selected.categoryLabel}</Text>
+              </Stack>
+              <Row variant="quick-actions">
+                <Button variant="pill" onClick={() => onAction("toSelected")}>
+                  <Icon name="CornerUpRight" />
+                  <Text>Directions</Text>
+                </Button>
+                <Button variant="soft-pill" onClick={() => onAction("quickStart")}>
+                  <Icon name="Navigation" />
+                  <Text>Start</Text>
+                </Button>
+                <Button variant="soft-pill" onClick={() => onAction("share")}>
+                  <Icon name="Share2" />
+                  <Text>Share</Text>
+                </Button>
+                <Button variant="soft-pill" onClick={() => onAction("save")}>
+                  <Icon name="Bookmark" />
+                  <Text>{data.saveLabel}</Text>
+                </Button>
+              </Row>
+            </>
+          )}
           <Stack variant="sheet-content">
             {data.exploring && (
               <>
@@ -67,21 +98,19 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                       <Spacer />
                       <Button variant="text" onClick={() => onAction("refresh")}>Search this area</Button>
                     </Row>
-                    <Row variant="discovery-cards">
+                    <Stack variant="place-results">
                       {data.results.map((item, i) => (
-                        <Button key={i} variant="discovery-card" onClick={() => onAction("place")} item={item.key}>
-                          <Stack variant={item.art}>
-                            <Icon name={item.icon} size={52} />
-                            <Text variant="card-category">{item.categoryLabel}</Text>
-                          </Stack>
-                          <Stack variant="card-copy">
+                        <Button key={i} variant="place-result" onClick={() => onAction("place")} item={item.key}>
+                          <Icon name={item.icon} size={23} />
+                          <Stack variant="result-copy">
                             <Heading level={2}>{item.name}</Heading>
                             <Text variant="caption">{item.address}</Text>
                             <Text variant="place-meta">{item.meta}</Text>
                           </Stack>
+                          <Icon name="ArrowUpRight" />
                         </Button>
                       ))}
-                    </Row>
+                    </Stack>
                     <Button variant="see-more" onClick={() => onAction("expand")}>{data.seeMoreLabel}</Button>
                   </>
                 ) : (
@@ -231,23 +260,6 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
             )}
             {data.selected && (
               <Card variant="place-detail">
-                <Text variant="place-category">{data.selected.categoryLabel}</Text>
-                <Text>{data.selected.address}</Text>
-                <Row variant="place-actions">
-                  <Button variant="pill" onClick={() => onAction("toSelected")}>
-                    <Icon name="Navigation" />
-                    <Text>Directions</Text>
-                  </Button>
-                  <Button variant="outline-pill" onClick={() => onAction("save")}>
-                    <Icon name="Bookmark" />
-                    <Text>Save</Text>
-                  </Button>
-                  <Button variant="outline-pill" onClick={() => onAction("share")}>
-                    <Icon name="Share2" />
-                    <Text>Share</Text>
-                  </Button>
-                </Row>
-                <Divider />
                 <Row>
                   <Icon name="MapPin" />
                   <Text>{data.selected.coordinates}</Text>
@@ -279,20 +291,114 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
             )}
           </Stack>
         </Stack>
-        <Row variant="bottom-tabs">
-          <Button variant={data.exploreVariant} onClick={() => onAction("explore")}>
-            <Icon name="MapPin" size={25} />
-            <Text>Explore</Text>
-          </Button>
-          <Button variant={data.savedVariant} onClick={() => onAction("saved")}>
-            <Icon name="Bookmark" size={25} />
-            <Text>You</Text>
-          </Button>
-          <Button variant={data.contributeVariant} onClick={() => onAction("contribute")}>
-            <Icon name="CirclePlus" size={25} />
-            <Text>Contribute</Text>
-          </Button>
-        </Row>
+        {data.showTabs && (
+          <Row variant="bottom-tabs">
+            <Button variant={data.exploreVariant} onClick={() => onAction("explore")}>
+              <Icon name="MapPin" size={25} />
+              <Text>Explore</Text>
+            </Button>
+            <Button variant={data.savedVariant} onClick={() => onAction("saved")}>
+              <Icon name="Bookmark" size={25} />
+              <Text>You</Text>
+            </Button>
+            <Button variant={data.contributeVariant} onClick={() => onAction("contribute")}>
+              <Icon name="CirclePlus" size={25} />
+              <Text>Contribute</Text>
+            </Button>
+          </Row>
+        )}
+        {data.searchOpen && (
+          <Stack variant="search-view" aria-label="Place search">
+            <Row variant="search-editor">
+              <Button variant="search-icon" onClick={() => onAction("closeSearch")} aria-label="Back to map"><Icon name="ArrowLeft" size={24} /></Button>
+              <Input name="query" placeholder="Search here" aria-label="Search places" onClick={() => onAction("search")} autoFocus={true} enterKeyHint="search" />
+              {data.searchHasQuery && (
+                <Button variant="search-icon" onClick={() => onAction("clearQuery")} aria-label="Clear query"><Icon name="X" /></Button>
+              )}
+              <Button variant="search-icon" onClick={() => onAction("search")} aria-label="Submit search"><Icon name="Search" size={23} /></Button>
+            </Row>
+            <Row variant="search-shortcuts">
+              <Button variant="search-shortcut" onClick={() => onAction("home")}>
+                <Icon name="House" size={24} />
+                <Stack>
+                  <Text>Home</Text>
+                  <Text variant="caption">{data.homeLabel}</Text>
+                </Stack>
+              </Button>
+              <Button variant="search-shortcut" onClick={() => onAction("work")}>
+                <Icon name="BriefcaseBusiness" size={24} />
+                <Stack>
+                  <Text>Work</Text>
+                  <Text variant="caption">{data.workLabel}</Text>
+                </Stack>
+              </Button>
+              <Button variant="search-shortcut" onClick={() => onAction("coordinates")}>
+                <Icon name="LocateFixed" size={24} />
+                <Text>Coordinates</Text>
+              </Button>
+            </Row>
+            <Stack variant="search-scroll">
+              {data.showRecent ? (
+                <>
+                  <Row variant="recent-heading">
+                    <Heading level={2}>Recent</Heading>
+                    <Spacer />
+                    {data.hasRecents && (
+                      <Button variant="text" onClick={() => onAction("clearRecents")}>Clear all</Button>
+                    )}
+                  </Row>
+                  {data.hasRecents ? (
+                    <Stack variant="recent-list">
+                      {data.recents.map((item, i) => (
+                        <Button key={i} variant="search-result" onClick={() => onAction("recentSearch")} item={item.key}>
+                          <Icon name="History" size={23} />
+                          <Stack variant="result-copy">
+                            <Text>{item.title}</Text>
+                            <Text variant="caption">{item.address}</Text>
+                          </Stack>
+                          <Icon name="ArrowUpRight" size={19} />
+                        </Button>
+                      ))}
+                    </Stack>
+                  ) : (
+                    <Text variant="caption">Your searches and chosen places appear here. History stays private on this server.</Text>
+                  )}
+                </>
+              ) : (
+                <>
+                  {data.localSuggestions.map((item, i) => (
+                    <Button key={i} variant="search-result" onClick={() => onAction("savedPlace")} item={item.id}>
+                      <Icon name="Bookmark" size={23} />
+                      <Stack variant="result-copy">
+                        <Text>{item.name}</Text>
+                        <Text variant="caption">{item.address}</Text>
+                      </Stack>
+                    </Button>
+                  ))}
+                  {data.searchPending && (
+                    <Row variant="search-status">
+                      <Spinner />
+                      <Text>Finding places...</Text>
+                    </Row>
+                  )}
+                  {data.suggestions.map((item, i) => (
+                    <Button key={i} variant="search-result" onClick={() => onAction("suggestion")} item={item.key}>
+                      <Icon name="MapPin" size={23} />
+                      <Stack variant="result-copy">
+                        <Text>{item.name}</Text>
+                        <Text variant="caption">{item.address}</Text>
+                      </Stack>
+                      <Icon name="ArrowUpRight" size={19} />
+                    </Button>
+                  ))}
+                  {data.searchStatus && (
+                    <Text variant="caption">{data.searchStatus}</Text>
+                  )}
+                </>
+              )}
+            </Stack>
+          </Stack>
+        )}
       </Stack>
       {data.layersOpen && (
         <Card variant="dialog" aria-label="Map layers">
@@ -322,9 +428,6 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
           </Grid>
           {data.layerMessage && (
             <Alert>{data.layerMessage}</Alert>
-          )}
-          {data.layerURL && (
-            <Link variant="button-secondary" href={data.layerURL} external={true}>{data.layerLink}</Link>
           )}
         </Card>
       )}
@@ -383,18 +486,6 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
           <Text>Enter latitude and longitude to open an exact location.</Text>
           <Field label="Coordinates"><Input name="coordinates" placeholder="50.7829, -0.6731" onClick={() => onAction("goCoordinates")} /></Field>
           <Button variant="pill" onClick={() => onAction("goCoordinates")}>Show on map</Button>
-        </Card>
-      )}
-      {data.weatherOpen && (
-        <Card variant="dialog" aria-label="Local conditions">
-          <Row>
-            <Heading level={2}>Local conditions</Heading>
-            <Spacer />
-            <Button variant="search-icon" onClick={() => onAction("closeOverlay")} aria-label="Close conditions"><Icon name="X" /></Button>
-          </Row>
-          <Text>{data.conditions}</Text>
-          <Text variant="caption">Forecast and air-quality models from Open-Meteo and CAMS. Not a local sensor reading.</Text>
-          <Link href="https://open-meteo.com/" external={true}>Weather source and attribution</Link>
         </Card>
       )}
     </Page>

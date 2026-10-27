@@ -1,0 +1,62 @@
+{
+  "syntheticDataOnly": true,
+  "localSyntheticProviders": true,
+  "realGeographicProviderAcceptance": false,
+  "physicalPhoneKeyboardGPSShareTest": false,
+  "checks": [
+    "Home sheet112px, map has more than75percent vertical room before the sheet",
+    "Selected suggestion immediately shows Directions, Start, Share and Save without expanded sheet or bottom tabs",
+    "Drag up/down reveals private fields; save and share retain private-note boundaries",
+    "Search autofocus, private recents/Home/Work and reduced viewport for keyboard space",
+    "Recent places survive reload; reopening a saved place keeps saved status",
+    "Directions destination prefilled; start lookup, route line and GPX work with local provider contract",
+    "Explicit Start requests synthetic device location, calculates route and follows only while page open",
+    "Category results remain map-first in136px sheet with compact real result rows instead of tall placeholder art",
+    "Empty search remains collapsed and explains retry",
+    "Closing search discards late autocomplete without reopening it",
+    "360/390/412/576/1440 layouts keep primary place action visible without horizontal page overflow",
+    "Reopening a saved provider place keeps its current hours, phone and website along with private notes",
+    "Native browser Back closes full-screen search without leaving Maps",
+    "Result arrival preserves a sheet manually expanded while a search is pending",
+    "Declined location keeps the place/map and explains how to choose a start manually",
+    "Provider errors keep the map visible with a retry state",
+    "Search in dark/light themes, Settings and encrypted backup remain functional",
+    "Recent history is bounded20, durable, CSRF protected, validates coordinates and cannot be read/cleared across accounts"
+  ],
+  "errors": [],
+  "externalBrowserRequests": [],
+  "screenshots": [
+    "mobile-home.png",
+    "mobile-search-empty.png",
+    "mobile-search-suggestions.png",
+    "mobile-place-compact.png",
+    "mobile-search-recents.png",
+    "mobile-directions.png",
+    "mobile-category.png",
+    "mobile-search-dark.png"
+  ],
+  "layouts": [
+    {
+      "width": 360,
+      "height": 640
+    },
+    {
+      "width": 412,
+      "height": 915
+    },
+    {
+      "width": 576,
+      "height": 1152
+    },
+    {
+      "width": 1440,
+      "height": 940
+    }
+  ],
+  "testedExecutableSHA256": "df5a5b6ad4bab6ca0363a664db5ee609b621eb5af25644e50e43b5c3afb7ae21",
+  "runtime": {
+    "app": "maps",
+    "status": "ok",
+    "version": "0.1.0-mobile-candidate"
+  }
+}

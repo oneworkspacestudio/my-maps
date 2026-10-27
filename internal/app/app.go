@@ -8,6 +8,7 @@ import (
 	"github.com/oneworkspacestudio/one-workspace/pkg/apphost"
 	"io"
 	"math"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -42,16 +43,13 @@ func env(k, d string) string {
 func New(h *apphost.Host) (*App, error) {
 	a := &App{H: h, client: &http.Client{Timeout: 20 * time.Second}, photon: env("MYMAPS_GEOCODER", "https://photon.komoot.io"), routing: env("MYMAPS_ROUTER", "https://routing.openstreetmap.de"), tiles: env("MYMAPS_TILES", "https://tile.openstreetmap.org/{z}/{x}/{y}.png")}
 	for _, endpoint := range []string{a.photon, a.routing, a.tiles, env("MYMAPS_OVERPASS", "https://overpass-api.de")} {
-		u, e := url.Parse(endpoint)
-		if e != nil || u.Scheme != "https" || u.Host == "" || u.User != nil {
-			return nil, errors.New("map providers must be HTTPS URLs without credentials")
+		if !validProviderEndpoint(endpoint) {
+			return nil, errors.New("map providers require HTTPS or a literal HTTP loopback address, without credentials")
 		}
 	}
 	tile, _ := url.Parse(a.tiles)
 	h.Config.ImageOrigins = []string{"https://" + tile.Host}
-	if e := h.Migrate(1, `CREATE TABLE places(id TEXT PRIMARY KEY,owner TEXT NOT NULL,name TEXT NOT NULL,address TEXT NOT NULL,lat REAL NOT NULL,lon REAL NOT NULL,list TEXT NOT NULL,notes TEXT NOT NULL);
- CREATE INDEX places_owner ON places(owner,list);
- CREATE TABLE provider_cache(key TEXT PRIMARY KEY,body BLOB NOT NULL,expires INTEGER NOT NULL);`); e != nil {
+	if e := migrate(h); e != nil {
 		return nil, e
 	}
 	h.Mux.HandleFunc("GET /api/config", h.Require(func(w http.ResponseWriter, r *http.Request) {
@@ -61,12 +59,23 @@ func New(h *apphost.Host) (*App, error) {
 	h.Mux.HandleFunc("GET /api/reverse", h.Require(a.reverse))
 	h.Mux.HandleFunc("GET /api/nearby", h.Require(a.nearby))
 	h.Mux.HandleFunc("GET /api/map-resource", h.Require(a.mapResource))
-	h.Mux.HandleFunc("GET /api/weather", h.Require(a.weather))
 	h.Mux.HandleFunc("POST /api/route", h.Require(a.route))
 	h.Mux.HandleFunc("GET /api/places", h.Require(a.places))
 	h.Mux.HandleFunc("POST /api/places", h.Require(a.save))
 	h.Mux.HandleFunc("DELETE /api/places/{id}", h.Require(a.remove))
+	h.Mux.HandleFunc("GET /api/recents", h.Require(a.recents))
+	h.Mux.HandleFunc("POST /api/recents", h.Require(a.remember))
+	h.Mux.HandleFunc("DELETE /api/recents", h.Require(a.clearRecents))
 	return a, nil
+}
+
+func validProviderEndpoint(endpoint string) bool {
+	u, err := url.Parse(endpoint)
+	if err != nil || u.Host == "" || u.User != nil || u.Fragment != "" {
+		return false
+	}
+	ip := net.ParseIP(u.Hostname())
+	return u.Scheme == "https" || (u.Scheme == "http" && ip != nil && ip.IsLoopback())
 }
 func (a *App) Run(ctx context.Context) error {
 	ticker := time.NewTicker(time.Hour)

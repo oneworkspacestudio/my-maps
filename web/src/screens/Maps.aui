@@ -4,17 +4,19 @@ Page Maps
     Stack variant=floating-search
       Row variant=search-bar
         Icon name=MapPin size=28
-        Input name=query placeholder="Search here" action=search
-        Button variant=search-icon action=voice aria-label="Search by voice"
-          Icon name=Mic size=24
-        Button variant=search-icon action=coordinates aria-label="Search by coordinates"
-          Icon name=ScanLine size=24
-        Button variant=avatar action=profile aria-label="Account and settings"
-          Text $initial
+        Button variant=search-entry action=openSearch aria-label="Search places"
+          Text $searchText
+        If condition=$showSearchReset
+          Button variant=search-icon action=clearSearch aria-label="Clear search"
+            Icon name=X size=24
+        Else
+          Button variant=avatar action=profile aria-label="Account and settings"
+            Text $initial
       Row variant=category-chips
-        Button variant=chip action=home
-          Icon name=House
-          Text "Home"
+        If condition=$showTabs
+          Button variant=chip action=home
+            Icon name=House
+            Text "Home"
         For each=$categories
           Button variant=$item.variant action=category item=$item.key
             Icon name=$item.icon
@@ -37,16 +39,36 @@ Page Maps
       Button variant=sheet-handle action=expand aria-label=$expandLabel aria-expanded=$sheetExpanded
         Section variant=handle-line
       Row variant=sheet-heading
+        If condition=$routing
+          Button variant=search-icon action=clearSearch aria-label="Back to map"
+            Icon name=ArrowLeft
         Stack variant=sheet-title
           Heading level=1 $title
           Text variant=sheet-hint $sheetHint
-        If condition=$exploring
-          Button variant=weather action=weather aria-label="Local weather"
-            Icon name=CloudSun
-            Text $temperature
         If condition=$closable
+          Button variant=round-action action=save aria-label="Save place"
+            Icon name=Bookmark
+          Button variant=round-action action=share aria-label="Share place"
+            Icon name=Share2
           Button variant=search-icon action=deselect aria-label="Close place details"
             Icon name=X
+      If condition=$selected
+        Stack variant=place-summary
+          Text variant=place-address $selected.address
+          Text variant=caption $selected.categoryLabel
+        Row variant=quick-actions
+          Button variant=pill action=toSelected
+            Icon name=CornerUpRight
+            Text "Directions"
+          Button variant=soft-pill action=quickStart
+            Icon name=Navigation
+            Text "Start"
+          Button variant=soft-pill action=share
+            Icon name=Share2
+            Text "Share"
+          Button variant=soft-pill action=save
+            Icon name=Bookmark
+            Text $saveLabel
       Stack variant=sheet-content
         If condition=$exploring
           If condition=$hasResults
@@ -54,16 +76,15 @@ Page Maps
               Text variant=caption $resultCaption
               Spacer
               Button variant=text action=refresh "Search this area"
-            Row variant=discovery-cards
+            Stack variant=place-results
               For each=$results
-                Button variant=discovery-card action=place item=$item.key
-                  Stack variant=$item.art
-                    Icon name=$item.icon size=52
-                    Text variant=card-category $item.categoryLabel
-                  Stack variant=card-copy
+                Button variant=place-result action=place item=$item.key
+                  Icon name=$item.icon size=23
+                  Stack variant=result-copy
                     Heading level=2 $item.name
                     Text variant=caption $item.address
                     Text variant=place-meta $item.meta
+                  Icon name=ArrowUpRight
             Button variant=see-more action=expand $seeMoreLabel
           Else
             Stack variant=explore-empty
@@ -167,19 +188,6 @@ Page Maps
                 Text variant=caption $item.distance
         If condition=$selected
           Card variant=place-detail
-            Text variant=place-category $selected.categoryLabel
-            Text $selected.address
-            Row variant=place-actions
-              Button variant=pill action=toSelected
-                Icon name=Navigation
-                Text "Directions"
-              Button variant=outline-pill action=save
-                Icon name=Bookmark
-                Text "Save"
-              Button variant=outline-pill action=share
-                Icon name=Share2
-                Text "Share"
-            Divider
             Row
               Icon name=MapPin
               Text $selected.coordinates
@@ -202,16 +210,80 @@ Page Maps
             Field label="Your private notes"
               Input name=notes multiline=true
             Button variant=pill action=save "Save place and notes"
-    Row variant=bottom-tabs
-      Button variant=$exploreVariant action=explore
-        Icon name=MapPin size=25
-        Text "Explore"
-      Button variant=$savedVariant action=saved
-        Icon name=Bookmark size=25
-        Text "You"
-      Button variant=$contributeVariant action=contribute
-        Icon name=CirclePlus size=25
-        Text "Contribute"
+    If condition=$showTabs
+      Row variant=bottom-tabs
+        Button variant=$exploreVariant action=explore
+          Icon name=MapPin size=25
+          Text "Explore"
+        Button variant=$savedVariant action=saved
+          Icon name=Bookmark size=25
+          Text "You"
+        Button variant=$contributeVariant action=contribute
+          Icon name=CirclePlus size=25
+          Text "Contribute"
+    If condition=$searchOpen
+      Stack variant=search-view aria-label="Place search"
+        Row variant=search-editor
+          Button variant=search-icon action=closeSearch aria-label="Back to map"
+            Icon name=ArrowLeft size=24
+          Input name=query placeholder="Search here" aria-label="Search places" action=search autoFocus=true enterKeyHint=search
+          If condition=$searchHasQuery
+            Button variant=search-icon action=clearQuery aria-label="Clear query"
+              Icon name=X
+          Button variant=search-icon action=search aria-label="Submit search"
+            Icon name=Search size=23
+        Row variant=search-shortcuts
+          Button variant=search-shortcut action=home
+            Icon name=House size=24
+            Stack
+              Text "Home"
+              Text variant=caption $homeLabel
+          Button variant=search-shortcut action=work
+            Icon name=BriefcaseBusiness size=24
+            Stack
+              Text "Work"
+              Text variant=caption $workLabel
+          Button variant=search-shortcut action=coordinates
+            Icon name=LocateFixed size=24
+            Text "Coordinates"
+        Stack variant=search-scroll
+          If condition=$showRecent
+            Row variant=recent-heading
+              Heading level=2 "Recent"
+              Spacer
+              If condition=$hasRecents
+                Button variant=text action=clearRecents "Clear all"
+            If condition=$hasRecents
+              Stack variant=recent-list
+                For each=$recents
+                  Button variant=search-result action=recentSearch item=$item.key
+                    Icon name=History size=23
+                    Stack variant=result-copy
+                      Text $item.title
+                      Text variant=caption $item.address
+                    Icon name=ArrowUpRight size=19
+            Else
+              Text variant=caption "Your searches and chosen places appear here. History stays private on this server."
+          Else
+            For each=$localSuggestions
+              Button variant=search-result action=savedPlace item=$item.id
+                Icon name=Bookmark size=23
+                Stack variant=result-copy
+                  Text $item.name
+                  Text variant=caption $item.address
+            If condition=$searchPending
+              Row variant=search-status
+                Spinner
+                Text "Finding places..."
+            For each=$suggestions
+              Button variant=search-result action=suggestion item=$item.key
+                Icon name=MapPin size=23
+                Stack variant=result-copy
+                  Text $item.name
+                  Text variant=caption $item.address
+                Icon name=ArrowUpRight size=19
+            If condition=$searchStatus
+              Text variant=caption $searchStatus
   If condition=$layersOpen
     Card variant=dialog aria-label="Map layers"
       Row
@@ -236,8 +308,6 @@ Page Maps
             Text $item.title
       If condition=$layerMessage
         Alert $layerMessage
-      If condition=$layerURL
-        Link variant=button-secondary href=$layerURL external=true $layerLink
   If condition=$profileOpen
     Card variant=dialog aria-label="Account and settings"
       Row
@@ -283,13 +353,3 @@ Page Maps
       Field label="Coordinates"
         Input name=coordinates placeholder="50.7829, -0.6731" action=goCoordinates
       Button variant=pill action=goCoordinates "Show on map"
-  If condition=$weatherOpen
-    Card variant=dialog aria-label="Local conditions"
-      Row
-        Heading level=2 "Local conditions"
-        Spacer
-        Button variant=search-icon action=closeOverlay aria-label="Close conditions"
-          Icon name=X
-      Text $conditions
-      Text variant=caption "Forecast and air-quality models from Open-Meteo and CAMS. Not a local sensor reading."
-      Link href="https://open-meteo.com/" external=true "Weather source and attribution"

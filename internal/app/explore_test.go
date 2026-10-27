@@ -20,14 +20,12 @@ func TestMapResourceAllowlist(t *testing.T) {
 
 func TestExploreRejectsInvalidInputBeforeFetching(t *testing.T) {
 	a := &App{}
-	for _, path := range []string{"/api/nearby?lat=NaN&lon=0&category=restaurants", "/api/nearby?lat=50&lon=181&category=restaurants", "/api/nearby?lat=50&lon=0&category=arbitrary-query", "/api/weather?lat=Inf&lon=0", "/api/map-resource?url=https://127.0.0.1/private"} {
+	for _, path := range []string{"/api/nearby?lat=NaN&lon=0&category=restaurants", "/api/nearby?lat=50&lon=181&category=restaurants", "/api/nearby?lat=50&lon=0&category=arbitrary-query", "/api/map-resource?url=https://127.0.0.1/private"} {
 		r := httptest.NewRequest("GET", path, nil)
 		w := httptest.NewRecorder()
 		switch r.URL.Path {
 		case "/api/nearby":
 			a.nearby(w, r)
-		case "/api/weather":
-			a.weather(w, r)
 		default:
 			a.mapResource(w, r)
 		}

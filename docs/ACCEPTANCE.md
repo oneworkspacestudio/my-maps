@@ -48,3 +48,31 @@ the returned places with space for search controls and the collapsed sheet.
 The earlier7 check counted marker DOM nodes and missed off-screen pins. Public7
 was never promoted/installed and remains immutable, explicitly withheld in favour
 of8. Do not treat DOM marker count alone as map visibility acceptance.
+
+## Self-hosting correction in progress
+
+Earlier evidence above describes released versions, including controls now removed
+from the working source. Cloud browser speech, weather/AQI API, the traffic
+placeholder and external Mapillary/FIRMS controls are removed. Coordinate lookup
+uses a location icon; transport/cycling buttons name the actual facility searches.
+Frontend AUI/TypeScript/Vite and Go tests/vet pass for this cleanup. This does not
+prove local map providers or a new installation: none has been provisioned or
+released for this correction yet. Public map/geocoder/router defaults remain.
+
+## Mobile search/place revision (unreleased working source)
+
+Final native candidate passes18 isolated UI groups at360/390/412/576/1440 widths:
+map-first search/selection and categories, immediate place actions, pointer drags,
+manual expansion during pending search, keyboard-size viewport, durable private
+recents/Home/Work, saved-provider metadata, route/GPX and mocked foreground GPS,
+native browser Back, cancelled suggestions, empty/outage/location-denial states,
+dark/light styling with screenshot/contrast review, Settings/encrypted backup and
+account/CSRF isolation. History is bounded20 and clearable. No browser exceptions
+or external browser requests. Local tile/search/route providers were synthetic;
+these checks do not prove real regional map/index/router datasets or physical
+phone keyboard/GPS/share behavior. Go migration/validation tests and vet pass;
+AUI/TypeScript/Vite and native build pass. Schema upgrade/restart preserve places;
+future schema data is refused. Only the guarded named test root/processes were
+removed; owner data was not used. See docs/evidence/mobile-search-20261027.json.
+No new public release/channel change or installation is claimed. The remaining
+public-provider defaults must be replaced for the requested full self-hosting.

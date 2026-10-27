@@ -22,15 +22,24 @@ Workspace 0.3.0-preview.92 or newer.
 
 ## Included
 
+The mobile search/place revision below is working source, not a new public release.
+Existing installations remain on preview.8 until a subsequent verified update.
+
+<p><img src="docs/assets/mobile-search.png" width="240" alt="Mobile search UI with synthetic records"> <img src="docs/assets/mobile-place.png" width="240" alt="Compact place actions on a synthetic test map"></p>
+
+These UI previews use synthetic test data.
+
 - Full-screen map with floating search, category chips, a sliding place sheet,
   Explore / You / Contribute tabs and an account menu.
+- Full-screen search with address suggestions, private recent searches and Home/Work shortcuts.
+- Compact place actions: Directions, Start, Save and Share before opening details.
 - Interactive street map, zoom, rotation, location and dropped pins.
 - Nearby restaurants, shopping, hotels, attractions, parking and fuel.
 - Map-type and detail picker, raised buildings and open terrain.
-- Regional NASA satellite imagery (500 m resolution), local weather and modelled air quality.
-- Public transport and cycling facilities; links to community street imagery and NASA fires.
-- Browser voice search where supported, and exact-coordinate search.
-- Place/address search and reverse lookup, only when requested.
+- Regional NASA satellite imagery (500 m resolution).
+- Nearby transport stops and cycling facilities.
+- Exact-coordinate search.
+- Place/address search and reverse lookup, when you type or submit a search, or choose a map point.
 - Private saved lists, notes, favourites and deletion.
 - Share links containing a place name and coordinates, without private notes.
 - Driving, cycling and walking directions, up to eight stops, alternatives,
@@ -40,6 +49,14 @@ Workspace 0.3.0-preview.92 or newer.
 - Light/dark theme, mobile layout, Workspace launcher, encrypted backups.
 
 ## Open services and limits
+
+**Current hosting boundary:** the application and private places are self-hosted,
+but the default map, address and routing providers below are public services.
+This is not yet a fully self-hosted map stack. The self-hosting correction is
+in progress; geographic coverage must be selected before provisioning local data.
+My Search federates private Workspace content, while My AI includes SearXNG web
+search. Neither replaces a geographic index or routing graph. The bundled My AI
+search configuration currently includes Google; Maps does not use it.
 
 Phones use OpenStreetMap image tiles without requiring graphics acceleration. Desktop vector maps use [OpenFreeMap](https://openfreemap.org/quick_start/),
 [OpenMapTiles](https://openmaptiles.org/) and OpenStreetMap. Terrain comes from
@@ -54,21 +71,18 @@ Photon also provides nearby category search on phones and desktops, with Overpas
 as a backup. Address/route queries are cached for 24 hours, nearby queries for
 one hour. New provider requests wait at a server-wide one-per-second limit.
 A loaded-vector fallback remains available when both nearby providers fail.
-Weather and air quality use [Open-Meteo](https://open-meteo.com/), cached for
-15 minutes. Its free service is for personal/non-commercial installations;
-[provider terms](https://open-meteo.com/en/terms) apply. All public providers are
-best effort and can restrict usage.
+All public providers are best effort and can restrict usage.
 
 Search text and requested coordinates go to the selected providers. Location is
 requested only when you press My location or Follow my location. Saved places
-and notes stay on your server. Voice search uses your browser's speech service
-when available; its microphone permission is requested only after your action.
+and notes stay on your server. Browser cloud speech recognition is removed.
 
 The layout follows the supplied Google Maps references, but this release does
 **not provide full Google Maps feature parity**. There is no Google place-photo,
 review or rating feed, Lens, live traffic, transit timetable, cycle-network overlay,
 embedded Street View, live fire overlay, background navigation, voice guidance
-or offline map package. Street imagery and fire maps open separate services.
+or offline map package. Unavailable traffic, street-imagery and fire controls
+are removed, along with external weather and air-quality calls.
 Satellite imagery is regional NASA Blue Marble, not street-resolution imagery.
 Raised buildings depend on mapped heights. Location following is not turn-by-turn
 navigation. Routes exclude live congestion and road closures.
