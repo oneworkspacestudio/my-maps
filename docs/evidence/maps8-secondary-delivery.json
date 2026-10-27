@@ -1,0 +1,16 @@
+{
+  "mapsVersion": "0.1.0-preview.8",
+  "previousMapsVersion": "0.1.0-preview.6",
+  "managerVersion": "0.3.0-preview.93",
+  "myAI14Retained": true,
+  "normalBackedUpUpdate": true,
+  "onlyMapsVisibleVersionChanged": true,
+  "all27ServicesHealthy": true,
+  "newestVerifiedRecoveryRetained": true,
+  "elapsed": "2m 20s",
+  "publishedPackageValidatedByNormalUpdater": true,
+  "independentRemoteDiskCredentialAudit": false,
+  "liveOwnerMapUIRecheck": false,
+  "ownerBrowserSessionExpired": true,
+  "physicalAndroidTest": false
+}

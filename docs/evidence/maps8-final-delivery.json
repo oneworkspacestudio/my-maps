@@ -1,0 +1,102 @@
+{
+  "release": "https://github.com/oneworkspacestudio/my-maps/releases/tag/v0.1.0-preview.8",
+  "sourceCommit": "2606d0189ef2d6364face319d47ca7444aceaf27",
+  "executableSHA256": "5056ca701df24401d5b6eb38da31fb75eb8bb2944d27cb19dce24bcbc9941fda",
+  "publicAssetsVerified": 17,
+  "anonymousPromotedChannelVerified": true,
+  "superseded7WithheldBeforeOwnerInstallation": true,
+  "exactPackageFeatureGroupsPassed": 18,
+  "actualNearbyCategories": {
+    "restaurants": {
+      "source": "photon",
+      "count": 50
+    },
+    "shopping": {
+      "source": "photon",
+      "count": 50
+    },
+    "hotels": {
+      "source": "photon",
+      "count": 14
+    },
+    "attractions": {
+      "source": "photon",
+      "count": 1
+    },
+    "fuel": {
+      "source": "photon",
+      "count": 2
+    },
+    "parking": {
+      "source": "photon",
+      "count": 20
+    },
+    "transit": {
+      "source": "photon",
+      "count": 34
+    },
+    "cycling": {
+      "source": "photon",
+      "count": 4
+    }
+  },
+  "actualTravelModes": {
+    "car": {
+      "alternatives": 1,
+      "points": 58
+    },
+    "foot": {
+      "alternatives": 1,
+      "points": 43
+    },
+    "bike": {
+      "alternatives": 1,
+      "points": 47
+    }
+  },
+  "primary": {
+    "allOtherExecutableBytesRetained": true,
+    "appCount": 28,
+    "exactTestedBinariesInstalled": true,
+    "identityAndCredentialsRetained": true,
+    "managerSHA256": "7456db79f1cf330b36d5d324a44845adf0dadbbde3875e427d95fe3ac0921409",
+    "mapsSHA256": "5056ca701df24401d5b6eb38da31fb75eb8bb2944d27cb19dce24bcbc9941fda",
+    "mapsVersion": "0.1.0-preview.8",
+    "normalBackedUpUpdate": true,
+    "otherAppContractsAndPackagesRetained": true,
+    "ownerConfigurationRetained": true,
+    "previousVersion": "0.3.0-preview.93",
+    "version": "0.3.0-preview.93"
+  },
+  "primaryRuntime": {
+    "all27ServicesRunning": true,
+    "correctInstalledHTMLTitle": true,
+    "exactPublishedEXE": true,
+    "managerVersion": "0.3.0-preview.93",
+    "normalUpdateComplete": true,
+    "mapsVersion": "0.1.0-preview.8",
+    "servedJS_CSS_WorkerMatchAcceptedPackage": true
+  },
+  "secondary": {
+    "mapsVersion": "0.1.0-preview.8",
+    "previousMapsVersion": "0.1.0-preview.6",
+    "managerVersion": "0.3.0-preview.93",
+    "myAI14Retained": true,
+    "normalBackedUpUpdate": true,
+    "onlyMapsVisibleVersionChanged": true,
+    "all27ServicesHealthy": true,
+    "newestVerifiedRecoveryRetained": true,
+    "elapsed": "2m 20s",
+    "publishedPackageValidatedByNormalUpdater": true,
+    "independentRemoteDiskCredentialAudit": false,
+    "liveOwnerMapUIRecheck": false,
+    "ownerBrowserSessionExpired": true,
+    "physicalAndroidTest": false
+  },
+  "namedSyntheticPreviewRemoved": true,
+  "physicalAndroidTest": false,
+  "limits": [
+    "Physical GPS/microphone/OS sharing not tested",
+    "Traffic, timetables, Google photos/reviews/Lens and embedded Street View are not implemented"
+  ]
+}

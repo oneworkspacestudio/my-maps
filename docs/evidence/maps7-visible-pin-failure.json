@@ -1,0 +1,13 @@
+{
+  "syntheticDataOnly": true,
+  "version": "0.1.0-preview.7",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "category": "fuel",
+  "markerDOMCount": 3,
+  "markersInsideUnobscuredMap": 0,
+  "supersededBy": "0.1.0-preview.8",
+  "neverPromotedOrInstalledOnOwnerPCs": true
+}

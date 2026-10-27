@@ -52,3 +52,32 @@ use guarded helper built from hash-verified public93 source (sdk93-source), neve
 old92 controller. Registered four-package/min92 metadata remains compatible;
 canonical92 fixture passed both released92 and93 parser code. All other pins and
 withholdings, including MyAI12/13, must stay. Final8 delivery remains pending.
+
+## Final8 released, promoted and installed on both PCs
+
+Immutable v0.1.0-preview.8/source2606d0189ef2d6364face319d47ca7444aceaf27.
+EXE5056ca701df24401d5b6eb38da31fb75eb8bb2944d27cb19dce24bcbc9941fda.
+All17 public asset sizes/digests, anonymous executable/default promoted channel
+and exact served JS/CSS/worker pass. Final exact8 repeated18-group acceptance,
+including real8category and3travel-mode data and visible sparse/dense category
+pins. Released92/93 parser fixtures accept four registered packages/min92.
+Official channel/future pin/default6af46a5 promotes8;7 remains explicitly withheld,
+never promoted/installed on these PCs. Other pins/earlier entries/withholdings kept.
+
+Both normal protected Maps-only6->8 updates completed on manager93, all27services
+healthy on each. Primary matching public93 helper independently audited exact
+Maps8/manager93 bytes, served assets/title, owner config/decrypted identities and
+all other app contracts/packages/executable bytes retained. Secondary normal
+owner updater completed9stages/2m20, verified newest recovery retained and exactly
+Maps visible version changed. MyAI14/manager93/other app versions retained;
+independent public root health confirms27running. No remote disk/secret audit.
+Secondary browser portal/MyAccounts session expired, so no live owner Maps UI or
+independent /maps/healthz version reread claimed; the updater validated published
+bytes/startup and reports8. Login/check tabs closed, updated updater left open.
+
+Only named protected C fixture/search-preview PID/port19315 removed with path,
+process and no-reparse checks; owner data/recovery retained. Actual owner captures
+stay outside Git. Sanitized docs/evidence/maps8-*.json; earlier7 visibility fault
+is recorded explicitly. Refresh an existing phone tab for corrected UI code.
+Required push/release/channel/two-PC installs are complete. No physical Android,
+GPS/mic/OS share/reboot or unavailable Google feature/data parity claim.

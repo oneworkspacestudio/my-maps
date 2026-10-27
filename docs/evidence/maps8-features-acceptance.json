@@ -1,0 +1,83 @@
+{
+  "syntheticDataOnly": true,
+  "physicalAndroidTest": false,
+  "checks": [
+    "mocked speech result fills search field without automatic permission-dependent search",
+    "real search leaves visible map and collapsed sheet; keyboard focus released",
+    "manual pointer drag expands/collapses sheet without double toggling",
+    "manual expansion during pending search is preserved when results arrive",
+    "sparse and dense category pins fit the unobscured phone map",
+    "all 8 nearby categories return real data without vector rendering; map stays visible",
+    "provider outage has useful retry state; retry recovers real results without popup",
+    "search refresh repeats address query instead of silently searching restaurants",
+    "coordinate validation, manual details, private save, Home shortcut and mocked share exclude notes",
+    "synthetic GPS centre/marker on non-WebGL map",
+    "saved tab, GeoJSON export and private place deletion",
+    "actual drive/walk/cycle routes render SVG; GPX, swap and clear controls work",
+    "distance measurement on two raster-map points",
+    "satellite/default tiles, repeated unsupported 3D recovery, weather/AQI and truthful external layer controls",
+    "contribution links, theme, Settings navigation and actual encrypted backup download",
+    "unsupported voice has explicit typed-search fallback",
+    "standalone-user creation works; another account cannot see private places",
+    "360/390/576/1440 layouts and modal bounds"
+  ],
+  "nearby": {
+    "restaurants": {
+      "source": "photon",
+      "count": 50
+    },
+    "shopping": {
+      "source": "photon",
+      "count": 50
+    },
+    "hotels": {
+      "source": "photon",
+      "count": 14
+    },
+    "attractions": {
+      "source": "photon",
+      "count": 1
+    },
+    "fuel": {
+      "source": "photon",
+      "count": 2
+    },
+    "parking": {
+      "source": "photon",
+      "count": 20
+    },
+    "transit": {
+      "source": "photon",
+      "count": 34
+    },
+    "cycling": {
+      "source": "photon",
+      "count": 4
+    }
+  },
+  "routes": {
+    "car": {
+      "alternatives": 1,
+      "points": 58
+    },
+    "foot": {
+      "alternatives": 1,
+      "points": 43
+    },
+    "bike": {
+      "alternatives": 1,
+      "points": 47
+    }
+  },
+  "errors": [],
+  "limits": [
+    "Physical GPS/microphone/OS sharing not tested",
+    "Traffic, timetables, Google photos/reviews/Lens and embedded Street View are not implemented"
+  ],
+  "runtime": {
+    "app": "maps",
+    "status": "ok",
+    "version": "0.1.0-preview.8"
+  },
+  "testedExecutableSHA256": "5056ca701df24401d5b6eb38da31fb75eb8bb2944d27cb19dce24bcbc9941fda"
+}
