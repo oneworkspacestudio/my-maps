@@ -8,7 +8,7 @@
 | Search | Local SQLite FTS index of mapped names/roads, GeoNames towns, optional UK postcodes |
 | Nearby | Named POIs in the installed maximum-detail tiles; truthful empty results when absent |
 | Place sheet | Compact after search; manual pointer drag or keyboard/tap handle reveals details |
-| Private places | Account-isolated lists, Home/Work, notes, deletion and GeoJSON export |
+| Private places | Save-to-list dropdown on places/results, Favourites/Home/Work/custom lists, private notes, deletion and GeoJSON export |
 | Search history | Account-isolated recent queries/places, bounded20, Clear all |
 | Share | Place name and coordinates only; private notes excluded |
 | Driving | Optional loopback OSRM driving service, up to8 stops, alternatives/steps/GPX |
@@ -70,3 +70,17 @@ Database schema3 upgrades saved places/history from schemas1/2 without replacing
 owner records. An older executable refuses a newer schema; use the normal compatible
 backup recovery rather than downgrading the executable in place. The managed app
 keeps four registered program/license packages and a minimum Workspace92 contract.
+
+## Saving and Home/Work shortcuts
+
+Save opens a native select picker without changing the place sheet or writing a
+record. Favourites is the default for new places; existing places keep their list
+and notes. Nearby/search/recent locations have independent save controls. An unset
+Home or Work shortcut starts search and preselects that list after choosing a place.
+No free-text list editing is needed for either shortcut. New list names are the
+only list text entry. Confirm writes the list/note together; cancel keeps all data.
+
+Home and Work each resolve to one location per account. Replacement is transactional:
+the previous place moves to Favourites with its notes intact. Other accounts are
+unaffected. Existing custom lists remain selectable. This remains one list per
+saved place, not multiple simultaneous memberships. No new data schema is needed.

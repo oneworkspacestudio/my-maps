@@ -46,6 +46,19 @@ postcodes, rather than every house address. Optional driving directions, stops,
 steps, alternatives, GPX and foreground location following require a separately
 hosted local OSRM driving service. Directions and Start are hidden until connected.
 
+## Save a place or set Home
+
+Tap **Save** on a location or a search/nearby result. Choose **Favourites**, **Home**,
+**Work** or an existing list from the dropdown, then confirm. Create a new list in
+that same picker if needed. Private notes are optional. Opening or cancelling the
+picker makes no changes.
+
+An unset Home or Work shortcut opens search and preselects the right list after
+you choose a location. A configured shortcut opens its place. Replacing Home or
+Work moves the previous location to Favourites and keeps its notes.
+
+<img src="docs/assets/save-place-picker.png" width="320" alt="Save picker with Home selected and an explicit Save as Home button; synthetic preview">
+
 ## Data and privacy
 
 [OpenStreetMap](https://www.openstreetmap.org/copyright) / [Protomaps](https://docs.protomaps.com/basemaps/downloads)

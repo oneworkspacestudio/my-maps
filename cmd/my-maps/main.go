@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-var version = "0.1.0-preview.9"
+var version = "0.1.0-preview.10"
 
 func main() {
 	if e := apphost.Main(apphost.Config{ID: "maps", Name: "My Maps", Version: version, Listen: "127.0.0.1:9015", Geolocation: true}, webui.Files(), func(h *apphost.Host) (apphost.Application, error) { return app.New(h) }); e != nil {

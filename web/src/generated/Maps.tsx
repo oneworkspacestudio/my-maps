@@ -1,5 +1,5 @@
 // Generated from screens/Maps.aui; edit the AUI source.
-import { Button, Card, Divider, Field, Grid, Heading, Icon, Image, Input, Link, Page, Row, Section, Spacer, Spinner, Stack, Text } from "@/components/ui"
+import { Alert, Button, Card, Divider, Field, Grid, Heading, Icon, Image, Input, Link, Page, Row, Section, Select, Spacer, Spinner, Stack, Text } from "@/components/ui"
 
 export function Maps({ data, onAction }: { data: any; onAction: (name: string) => void }) {
   return (
@@ -105,15 +105,20 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                     </Row>
                     <Stack variant="place-results">
                       {data.results.map((item, i) => (
-                        <Button key={i} variant="place-result" onClick={() => onAction("place")} item={item.key}>
-                          <Icon name={item.icon} size={23} />
-                          <Stack variant="result-copy">
-                            <Heading level={2}>{item.name}</Heading>
-                            <Text variant="caption">{item.address}</Text>
-                            <Text variant="place-meta">{item.meta}</Text>
-                          </Stack>
-                          <Icon name="ArrowUpRight" />
-                        </Button>
+                        <Row key={i} variant="place-result-row">
+                          <Button variant="place-result" onClick={() => onAction("place")} item={item.key}>
+                            <Icon name={item.icon} size={23} />
+                            <Stack variant="result-copy">
+                              <Heading level={2}>{item.name}</Heading>
+                              <Text variant="caption">{item.address}</Text>
+                              <Text variant="place-meta">{item.meta}</Text>
+                            </Stack>
+                          </Button>
+                          <Button variant="list-save" onClick={() => onAction("saveResult")} item={item.key} aria-label={item.saveAria}>
+                            <Icon name={item.saveIcon} size={23} />
+                            <Text>{item.saveLabel}</Text>
+                          </Button>
+                        </Row>
                       ))}
                     </Stack>
                     <Button variant="see-more" onClick={() => onAction("expand")}>{data.seeMoreLabel}</Button>
@@ -187,6 +192,7 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                         <Text variant="caption">{item.list}</Text>
                       </Stack>
                     </Button>
+                    <Button variant="search-icon" onClick={() => onAction("editSaved")} item={item.id} aria-label="Change saved place list"><Icon name="Bookmark" /></Button>
                     <Button variant="search-icon" onClick={() => onAction("deletePlace")} item={item.id} aria-label="Delete saved place"><Icon name="Trash2" /></Button>
                   </Row>
                 ))}
@@ -292,13 +298,21 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                   <Link href={data.selected.osm} external={true}>Place details on OpenStreetMap</Link>
                 )}
                 <Row>
-                  <Button variant="text" onClick={() => onAction("start")}>Set start</Button>
-                  <Button variant="text" onClick={() => onAction("stop")}>Add stop</Button>
+                  {data.routingAvailable && (
+                    <>
+                      <Button variant="text" onClick={() => onAction("start")}>Set start</Button>
+                      <Button variant="text" onClick={() => onAction("stop")}>Add stop</Button>
+                    </>
+                  )}
                   <Button variant="text" onClick={() => onAction("measure")}>Measure distance</Button>
                 </Row>
-                <Field label="List"><Input name="list" placeholder="Favourites" /></Field>
-                <Field label="Your private notes"><Input name="notes" multiline={true} /></Field>
-                <Button variant="pill" onClick={() => onAction("save")}>Save place and notes</Button>
+                {data.selected.list && (
+                  <Text variant="caption">Saved in {data.selected.list}</Text>
+                )}
+                {data.selected.notes && (
+                  <Text>{data.selected.notes}</Text>
+                )}
+                <Button variant="pill" onClick={() => onAction("save")}>Save to a list</Button>
               </Card>
             )}
           </Stack>
@@ -329,6 +343,12 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
               )}
               <Button variant="search-icon" onClick={() => onAction("search")} aria-label="Submit search"><Icon name="Search" size={23} /></Button>
             </Row>
+            {data.searchHeading && (
+              <Stack variant="shortcut-intent">
+                <Heading level={2}>{data.searchHeading}</Heading>
+                <Text variant="caption">{data.shortcutHint}</Text>
+              </Stack>
+            )}
             <Row variant="search-shortcuts">
               <Button variant="search-shortcut" onClick={() => onAction("home")}>
                 <Icon name="House" size={24} />
@@ -362,14 +382,21 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                   {data.hasRecents ? (
                     <Stack variant="recent-list">
                       {data.recents.map((item, i) => (
-                        <Button key={i} variant="search-result" onClick={() => onAction("recentSearch")} item={item.key}>
-                          <Icon name="History" size={23} />
-                          <Stack variant="result-copy">
-                            <Text>{item.title}</Text>
-                            <Text variant="caption">{item.address}</Text>
-                          </Stack>
-                          <Icon name="ArrowUpRight" size={19} />
-                        </Button>
+                        <Row key={i} variant="search-result-row">
+                          <Button variant="search-result" onClick={() => onAction("recentSearch")} item={item.key}>
+                            <Icon name="History" size={23} />
+                            <Stack variant="result-copy">
+                              <Text>{item.title}</Text>
+                              <Text variant="caption">{item.address}</Text>
+                            </Stack>
+                          </Button>
+                          {item.saveable && (
+                            <Button variant="list-save" onClick={() => onAction("saveRecent")} item={item.key} aria-label={item.saveAria}>
+                              <Icon name="Bookmark" size={23} />
+                              <Text>Save</Text>
+                            </Button>
+                          )}
+                        </Row>
                       ))}
                     </Stack>
                   ) : (
@@ -394,14 +421,19 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                     </Row>
                   )}
                   {data.suggestions.map((item, i) => (
-                    <Button key={i} variant="search-result" onClick={() => onAction("suggestion")} item={item.key}>
-                      <Icon name="MapPin" size={23} />
-                      <Stack variant="result-copy">
-                        <Text>{item.name}</Text>
-                        <Text variant="caption">{item.address}</Text>
-                      </Stack>
-                      <Icon name="ArrowUpRight" size={19} />
-                    </Button>
+                    <Row key={i} variant="search-result-row">
+                      <Button variant="search-result" onClick={() => onAction("suggestion")} item={item.key}>
+                        <Icon name="MapPin" size={23} />
+                        <Stack variant="result-copy">
+                          <Text>{item.name}</Text>
+                          <Text variant="caption">{item.address}</Text>
+                        </Stack>
+                      </Button>
+                      <Button variant="list-save" onClick={() => onAction("saveSuggestion")} item={item.key} aria-label={item.saveAria}>
+                        <Icon name={item.saveIcon} size={23} />
+                        <Text>{item.saveLabel}</Text>
+                      </Button>
+                    </Row>
                   ))}
                   {data.searchStatus && (
                     <Text variant="caption">{data.searchStatus}</Text>
@@ -471,6 +503,41 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
           <Text>Enter latitude and longitude to open an exact location.</Text>
           <Field label="Coordinates"><Input name="coordinates" placeholder="50.7829, -0.6731" onClick={() => onAction("goCoordinates")} /></Field>
           <Button variant="pill" onClick={() => onAction("goCoordinates")}>Show on map</Button>
+        </Card>
+      )}
+      {data.saveOpen && (
+        <Card variant="dialog" aria-label="Save place to list">
+          <Row>
+            <Heading level={2}>Save to a list</Heading>
+            <Spacer />
+            <Button variant="search-icon" onClick={() => onAction("closeOverlay")} aria-label="Close save picker"><Icon name="X" /></Button>
+          </Row>
+          <Stack variant="save-place-summary">
+            <Icon name="MapPin" size={24} />
+            <Heading level={3}>{data.saveTarget.name}</Heading>
+            <Text variant="caption">{data.saveTarget.address}</Text>
+          </Stack>
+          {data.saveError && (
+            <Alert tone="error">{data.saveError}</Alert>
+          )}
+          <Field label="Choose a list"><Select name="saveList" options={data.saveOptions} /></Field>
+          {data.newListSelected && (
+            <Field label="New list name"><Input name="newList" placeholder="e.g. Weekend trips" maxLength={100} autoFocus={true} onClick={() => onAction("confirmSave")} /></Field>
+          )}
+          {data.shortcutReplacement && (
+            <Text variant="save-explanation">{data.shortcutReplacement}</Text>
+          )}
+          <Field label="Private note (optional)"><Input name="saveNotes" multiline={true} maxLength={10000} /></Field>
+          {data.saveBusy && (
+            <Row>
+              <Spinner />
+              <Text>Saving place...</Text>
+            </Row>
+          )}
+          <Row variant="save-picker-actions">
+            <Button variant="soft-pill" onClick={() => onAction("closeOverlay")}>Cancel</Button>
+            <Button variant="pill" onClick={() => onAction("confirmSave")}>{data.saveConfirmLabel}</Button>
+          </Row>
         </Card>
       )}
     </Page>

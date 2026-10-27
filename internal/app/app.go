@@ -21,6 +21,7 @@ type App struct {
 	H                      *apphost.Host
 	client                 *http.Client
 	mu                     sync.Mutex
+	placesMu               sync.Mutex
 	last                   time.Time
 	photon, routing, tiles string
 	maps                   *mapManager
@@ -294,32 +295,19 @@ func (a *App) save(w http.ResponseWriter, r *http.Request) {
 		apphost.Problem(w, 400, "Check the place name, coordinates and notes")
 		return
 	}
-	owner := apphost.Current(r).User.ID
-	if p.ID == "" {
-		p.ID = apphost.ID()
-		var count int
-		a.H.DB.QueryRow("SELECT count(*) FROM places WHERE owner=?", owner).Scan(&count)
-		if count >= 10000 {
-			apphost.Problem(w, 409, "Export or remove some saved places before adding more")
-			return
+	p.List = canonicalList(p.List)
+	a.placesMu.Lock()
+	defer a.placesMu.Unlock()
+	saved, status, err := persistPlace(r.Context(), a.H.DB, apphost.Current(r).User.ID, p)
+	if err != nil {
+		if status == 500 {
+			a.H.DBError(w, err)
+		} else {
+			apphost.Problem(w, status, err.Error())
 		}
-		_, e := a.H.DB.Exec("INSERT INTO places VALUES(?,?,?,?,?,?,?,?)", p.ID, owner, p.Name, p.Address, p.Lat, p.Lon, p.List, p.Notes)
-		if e != nil {
-			a.H.DBError(w, e)
-			return
-		}
-	} else {
-		res, e := a.H.DB.Exec("UPDATE places SET name=?,address=?,lat=?,lon=?,list=?,notes=? WHERE id=? AND owner=?", p.Name, p.Address, p.Lat, p.Lon, p.List, p.Notes, p.ID, owner)
-		if e != nil {
-			a.H.DBError(w, e)
-			return
-		}
-		n, _ := res.RowsAffected()
-		if n != 1 {
-			apphost.Problem(w, 404, "Saved place not found")
-			return
-		}
+		return
 	}
+	p = saved
 	apphost.JSON(w, 200, p)
 }
 func (a *App) remove(w http.ResponseWriter, r *http.Request) {

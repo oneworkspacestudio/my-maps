@@ -78,13 +78,16 @@ Page Maps
               Button variant=text action=refresh "Search this area"
             Stack variant=place-results
               For each=$results
-                Button variant=place-result action=place item=$item.key
-                  Icon name=$item.icon size=23
-                  Stack variant=result-copy
-                    Heading level=2 $item.name
-                    Text variant=caption $item.address
-                    Text variant=place-meta $item.meta
-                  Icon name=ArrowUpRight
+                Row variant=place-result-row
+                  Button variant=place-result action=place item=$item.key
+                    Icon name=$item.icon size=23
+                    Stack variant=result-copy
+                      Heading level=2 $item.name
+                      Text variant=caption $item.address
+                      Text variant=place-meta $item.meta
+                  Button variant=list-save action=saveResult item=$item.key aria-label=$item.saveAria
+                    Icon name=$item.saveIcon size=23
+                    Text $item.saveLabel
             Button variant=see-more action=expand $seeMoreLabel
           Else
             Stack variant=explore-empty
@@ -133,6 +136,8 @@ Page Maps
                 Stack
                   Text $item.name
                   Text variant=caption $item.list
+              Button variant=search-icon action=editSaved item=$item.id aria-label="Change saved place list"
+                Icon name=Bookmark
               Button variant=search-icon action=deletePlace item=$item.id aria-label="Delete saved place"
                 Icon name=Trash2
         If condition=$contributing
@@ -207,14 +212,15 @@ Page Maps
             If condition=$selected.osm
               Link href=$selected.osm external=true "Place details on OpenStreetMap"
             Row
-              Button variant=text action=start "Set start"
-              Button variant=text action=stop "Add stop"
+              If condition=$routingAvailable
+                Button variant=text action=start "Set start"
+                Button variant=text action=stop "Add stop"
               Button variant=text action=measure "Measure distance"
-            Field label="List"
-              Input name=list placeholder="Favourites"
-            Field label="Your private notes"
-              Input name=notes multiline=true
-            Button variant=pill action=save "Save place and notes"
+            If condition=$selected.list
+              Text variant=caption "Saved in $selected.list"
+            If condition=$selected.notes
+              Text $selected.notes
+            Button variant=pill action=save "Save to a list"
     If condition=$showTabs
       Row variant=bottom-tabs
         Button variant=$exploreVariant action=explore
@@ -237,6 +243,10 @@ Page Maps
               Icon name=X
           Button variant=search-icon action=search aria-label="Submit search"
             Icon name=Search size=23
+        If condition=$searchHeading
+          Stack variant=shortcut-intent
+            Heading level=2 $searchHeading
+            Text variant=caption $shortcutHint
         Row variant=search-shortcuts
           Button variant=search-shortcut action=home
             Icon name=House size=24
@@ -261,12 +271,16 @@ Page Maps
             If condition=$hasRecents
               Stack variant=recent-list
                 For each=$recents
-                  Button variant=search-result action=recentSearch item=$item.key
-                    Icon name=History size=23
-                    Stack variant=result-copy
-                      Text $item.title
-                      Text variant=caption $item.address
-                    Icon name=ArrowUpRight size=19
+                  Row variant=search-result-row
+                    Button variant=search-result action=recentSearch item=$item.key
+                      Icon name=History size=23
+                      Stack variant=result-copy
+                        Text $item.title
+                        Text variant=caption $item.address
+                    If condition=$item.saveable
+                      Button variant=list-save action=saveRecent item=$item.key aria-label=$item.saveAria
+                        Icon name=Bookmark size=23
+                        Text "Save"
             Else
               Text variant=caption "Your searches and chosen places appear here. History stays private on this server."
           Else
@@ -281,12 +295,15 @@ Page Maps
                 Spinner
                 Text "Finding places..."
             For each=$suggestions
-              Button variant=search-result action=suggestion item=$item.key
-                Icon name=MapPin size=23
-                Stack variant=result-copy
-                  Text $item.name
-                  Text variant=caption $item.address
-                Icon name=ArrowUpRight size=19
+              Row variant=search-result-row
+                Button variant=search-result action=suggestion item=$item.key
+                  Icon name=MapPin size=23
+                  Stack variant=result-copy
+                    Text $item.name
+                    Text variant=caption $item.address
+                Button variant=list-save action=saveSuggestion item=$item.key aria-label=$item.saveAria
+                  Icon name=$item.saveIcon size=23
+                  Text $item.saveLabel
             If condition=$searchStatus
               Text variant=caption $searchStatus
   If condition=$profileOpen
@@ -337,3 +354,32 @@ Page Maps
       Field label="Coordinates"
         Input name=coordinates placeholder="50.7829, -0.6731" action=goCoordinates
       Button variant=pill action=goCoordinates "Show on map"
+  If condition=$saveOpen
+    Card variant=dialog aria-label="Save place to list"
+      Row
+        Heading level=2 "Save to a list"
+        Spacer
+        Button variant=search-icon action=closeOverlay aria-label="Close save picker"
+          Icon name=X
+      Stack variant=save-place-summary
+        Icon name=MapPin size=24
+        Heading level=3 $saveTarget.name
+        Text variant=caption $saveTarget.address
+      If condition=$saveError
+        Alert tone=error $saveError
+      Field label="Choose a list"
+        Select name=saveList options=$saveOptions
+      If condition=$newListSelected
+        Field label="New list name"
+          Input name=newList placeholder="e.g. Weekend trips" maxLength=100 autoFocus=true action=confirmSave
+      If condition=$shortcutReplacement
+        Text variant=save-explanation $shortcutReplacement
+      Field label="Private note (optional)"
+        Input name=saveNotes multiline=true maxLength=10000
+      If condition=$saveBusy
+        Row
+          Spinner
+          Text "Saving place..."
+      Row variant=save-picker-actions
+        Button variant=soft-pill action=closeOverlay "Cancel"
+        Button variant=pill action=confirmSave $saveConfirmLabel
