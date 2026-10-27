@@ -12,9 +12,13 @@ No new data schema. No owner records were used as development fixtures.
 All17 public assets/digests and anonymous EXE/channel verified. Primary normal
 Maps9-to10 protected update completed with exact accepted bytes/served JS/CSS and
 28healthy services; other app contracts/packages/EXE bytes and owner configuration/
-identities retained. Secondary remains pending normal MyAccounts sign-in, with no
-secondary update submitted. Named C fixture/processes/ports19315/19316 were stopped
-and removed. No physical phone/keyboard/OS permission or Google parity claim.
+identities retained. After owner sign-in, secondary normal Maps8-to10 update
+completed in4m2s with a verified recovery backup and27running services. Fresh
+installed-version rows show only Maps changed; manager93/MyAI14 retained and live
+Maps health reports10. Secondary verification used the normal updater and public
+health views, without an independent remote disk/credential audit. Named C fixture/
+processes/ports19315/19316 were stopped and removed. No physical phone/keyboard/OS
+permission or Google parity claim.
 See docs/evidence/saved-lists-20261027.json.
 
 # Map-depth preview9 evidence
@@ -40,9 +44,11 @@ Preview9 was published from35cca4a with all17 assets/digests and anonymous
 executable/channel verification. Exact packaged EXE passed12 real-data groups;
 public92/93/94 managed-layout parser tests pass. Primary normal backed-up Maps-only
 update completed, exact served assets/EXE/version9 and28healthy services verified,
-all other app bytes/settings/identities retained. Secondary update is pending normal
-owner MyAccounts sign-in; no secondary installation is claimed. Named protected
-fixture/PID/port19315 was stopped and removed. See docs/evidence/map-depth-20261027.json.
+all other app bytes/settings/identities retained. At preview9 publication, secondary
+was pending normal owner MyAccounts sign-in. Named protected
+fixture/PID/port19315 was stopped and removed. Secondary subsequently received
+preview10, including this local-depth work; see the saved-list delivery evidence
+above. See docs/evidence/map-depth-20261027.json for the historical preview9 checks.
 
 ## Historical preview evidence
 

@@ -65,3 +65,25 @@ Protected owned C fixture maps-save-20261027, exact app and Python provider PIDs
 ports19315/19316 stopped/removed with executable/command/path/reparse guards. Safe
 restart script now preserves provider tracking. Source/release/receipt artifacts
 remain in task tooling on I; docs/evidence/saved-lists-20261027.json is sanitized.
+
+## Secondary delivery completed after owner sign-in
+
+Owner signed in; normal workspace-2 updater freshly showed manager93/Maps8/MyAI14.
+Checked public channel, selected ONLY Maps10 (cleared manager/MyAI/Mail/Chat/new
+Push), submitted once. Normal download/package validation, scoped33.8MB recovery
+copy and checksum verification completed; restart took longer than earlier runs,
+with a temporary public502/disconnection. Automatic reconnect confirmed all9 stages
+complete in4m2s, all apps healthy, newest verified recovery
+update-20261027T211311-247ea6e5ea1b retained. No repeated apply or auth bypass.
+
+Fresh release check shows Maps10 up to date; every other visible row matches the
+pre-update baseline, retaining manager93/MyAI14/Chat10 and Push not installed.
+Live /maps/healthz reports10/ok, portal /healthz shows all27services running.
+Secondary proof is updater completion/version rows/live health, not an independent
+remote executable/disk/credential audit. No owner records as development fixtures,
+map dataset download, physical phone test or new release/asset replacement.
+Both PCs now have Maps10; primary delivery remains as recorded above. Tooling
+secondary-delivery10.json/completion10.txt/completion10.jpg retain local receipts;
+sanitized current evidence is docs/evidence/saved-lists-20261027.json in the app.
+Normal updater tab585734409/Chrome3 retained as deliverable. Sign-in/install handoff
+is resolved; no repeat installation needed.

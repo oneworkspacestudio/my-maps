@@ -46,8 +46,27 @@
     "version": "0.3.0-preview.94"
   },
   "secondary": {
-    "installed": false,
-    "reason": "Normal MyAccounts owner sign-in required; no secondary update submitted."
+    "mapsVersion": "0.1.0-preview.10",
+    "previousMapsVersion": "0.1.0-preview.8",
+    "managerVersion": "0.3.0-preview.93",
+    "myAI14Retained": true,
+    "normalBackedUpUpdate": true,
+    "onlyMapsVisibleVersionChanged": true,
+    "all27ServicesHealthy": true,
+    "newestVerifiedRecoveryRetained": true,
+    "elapsed": "4m 2s",
+    "publishedPackageValidatedByNormalUpdater": true,
+    "liveMapsHealth": {
+      "app": "maps",
+      "status": "ok",
+      "version": "0.1.0-preview.10"
+    },
+    "independentRemoteDiskCredentialAudit": false,
+    "ownerDataAsFixture": false,
+    "automaticMapDatasetDownload": false,
+    "physicalAndroidTest": false,
+    "installed": true,
+    "verificationScope": "Normal protected updater completion, fresh version table, live Maps health and all-service health; no independent remote disk or credential audit."
   },
   "protectedFixtureStoppedAndRemoved": true,
   "physicalPhoneTest": false
