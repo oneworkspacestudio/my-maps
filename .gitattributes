@@ -1,0 +1,2 @@
+# Preserve exact upstream licence bytes used by the release digest checks.
+docs/licenses/*.txt -text
