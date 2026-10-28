@@ -2,6 +2,7 @@ import React,{useEffect,useRef} from 'react';
 import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {leafletLayer} from 'protomaps-leaflet';
+import {streetMapStyle} from './street-map-style';
 (window as any).L=L;
 import type {MapController} from './map-controller';
 import type {Place} from './map';
@@ -11,7 +12,7 @@ export function RasterMap(p:any){
  useEffect(()=>{
   const saved=p.camera.current,center=saved?.center||(p.selected?[p.selected.lon,p.selected.lat]:(p.config.installed?[(p.config.installed.bounds[0]+p.config.installed.bounds[2])/2,(p.config.installed.bounds[1]+p.config.installed.bounds[3])/2]:[-.09,51.505]));
   const map=L.map(node.current!,{zoomControl:false,attributionControl:false,preferCanvas:false}).setView([center[1],center[0]],saved?.zoom||(p.selected?15:p.config.installed?.maxZoom>10?14:p.config.installed?.maxZoom>6?8:4));native.current=map;
-  // SVG/DOM tiles and overlays work without WebGL, including disabled GPU drivers.
+  // Canvas base tiles and DOM overlays work without WebGL or a GPU driver.
   L.control.attribution({position:'bottomleft',prefix:false}).addTo(map);L.control.zoom({position:'bottomright'}).addTo(map);
   const controller:MapController={renderer:'raster',native:map,getCenter:()=>{const c=map.getCenter();return {lat:c.lat,lng:c.lng,toArray:()=>[c.lng,c.lat]}},getZoom:()=>map.getZoom(),getBearing:()=>0,getPitch:()=>0,
    easeTo:o=>{const c=o.center;if(c)map.setView([c[1],c[0]],o.zoom??map.getZoom(),{animate:false});else if(o.zoom!==undefined)map.setZoom(o.zoom,{animate:false});if(c&&o.padding){const d=o.padding;map.panBy([(d.right-d.left)/2,(d.bottom-d.top)/2],{animate:false})}},
@@ -28,7 +29,7 @@ export function RasterMap(p:any){
   const attribution=document.createElement('span');attribution.textContent=p.config.attribution;
   let layer:L.Layer;
   if(p.config.local){
-   layer=leafletLayer({url:p.config.localTiles,flavor:'light',lang:'en',maxDataZoom:p.config.installed.maxZoom,levelDiff:0,noWrap:true,attribution:attribution.innerHTML,maxZoom:19} as any) as unknown as L.Layer;
+   layer=leafletLayer({url:p.config.localTiles,...streetMapStyle(),lang:'en',maxDataZoom:p.config.installed.maxZoom,levelDiff:0,noWrap:true,attribution:attribution.innerHTML,maxZoom:19} as any) as unknown as L.Layer;
   }else{
    const raster=L.tileLayer('',{tileSize:256,maxZoom:19,attribution:attribution.innerHTML,detectRetina:false});
    raster.getTileUrl=(coords:L.Coords)=>p.base+'/api/map-resource?url='+encodeURIComponent(L.Util.template(p.config.tiles,{z:coords.z,x:coords.x,y:coords.y}));layer=raster;

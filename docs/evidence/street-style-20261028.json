@@ -1,0 +1,32 @@
+{
+  "version": "0.1.0-preview.11",
+  "realOpenData": true,
+  "ownerDataAsFixture": false,
+  "webglDisabled": true,
+  "checks": [
+    "Installed real Bognor Regis street tiles render pale land, cyan sea, mint parks, outlined blue-grey roads, white streets and buildings using Canvas without WebGL",
+    "Actual road, Hotham Park and named POI labels render with collision spacing and zoom hierarchy",
+    "Local maximum-detail tiles overzoom to18 with readable roads and building footprints; panning and zoom remain responsive",
+    "Local search selects a compact map-first place; Save still opens the list dropdown and Cancel returns without saving",
+    "Local nearby results remain interactive above the styled map without forcing the sheet open",
+    "Overview zoom6 renders from the same local pack with no public tile or font fallback",
+    "Desktop rendering, canvas resize and tile regeneration remain correct"
+  ],
+  "errors": [],
+  "externalRequests": [],
+  "actualRenderedPalette": {
+    "#f5f5f5": 76355,
+    "#8ed8e8": 117269,
+    "#c6f0d5": 9352,
+    "#c9d2dc": 12864,
+    "#ffffff": 23062,
+    "#e7e9ec": 25397
+  },
+  "executableSHA256": "79729364a331be74d9661aca1332c1aa9e49655e7a2abacd539921430d530ad7",
+  "geometryChecks": "Curved/reversed roads, short lines, degenerate lines and sharp turns passed.",
+  "goTestsAndVetPassed": true,
+  "AUITypeScriptVitePassed": true,
+  "exactReleasePackageVerified": false,
+  "primaryInstalled": false,
+  "secondaryInstalled": false
+}

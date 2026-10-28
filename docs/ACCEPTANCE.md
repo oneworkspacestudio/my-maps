@@ -1,3 +1,23 @@
+# Street-map preview11 evidence
+
+Reference-based local cartography replaces the default beige/white style: pale
+land, mint parks, cyan water, outlined blue-grey main roads, white local streets,
+pale outlined buildings and understated rail/boundary/path lines. Roads use
+separate casing/fill passes and bridge/tunnel ordering. Street names follow gentle
+bends, remain upright and avoid short lines/sharp turns. Park anchors and spaced
+category-coloured POI labels use actual tile features; no invented ratings/photos.
+
+An isolated protected NTFS fixture installed194 real Bognor Regis street tiles.
+Seven Canvas rendering/interaction groups pass at mobile15/16/18, overview6 and
+desktop sizes with WebGL disabled, no browser errors and no external browser
+requests. Actual rendered pixel colours, named roads/parks/POIs, pan/zoom/resize,
+local search, map-first sheet, nearby pins and Save-picker cancellation checked.
+Geometry checks cover curved/reversed/short/degenerate/hairpin lines. Go tests/vet,
+AUI generation, TypeScript and Vite pass. Native release validation/delivery are
+recorded separately after packaging. No owner records or physical phone fixture.
+Independent open-data geometry/coverage is retained; Google data is never used.
+See docs/evidence/street-style-20261028.json and assets/map-street-style.png.
+
 # Saved-list preview10 evidence
 
 Exact packaged preview10 passed12 isolated saved-list groups with WebGL disabled

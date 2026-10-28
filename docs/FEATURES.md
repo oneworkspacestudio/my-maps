@@ -3,6 +3,7 @@
 | Feature | Local implementation |
 | --- | --- |
 | Basemap | Bundled Leaflet + Protomaps Canvas renderer, local SQLite MVT tiles, no WebGL required |
+| Map appearance | Pale land, mint parks, cyan water, outlined blue-grey main roads, white local streets, buildings and zoom-aware street/park/place labels |
 | Depth | Overview z0–6; regional z0–10; streets z0–14 with overzoom to19 |
 | Coverage | World overview; UK/Europe overview or regional; user-chosen local area at all depths |
 | Search | Local SQLite FTS index of mapped names/roads, GeoNames towns, optional UK postcodes |
