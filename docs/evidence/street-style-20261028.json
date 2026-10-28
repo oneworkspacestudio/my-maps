@@ -26,7 +26,60 @@
   "geometryChecks": "Curved/reversed roads, short lines, degenerate lines and sharp turns passed.",
   "goTestsAndVetPassed": true,
   "AUITypeScriptVitePassed": true,
-  "exactReleasePackageVerified": false,
-  "primaryInstalled": false,
-  "secondaryInstalled": false
+  "exactReleasePackageVerified": true,
+  "primaryInstalled": true,
+  "secondaryInstalled": true,
+  "sourceCommit": "4a6ba25c1894b6ccd76c45a7734e616df9517c27",
+  "release": "https://github.com/oneworkspacestudio/my-maps/releases/tag/v0.1.0-preview.11",
+  "all17PublicAssetsVerified": true,
+  "anonymousExecutableAndChannelVerified": true,
+  "promotionCommit": "df63e4e",
+  "releasedManagerParsers": [
+    92,
+    93,
+    94,
+    95
+  ],
+  "protectedSyntheticFixtureStoppedAndRemoved": true,
+  "primary": {
+    "allOtherExecutableBytesRetained": true,
+    "appCount": 30,
+    "exactTestedBinariesInstalled": true,
+    "identityAndCredentialsRetained": true,
+    "managerSHA256": "997d7d73ba68f3396362dbc4398d9aacfb11767c0e717e7e16d610db15b9cbb9",
+    "mapsSHA256": "79729364a331be74d9661aca1332c1aa9e49655e7a2abacd539921430d530ad7",
+    "mapsVersion": "0.1.0-preview.11",
+    "normalBackedUpUpdate": true,
+    "otherAppContractsAndPackagesRetained": true,
+    "ownerConfigurationRetained": true,
+    "previousVersion": "0.3.0-preview.95",
+    "version": "0.3.0-preview.95",
+    "servedJS_CSS_MatchAcceptedPackage": true,
+    "exactPublishedEXE": true,
+    "correctInstalledHTMLTitle": true,
+    "normalUpdateComplete": true,
+    "all29ServicesRunning": true,
+    "managerVersion": "0.3.0-preview.95"
+  },
+  "secondary": {
+    "version": "0.1.0-preview.11",
+    "previousMapsVersion": "0.1.0-preview.10",
+    "managerVersion": "0.3.0-preview.95",
+    "normalBackedUpUpdate": true,
+    "normalUpdateComplete": true,
+    "onlyMapsVisibleVersionChanged": true,
+    "all29ServicesRunning": true,
+    "liveMapsHealth": {
+      "app": "maps",
+      "status": "ok",
+      "version": "0.1.0-preview.11"
+    },
+    "newestVerifiedRecoveryRetained": true,
+    "elapsed": "5m 52s",
+    "independentRemoteDiskCredentialAudit": false,
+    "ownerDataAsFixture": false,
+    "automaticMapDatasetDownload": false,
+    "liveOwnerMapReadOnlyViewedAfterDelivery": true,
+    "verificationScope": "Normal protected updater completion, fresh installed-version rows, live Maps version/health, all-service health and read-only deployed map Canvas. No independent remote disk/credential audit."
+  }
 }

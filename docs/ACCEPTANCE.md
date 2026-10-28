@@ -13,8 +13,14 @@ desktop sizes with WebGL disabled, no browser errors and no external browser
 requests. Actual rendered pixel colours, named roads/parks/POIs, pan/zoom/resize,
 local search, map-first sheet, nearby pins and Save-picker cancellation checked.
 Geometry checks cover curved/reversed/short/degenerate/hairpin lines. Go tests/vet,
-AUI generation, TypeScript and Vite pass. Native release validation/delivery are
-recorded separately after packaging. No owner records or physical phone fixture.
+AUI generation, TypeScript and Vite pass. Exact tested/published executable bytes
+match; all17 public assets, anonymous executable/channel and released92/93/94/95
+manager parsers verified. Both normal Maps-only updates10-to11 completed with
+verified recovery backups, manager95 retained and29running services on each PC.
+Primary other app bytes/settings/identities match; secondary visible versions show
+only Maps changed, live health reports11 and read-only deployed local Canvas is
+visible. No independent remote disk/credential audit or physical phone test. The
+protected synthetic development fixture/process/port19315 was removed.
 Independent open-data geometry/coverage is retained; Google data is never used.
 See docs/evidence/street-style-20261028.json and assets/map-street-style.png.
 
