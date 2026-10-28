@@ -1,2 +1,5 @@
 # Preserve exact upstream licence bytes used by the release digest checks.
 docs/licenses/*.txt -text
+internal/directions/bridge/MapsRoutingBridge.java -text
+internal/directions/bridge/MapsRoutingBridge.class -text
+internal/directions/licenses/*.txt -text

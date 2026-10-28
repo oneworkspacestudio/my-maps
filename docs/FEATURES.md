@@ -11,10 +11,10 @@
 | Place sheet | Compact after search; manual pointer drag or keyboard/tap handle reveals details |
 | Private places | Save-to-list dropdown on places/results, Favourites/Home/Work/custom lists, private notes, deletion and GeoJSON export |
 | Search history | Account-isolated recent queries/places, bounded20, Clear all |
-| Share | Place name and coordinates only; private notes excluded |
-| Driving | Optional loopback OSRM driving service, up to8 stops, alternatives/steps/GPX |
-| Location | Explicit device request, foreground following; no background navigation or voice guidance |
-| Removed | Public imagery/terrain/3D, weather/AQI, traffic, Street View, voice/Lens, reviews/photos/ratings, walking/cycling modes without local graphs |
+| Share | Place name/coordinates or bounded route stops and mode; private notes excluded |
+| Directions | Integrated local BRouter downloads; drive/walk/cycle; car/EV/hybrid and bicycle/hiking profiles; avoid tolls/motorways/unpaved; up to8 stops, alternatives/turns/GPX |
+| Location | Explicit device request, foreground next-turn and remaining-distance navigation, explicit off-route update; no background navigation or voice guidance |
+| Removed | Public imagery/terrain/3D, weather/AQI, traffic, Street View, voice/Lens, reviews/photos/ratings; no transit, battery range, charging stops or heavy-vehicle restrictions |
 
 ## Installing or changing data
 
@@ -37,8 +37,9 @@ pack SHA256. This subset is not a verification of the planet archive's full-file
 BLAKE3 digest. ZIPs are streamed without extracting filesystem paths. The new pack
 is staged, indexed and activated atomically; failure/cancellation keeps the old
 pack. A completed replacement removes only its previous active map pack. Settings,
-saved places and recents stay in the app database. Encrypted/native backups include
-installed map packs, so larger selections also increase backup size.
+saved places and recents stay in the app database. Native app backups preserve accounts, saved places and app objects. Downloaded
+map packs and directions data are separate, replaceable files; reinstall coverage
+after restoring into a fresh folder. Existing coverage remains during app updates.
 
 No coverage download runs automatically during a software update. An installation
 without local data shows the chooser rather than a blank map or public fallback.
@@ -49,13 +50,27 @@ planet sync, transit timetable, street-photo source or arbitrary-download URL.
 
 ## Optional local services
 
-In Map downloads, connect a literal loopback OSRM URL, e.g.
-`http://127.0.0.1:5000`. A compatible nearest-driving response is required before
-saving it. A driving graph must already exist on this server; installing and
-building arbitrary routing graphs is outside this map-pack installer. Route API
-is standard `/route/v1/driving/…`. Directions/Start and the drive mode appear only
-when configured; no public routing fallback or synthetic journey is supplied.
-Disconnect hides them. Location following runs only while the page is open.
+The map chooser includes local directions by default for UK/local coverage. It
+shows the combined download/space estimate, installs the map first and then routing
+while this page remains open. Reopening Map downloads offers a separate directions
+installer if the page was closed before the second download started. Two installers
+cannot run concurrently. A plan is refreshed after a long map install; a larger
+routing download requires a new size check. Failed/cancelled downloads retain the
+previous active data.
+
+Directions downloads SHA-pinned BRouter and Temurin runtime archives plus bounded
+OSM-derived segments. Strong ETags/lengths, archive path/expansion checks and graph
+CRC checks protect staging; activation switches a local pointer only after private
+engine startup passes. Successful replacement removes the previous directions pack.
+The local bridge accepts only authenticated loopback route/cancel/health calls;
+no upstream profile uploads, suspects/recent-waypoint routes, route logs or public
+routing service are exposed. Process tokens pass through stdin and Windows job
+supervision stops the child with Maps. Car options affect actual routing profiles.
+Generic turn instructions do not announce road names; times have no live traffic.
+
+Legacy literal loopback OSRM URLs remain supported by the existing routing API and
+MYMAPS_ROUTER setting for standard driving; other modes/options require the bundled
+local engine. Directions and Start remain visible, with in-app setup when needed.
 
 Advanced administrators may set `MYMAPS_GEOCODER` to a local Photon base,
 `MYMAPS_ROUTER` to a local OSRM base or `MYMAPS_TILES` to a local XYZ raster URL.

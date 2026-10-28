@@ -1,0 +1,12 @@
+{
+  "cancelRetainsActiveGraph": true,
+  "realRouteAfterCancellation": true,
+  "installersMutuallyExclusive": true,
+  "memberCannotInstall": true,
+  "memberCanRoute": true,
+  "ukPlan": {
+    "files": 14,
+    "downloadBytes": 543546009,
+    "requiredBytes": 2167508939
+  }
+}

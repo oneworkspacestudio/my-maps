@@ -42,9 +42,37 @@ and encrypted backups.
 
 Nearby results come from the installed map. Coverage and detail affect what is
 searchable; this includes mapped names, roads, larger towns and selected UK
-postcodes, rather than every house address. Optional driving directions, stops,
-steps, alternatives, GPX and foreground location following require a separately
-hosted local OSRM driving service. Directions and Start are hidden until connected.
+postcodes, rather than every house address.
+
+## Directions out of the box
+
+Every place has **Directions** and **Start**. UK and local-area map setup includes
+local driving, walking and cycling directions by default. Choose coverage, check
+the download size and install. Maps downloads and manages its own local engine;
+no Java, Docker, API key or manual routing URL is needed. Existing servers can add
+it under **Map downloads → Local directions**.
+
+Choose Drive, Walk or Cycle. Car types include petrol/diesel, electric and hybrid;
+bicycle profiles include touring, road, gravel and mountain bike. Walking also
+offers hiking. Car options include fastest/lower-energy routing and avoiding tolls,
+motorways or unpaved roads. Previews show time, distance, alternatives and turns.
+Add up to eight stops, share their coordinates or export GPX. Start shows the next
+turn and remaining distance using device location while the page is open. If you
+leave the route, update directions from your current location.
+
+Routes are calculated on your server from downloaded OpenStreetMap-derived data.
+Five-degree data tiles may extend beyond the selected radius. A private loopback
+adapter isolates the downloaded engine, which exits with Maps. Precise route
+requests and GPS positions are not logged or saved. Engine licences and pinned
+download hashes are in `docs/licenses/directions-sources.json`; installed runtimes
+preserve their complete `legal/` directory. Downloaded coverage can be reinstalled
+after restoring an app backup.
+
+Estimates exclude live traffic and closures. Public transport, charging stops,
+vehicle height/weight restrictions and Google photos/reviews are unavailable.
+Electric/hybrid types adjust an energy model, without predicting battery range.
+Turn cues do not announce street names. Legacy loopback OSRM remains available
+through the existing API for standard driving only.
 
 ## Save a place or set Home
 

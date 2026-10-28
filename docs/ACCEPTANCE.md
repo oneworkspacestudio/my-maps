@@ -1,3 +1,32 @@
+# Local directions preview12 evidence
+
+Directions/Start are always present on place sheets. Real local BRouter driving,
+walking and cycling routes pass against downloaded public Bognor Regis OSM data;
+a longer public-city route returns two alternatives. Seven end-to-end native
+mobile groups cover compact map-first search/actions, GPS start, car/EV settings,
+avoid options, mode/profile resets, GPX, bounded shared route links, foreground
+turn guidance/exit, typed coverage errors and CSRF protection. Desktop rendering
+and zero external browser requests/errors are checked with WebGL disabled. Device
+GPS is simulated at public fixture coordinates; no physical-phone/background or
+voice-guidance test is claimed.
+
+The normal owner UI installed a real local routing graph/runtime. A separate
+first-run UI check verified recommended directions enabled, UK regional default,
+combined size review, sequential actual map + directions installation, Open map
+and a real walking route. Cancellation retained an existing graph and routing;
+map/directions installer exclusion and member-read/route versus owner-only install
+checks pass. UK plan is543546009 bytes at this source snapshot, with conservative
+free-space allowance2167508939 bytes; live plans refresh exact sizes. Unit tests
+cover travel profiles, finite geometry/turn normalization, coverage bounds,
+unsupported modes, archive traversal and download integrity. Go tests/vet and
+AUI/TypeScript/Vite pass. Public source/data/licence provenance is included.
+
+Protected disposable NTFS fixtures contain only generated accounts and public test
+coordinates; no owner accounts/data were development fixtures. Software release,
+manager parser, exact packaged byte and two-PC installation verification are
+recorded separately after publication. No Google traffic, transit, charging, photos
+or complete Google feature/dataset parity is claimed.
+
 # Street-map preview11 evidence
 
 Reference-based local cartography replaces the default beige/white style: pale

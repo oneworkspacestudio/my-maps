@@ -86,7 +86,7 @@ func TestLocalOSRMStandardDrivingContract(t *testing.T) {
 	}
 	w = httptest.NewRecorder()
 	a.route(w, httptest.NewRequest("POST", "/api/route", strings.NewReader(`{"mode":"foot","points":[[0,51],[0.01,51.01]]}`)))
-	if w.Code != 400 || calls != 1 {
+	if w.Code != 503 || !strings.Contains(w.Body.String(), "directions_download") || calls != 1 {
 		t.Fatal("unsupported mode reached driving graph")
 	}
 }

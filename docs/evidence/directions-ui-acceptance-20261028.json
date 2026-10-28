@@ -1,0 +1,16 @@
+{
+  "checks": [
+    "Local search keeps map visible and shows green Directions/Start/Share/Save on every chosen place",
+    "Directions uses current-location start and calculates a real car route with compact map-first Start action",
+    "Vehicle and avoidance controls change the actual local route request and produce a valid route",
+    "Drive, Walk and Cycle each recalculate real routes and reset to compatible vehicle profiles",
+    "GPX export and a bounded route-share link work without private notes",
+    "Shared routes open the planner without requesting GPS; Start enables foreground next-turn and remaining-distance navigation",
+    "Coverage failures are typed and unsupported modes cannot silently route as driving; CSRF blocks unauthorised installation"
+  ],
+  "errors": [],
+  "externalRequests": [],
+  "realLocalRouting": true,
+  "syntheticPublicLocationsOnly": true,
+  "executableSHA256": "481ee2f727f7ce1ab3867cc9835f3c9e3b4fa7ff7b3eb0488bd2af14e0eebc4b"
+}

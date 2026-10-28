@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/oneworkspacestudio/my-maps/internal/directions"
 	"github.com/oneworkspacestudio/one-workspace/pkg/apphost"
 	"io"
 	"math"
@@ -12,6 +13,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -22,9 +24,11 @@ type App struct {
 	client                 *http.Client
 	mu                     sync.Mutex
 	placesMu               sync.Mutex
+	installMu              sync.Mutex
 	last                   time.Time
 	photon, routing, tiles string
 	maps                   *mapManager
+	directions             *directions.Manager
 }
 type Place struct {
 	ID      string  `json:"id"`
@@ -63,6 +67,11 @@ func New(h *apphost.Host) (*App, error) {
 	if e != nil {
 		return nil, e
 	}
+	a.directions, e = directions.New(filepath.Join(h.Config.Data, "directions"), mapDiskFree)
+	if e != nil {
+		a.maps.close()
+		return nil, e
+	}
 	h.Mux.HandleFunc("GET /api/config", h.Require(func(w http.ResponseWriter, r *http.Request) {
 		a.maps.mu.RLock()
 		defer a.maps.mu.RUnlock()
@@ -71,7 +80,8 @@ func New(h *apphost.Host) (*App, error) {
 		if info != nil && info.Choice.Postcodes {
 			attribution += " · Contains Royal Mail data ©2022"
 		}
-		apphost.JSON(w, 200, map[string]any{"ready": info != nil || a.tiles != "", "local": info != nil, "installed": info, "canInstall": apphost.Current(r).User.Role == "owner", "localTiles": h.Base + "/api/local/tiles/{z}/{x}/{y}?v=" + packID(info), "nearbyAvailable": info != nil && info.Nearby || a.photon != "", "routingAvailable": a.maps.routing != "", "tiles": a.tiles, "customTiles": a.tiles != "", "attribution": attribution, "geocoder": a.photon})
+		localDirections := a.directions.Status()
+		apphost.JSON(w, 200, map[string]any{"ready": info != nil || a.tiles != "", "local": info != nil, "installed": info, "canInstall": apphost.Current(r).User.Role == "owner", "localTiles": h.Base + "/api/local/tiles/{z}/{x}/{y}?v=" + packID(info), "nearbyAvailable": info != nil && info.Nearby || a.photon != "", "routingAvailable": localDirections.Ready || a.maps.routing != "", "directions": localDirections, "tiles": a.tiles, "customTiles": a.tiles != "", "attribution": attribution, "geocoder": a.photon})
 	}))
 	h.Mux.HandleFunc("GET /api/search", h.Require(a.search))
 	h.Mux.HandleFunc("GET /api/reverse", h.Require(a.reverse))
@@ -86,9 +96,13 @@ func New(h *apphost.Host) (*App, error) {
 	h.Mux.HandleFunc("DELETE /api/recents", h.Require(a.clearRecents))
 	h.Mux.HandleFunc("GET /api/map-install", h.Require(a.maps.status))
 	h.Mux.HandleFunc("POST /api/map-install/plan", h.Owner(a.maps.makePlan))
-	h.Mux.HandleFunc("POST /api/map-install/start", h.Owner(a.maps.install))
+	h.Mux.HandleFunc("POST /api/map-install/start", h.Owner(a.mapInstall))
 	h.Mux.HandleFunc("POST /api/map-install/cancel", h.Owner(a.maps.cancelInstall))
 	h.Mux.HandleFunc("POST /api/map-install/routing", h.Owner(a.maps.setRouting))
+	h.Mux.HandleFunc("GET /api/directions", h.Require(a.directionsStatus))
+	h.Mux.HandleFunc("POST /api/directions/plan", h.Owner(a.directionsPlan))
+	h.Mux.HandleFunc("POST /api/directions/start", h.Owner(a.directionsInstall))
+	h.Mux.HandleFunc("POST /api/directions/cancel", h.Owner(a.directionsCancel))
 	h.Mux.HandleFunc("GET /api/local/tiles/{z}/{x}/{y}", h.Require(a.maps.tile))
 	return a, nil
 }
@@ -112,6 +126,7 @@ func validProviderEndpoint(endpoint string) bool {
 }
 func (a *App) Run(ctx context.Context) error {
 	defer a.maps.close()
+	defer a.directions.Close()
 	ticker := time.NewTicker(time.Hour)
 	defer ticker.Stop()
 	for {
@@ -228,15 +243,16 @@ func (a *App) reverse(w http.ResponseWriter, r *http.Request) {
 	a.fetch(w, r, fmt.Sprintf("%s/reverse?lat=%f&lon=%f", a.photon, lat, lon))
 }
 func (a *App) route(w http.ResponseWriter, r *http.Request) {
-	var in struct {
-		Mode   string      `json:"mode"`
-		Points [][]float64 `json:"points"`
-	}
+	var in directions.Request
 	if !apphost.Decode(w, r, &in) {
 		return
 	}
-	if in.Mode != "car" {
-		apphost.Problem(w, 400, "This local service supports driving")
+	if err := in.Validate(); err != nil {
+		apphost.Problem(w, 400, err.Error())
+		return
+	}
+	if a.directions != nil && a.directions.Status().Ready {
+		a.localRoute(w, r, in)
 		return
 	}
 	if len(in.Points) < 2 || len(in.Points) > 8 {
@@ -258,7 +274,11 @@ func (a *App) route(w http.ResponseWriter, r *http.Request) {
 		a.maps.mu.RUnlock()
 	}
 	if router == "" {
-		apphost.Problem(w, 503, "Connect a local routing service in Map downloads first")
+		apphost.JSON(w, 503, map[string]string{"error": "Download local directions to drive, walk or cycle", "code": "directions_download"})
+		return
+	}
+	if in.Mode != "car" || in.AvoidTolls || in.AvoidMotorways || in.AvoidUnpaved || in.Preference == "efficient" || in.Vehicle == "electric" || in.Vehicle == "hybrid" {
+		apphost.JSON(w, 503, map[string]string{"error": "Download local directions for these travel modes and vehicle options", "code": "directions_download"})
 		return
 	}
 	a.fetch(w, r, strings.TrimRight(router, "/")+"/route/v1/driving/"+strings.Join(pts, ";")+"?overview=full&steps=true&geometries=geojson&alternatives=true")

@@ -1,0 +1,6 @@
+{
+  "compiler": "OpenJDK javac 21.0.12+8; --release 17 -g:none",
+  "upstream": "BRouter 1.7.10 all.jar",
+  "sourceSHA256": "cb0c2593a38a1a4a802174e1bcb9b08d96b68308b94e1220aaa2178bcb8d7a84",
+  "classSHA256": "56a98e0269419b5552f6945bfee24aab121bf1e0d876f2eaf63329f0edaa2aa1"
+}

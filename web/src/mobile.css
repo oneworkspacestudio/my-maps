@@ -105,3 +105,21 @@
 .card--dialog .alert{position:static;transform:none;margin:0;max-width:100%;pointer-events:auto;box-shadow:none}.card--dialog .alert--error{color:#9c2020;background:#fce8e6}[data-theme=dark] .card--dialog .alert--error{color:#ffb7b1;background:#552c2b}
 
 [data-theme=dark] #screen-outlet .row--save-picker-actions .button--soft-pill{background:#33464b;color:#ecf0f1}
+
+/* Local directions share the compact, map-first place sheet. */
+.row--travel-modes{gap:0;flex-wrap:nowrap;border-bottom:1px solid var(--line);margin:0 -18px 12px;justify-content:space-around}
+.row--travel-modes .button{flex:1;border:0;border-radius:0;background:transparent;color:var(--muted);min-height:54px;padding:12px 6px;gap:7px;white-space:nowrap}
+.row--travel-modes .button--mode-active{color:var(--primary);box-shadow:inset 0 -3px var(--primary)}
+.stack--route-inputs{gap:8px}.stack--route-inputs>.row{flex-wrap:nowrap;gap:7px}.stack--route-inputs input{min-width:0;flex:1;width:100%;font-size:15px;background:#f1f3f4;border:0;border-radius:12px;padding:12px}
+.row--route-options-heading{flex-wrap:nowrap;gap:5px}.button--option-chip{background:#f1f3f4;border:0;color:var(--text);border-radius:12px;padding:9px 12px;gap:6px;white-space:nowrap}
+.card--route-options{padding:16px;border-radius:20px;gap:12px}.card--route-options .checkbox{min-height:36px}
+.stack--route-choices{gap:9px}.stack--route-choices .button{width:100%;padding:14px 16px;text-align:left;justify-content:flex-start;gap:14px;border-radius:18px;background:var(--surface);border:1px solid var(--line);color:var(--text)}
+.stack--route-choices .button--route-active{border:2px solid var(--primary);background:#edf8f5}.text--route-time{font-size:22px;color:#287850;font-weight:600}.stack--route-choices .stack{gap:2px}
+.row--route-actions{position:sticky;bottom:0;z-index:1;padding:12px 0;background:var(--surface);flex-wrap:nowrap;overflow:auto;scrollbar-width:none;gap:8px;flex-shrink:0}.row--route-actions .button{flex-shrink:0;border:0;border-radius:28px;gap:7px;min-height:44px;white-space:nowrap}
+.card--navigation-cue{background:var(--primary);color:white;padding:18px;border-radius:20px}.card--navigation-cue h2{font-size:23px;line-height:1.3}.card--navigation-cue .button{align-self:flex-start}.row--step{flex-wrap:nowrap;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}.row--step>.text:not(.text--caption){flex:1}.row--step>.lucide{color:var(--primary);flex-shrink:0}.row--step .text--caption{white-space:nowrap}
+.card--directions-download{padding:18px;border-radius:22px;gap:14px}.card--directions-download h2{font-size:20px}.card--directions-download .row{flex-wrap:nowrap}.card--directions-download .alert{position:static;width:auto;max-width:100%;margin:0}.card--directions-download .button{align-self:flex-start;white-space:normal}.text--route-ready{font-weight:600;color:#287850}
+.row--calculating-route{flex-wrap:nowrap;padding:12px 0}.row--calculating-route .text{flex:1}
+[data-theme=dark] .stack--route-inputs input,[data-theme=dark] .button--option-chip{background:#30373a}[data-theme=dark] .stack--route-choices .button--route-active{background:#153d3d}[data-theme=dark] .text--route-time,[data-theme=dark] .text--route-ready{color:#99d8b6}
+@media(max-width:700px){.stack--sheet-peek:has(.row--travel-modes){max-height:45%;height:auto;min-height:225px}.stack--sheet-peek:has(.row--travel-modes) .stack--sheet-content{overflow:auto}.stack--sheet-peek:has(.card--navigation-cue){max-height:40%;min-height:205px}.stack--sheet-peek .row--route-actions{position:static}.card--directions-download .grid{grid-template-columns:1fr 1fr}.row--route-actions .button{padding:11px 16px}}
+
+.stack--route-preview{padding:0 18px;gap:3px;flex-shrink:0}.stack--route-preview>.row--quick-actions{padding:9px 0 12px}.stack--sheet-peek:has(.stack--route-preview){min-height:255px}.stack--sheet-peek>.card--navigation-cue{margin:0 18px 12px;flex-shrink:0}.card--directions-download .alert{transform:none}

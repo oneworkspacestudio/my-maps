@@ -4,3 +4,5 @@ Application shell derived from One Workspace My Tasks (Apache-2.0).
 Map rendering: Leaflet (BSD-2-Clause), Protomaps Leaflet (BSD-3-Clause), bundled dependencies licensed separately.
 Optional downloaded map: Protomaps / OpenStreetMap contributors (ODbL Produced Work). Local names/postcode index: derived from selected map features and GeoNames (CC BY4.0). UK postcodes contain Royal Mail data; Royal Mail copyright and database right2022. See docs/DATA-LICENSES.md for source and licence links.
 Complete dependency licences accompany the Windows archive. This product is not affiliated with Google.
+
+Optional directions: BRouter 1.7.10 (MIT), Temurin JRE 21.0.12+8 (GPL2+Classpath exception and bundled notices), OSM-derived routing segments (ODbL). See docs/licenses/directions-sources.json and the runtime legal/ directory. © OpenStreetMap contributors.

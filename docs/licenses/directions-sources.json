@@ -1,0 +1,29 @@
+{
+  "components": [
+    {
+      "name": "BRouter",
+      "version": "1.7.10",
+      "license": "MIT",
+      "source": "https://github.com/abrensch/brouter/tree/v1.7.10",
+      "licenseFile": "brouter-1.7.10.txt",
+      "downloadSHA256": "023fec3ba997758e8cd7ab9e1bae52e962af3f00b57683e3de86b84ffad01532"
+    },
+    {
+      "name": "Eclipse Temurin JRE",
+      "version": "21.0.12+8",
+      "license": "GPL-2.0 with Classpath Exception and bundled component notices",
+      "source": "https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.12%2B8",
+      "correspondingSource": "https://github.com/adoptium/jdk21u/tree/jdk-21.0.12%2B8",
+      "downloadSHA256": "b8aa18fef5edb69bee8618f99677d66d0873d22cb40d974c15ac9ffcdecf73ba",
+      "notices": "The complete legal/ directory is preserved in each installed runtime."
+    }
+  ],
+  "data": {
+    "name": "OpenStreetMap-derived BRouter routing segments",
+    "source": "https://brouter.de/brouter/segments4/",
+    "license": "ODbL-1.0",
+    "attribution": "© OpenStreetMap contributors",
+    "licenseURL": "https://www.openstreetmap.org/copyright"
+  },
+  "distribution": "Separately downloaded optional components. The Maps executable embeds only its own bridge class."
+}

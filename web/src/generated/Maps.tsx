@@ -1,5 +1,5 @@
 // Generated from screens/Maps.aui; edit the AUI source.
-import { Alert, Button, Card, Divider, Field, Grid, Heading, Icon, Image, Input, Link, Page, Row, Section, Select, Spacer, Spinner, Stack, Text } from "@/components/ui"
+import { Alert, Button, Card, Checkbox, Divider, Field, Grid, Heading, Icon, Image, Input, Link, Page, Row, Section, Select, Spacer, Spinner, Stack, Text } from "@/components/ui"
 
 export function Maps({ data, onAction }: { data: any; onAction: (name: string) => void }) {
   return (
@@ -34,9 +34,7 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
         <Button variant="layers-control" onClick={() => onAction("layers")} aria-label="Map downloads"><Icon name="Download" size={26} /></Button>
         <Stack variant="map-controls">
           <Button variant="map-control" onClick={() => onAction("locate")} aria-label="My location"><Icon name="LocateFixed" size={25} /></Button>
-          {data.routingAvailable && (
-            <Button variant="directions-control" onClick={() => onAction("directions")} aria-label="Directions"><Icon name="Navigation" size={26} /></Button>
-          )}
+          <Button variant="directions-control" onClick={() => onAction("directions")} aria-label="Directions"><Icon name="Navigation" size={26} /></Button>
         </Stack>
         <Text variant="map-brand">My Maps</Text>
         {data.measuring && (
@@ -70,18 +68,14 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                 <Text variant="caption">{data.selected.categoryLabel}</Text>
               </Stack>
               <Row variant="quick-actions">
-                {data.routingAvailable && (
-                  <>
-                    <Button variant="pill" onClick={() => onAction("toSelected")}>
-                      <Icon name="CornerUpRight" />
-                      <Text>Directions</Text>
-                    </Button>
-                    <Button variant="soft-pill" onClick={() => onAction("quickStart")}>
-                      <Icon name="Navigation" />
-                      <Text>Start</Text>
-                    </Button>
-                  </>
-                )}
+                <Button variant="pill" onClick={() => onAction("toSelected")}>
+                  <Icon name="CornerUpRight" />
+                  <Text>Directions</Text>
+                </Button>
+                <Button variant="soft-pill" onClick={() => onAction("quickStart")}>
+                  <Icon name="Navigation" />
+                  <Text>Start</Text>
+                </Button>
                 <Button variant="soft-pill" onClick={() => onAction("share")}>
                   <Icon name="Share2" />
                   <Text>Share</Text>
@@ -92,6 +86,37 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                 </Button>
               </Row>
             </>
+          )}
+          {data.routePreview && (
+            <Stack variant="route-preview">
+              <Text variant="route-time">{data.routePreviewTime}</Text>
+              <Text variant="caption">{data.routePreviewSummary}</Text>
+              <Row variant="quick-actions">
+                <Button variant="pill" onClick={() => onAction("navigate")}>
+                  <Icon name="Navigation" />
+                  <Text>{data.navigationLabel}</Text>
+                </Button>
+                <Button variant="soft-pill" onClick={() => onAction("addStops")}>
+                  <Icon name="CirclePlus" />
+                  <Text>Add stops</Text>
+                </Button>
+                <Button variant="soft-pill" onClick={() => onAction("shareRoute")}>
+                  <Icon name="Share2" />
+                  <Text>Share</Text>
+                </Button>
+              </Row>
+            </Stack>
+          )}
+          {data.navigationActive && (
+            <Card variant="navigation-cue">
+              <Icon name={data.navigationIcon} size={28} />
+              <Heading level={2}>{data.nextInstruction}</Heading>
+              <Text>{data.remainingLabel}</Text>
+              {data.offRoute && (
+                <Button variant="pill" onClick={() => onAction("reroute")}>Update route from here</Button>
+              )}
+              <Button variant="soft-pill" onClick={() => onAction("navigate")}>Exit navigation</Button>
+            </Card>
           )}
           <Stack variant="sheet-content">
             {data.exploringNearby && (
@@ -212,32 +237,61 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                 <Button variant="pill" onClick={() => onAction("explore")}>Choose a place</Button>
               </>
             )}
-            {data.routing && (
+            {data.planning && (
               <>
                 <Row variant="travel-modes">
                   {data.modes.map((item, i) => (
-                    <Button key={i} variant={item.variant} onClick={() => onAction("mode")} item={item.key}>
+                    <Button key={i} variant={item.variant} onClick={() => onAction("mode")} item={item.key} aria-pressed={item.active}>
                       <Icon name={item.icon} />
                       <Text>{item.label}</Text>
                     </Button>
                   ))}
                 </Row>
-                <Row>
-                  <Icon name="CircleDot" />
-                  <Input name="startQuery" placeholder="Choose starting point" onClick={() => onAction("findStart")} />
-                  <Button variant="search-icon" onClick={() => onAction("findStart")} aria-label="Find starting point"><Icon name="Search" /></Button>
-                </Row>
-                <Row>
-                  <Icon name="MapPin" />
-                  <Input name="endQuery" placeholder="Choose destination" onClick={() => onAction("findEnd")} />
-                  <Button variant="search-icon" onClick={() => onAction("findEnd")} aria-label="Find destination"><Icon name="Search" /></Button>
-                </Row>
-                {data.routeResults.map((item, i) => (
-                  <Button key={i} variant="result" onClick={() => onAction("routePlace")} item={item.key}>
-                    <Text>{item.name}</Text>
-                    <Text variant="caption">{item.address}</Text>
+                {data.needsDirections && (
+                  <Section id="directions-download" />
+                )}
+                <Stack variant="route-inputs">
+                  <Row>
+                    <Icon name="CircleDot" />
+                    <Input name="startQuery" placeholder="Choose starting point" onClick={() => onAction("findStart")} />
+                    <Button variant="search-icon" onClick={() => onAction("useLocation")} aria-label="Use my location as start"><Icon name="LocateFixed" /></Button>
+                    <Button variant="search-icon" onClick={() => onAction("findStart")} aria-label="Find starting point"><Icon name="Search" /></Button>
+                  </Row>
+                  <Row>
+                    <Icon name="MapPin" />
+                    <Input name="endQuery" placeholder="Choose destination" onClick={() => onAction("findEnd")} />
+                    <Button variant="search-icon" onClick={() => onAction("findEnd")} aria-label="Find destination"><Icon name="Search" /></Button>
+                  </Row>
+                  {data.routeResults.map((item, i) => (
+                    <Button key={i} variant="result" onClick={() => onAction("routePlace")} item={item.key}>
+                      <Text>{item.name}</Text>
+                      <Text variant="caption">{item.address}</Text>
+                    </Button>
+                  ))}
+                </Stack>
+                <Row variant="route-options-heading">
+                  <Button variant="option-chip" onClick={() => onAction("routeOptions")} aria-expanded={data.optionsOpen}>
+                    <Icon name="Settings2" />
+                    <Text>Options & vehicle</Text>
                   </Button>
-                ))}
+                  <Button variant="text" onClick={() => onAction("swapStops")}>Swap</Button>
+                  <Button variant="text" onClick={() => onAction("clearStops")}>Clear</Button>
+                </Row>
+                {data.optionsOpen && (
+                  <Card variant="route-options">
+                    <Field label={data.vehicleLabel}><Select name="vehicle" options={data.vehicles} /></Field>
+                    {data.driving && (
+                      <>
+                        <Field label="Route preference"><Select name="preference" options={data.preferences} /></Field>
+                        <Checkbox name="avoidTolls" label="Avoid tolls" />
+                        <Checkbox name="avoidMotorways" label="Avoid motorways" />
+                        <Checkbox name="avoidUnpaved" label="Avoid unpaved roads" />
+                        <Text variant="caption">Vehicle type adjusts the local energy model. Battery range and charging stops are not calculated.</Text>
+                      </>
+                    )}
+                    <Checkbox name="alternatives" label="Show alternative routes" />
+                  </Card>
+                )}
                 {data.stops.map((item, i) => (
                   <Row key={i} variant="stop">
                     <Text>{item.label}</Text>
@@ -245,34 +299,60 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                     <Button variant="search-icon" onClick={() => onAction("removeStop")} item={item.key} aria-label="Remove stop"><Icon name="X" /></Button>
                   </Row>
                 ))}
-                <Row>
-                  <Button variant="pill" onClick={() => onAction("route")} disabled={data.notEnoughStops}>Find routes</Button>
-                  <Button variant="text" onClick={() => onAction("swapStops")}>Swap</Button>
-                  <Button variant="text" onClick={() => onAction("clearStops")}>Clear</Button>
-                </Row>
-                <Text variant="caption">Or choose places on the map, then tap Set start or Add stop.</Text>
-                {data.hasRoutes && (
+                {data.routeBusy ? (
+                  <Row variant="calculating-route">
+                    <Spinner />
+                    <Text>Calculating on your server...</Text>
+                    <Button variant="text" onClick={() => onAction("cancelRoute")} cancel={true}>Cancel</Button>
+                  </Row>
+                ) : (
+                  <Button variant="pill" onClick={() => onAction("route")} disabled={data.cannotRoute}>Find routes</Button>
+                )}
+                {data.hasRoutes ? (
                   <>
-                    {data.routes.map((item, i) => (
-                      <Button key={i} variant={item.variant} onClick={() => onAction("chooseRoute")} item={item.key}>
-                        <Icon name="Route" />
-                        <Text>{item.summary}</Text>
+                    <Stack variant="route-choices">
+                      {data.routes.map((item, i) => (
+                        <Button key={i} variant={item.variant} onClick={() => onAction("chooseRoute")} item={item.key} aria-pressed={item.active}>
+                          <Icon name="Route" />
+                          <Stack>
+                            <Text variant="route-time">{item.time}</Text>
+                            <Text variant="caption">{item.summary}</Text>
+                          </Stack>
+                        </Button>
+                      ))}
+                    </Stack>
+                    <Text variant="caption">{data.arrivalLabel}</Text>
+                    <Row variant="route-actions">
+                      <Button variant="pill" onClick={() => onAction("navigate")}>
+                        <Icon name="Navigation" />
+                        <Text>{data.navigationLabel}</Text>
                       </Button>
-                    ))}
-                    <Row>
-                      <Button variant="pill" onClick={() => onAction("navigate")}>{data.navigationLabel}</Button>
-                      <Button variant="secondary" onClick={() => onAction("exportRoute")}>Export GPX</Button>
+                      <Button variant="soft-pill" onClick={() => onAction("addStops")}>
+                        <Icon name="CirclePlus" />
+                        <Text>Add stops</Text>
+                      </Button>
+                      <Button variant="soft-pill" onClick={() => onAction("shareRoute")}>
+                        <Icon name="Share2" />
+                        <Text>Share</Text>
+                      </Button>
+                      <Button variant="soft-pill" onClick={() => onAction("exportRoute")}>
+                        <Icon name="Download" />
+                        <Text>GPX</Text>
+                      </Button>
                     </Row>
-                    <Text variant="caption">Route estimates exclude live traffic and road closures. Follow-location works while this page is open.</Text>
+                    <Text variant="caption">Estimates exclude live traffic and road closures. Navigation needs location permission and works while this page is open.</Text>
+                    <Heading level={2}>Directions</Heading>
                     {data.steps.map((item, i) => (
                       <Row key={i} variant="step">
-                        <Icon name="CornerUpRight" />
+                        <Icon name={item.icon} />
                         <Text>{item.instruction}</Text>
                         <Spacer />
                         <Text variant="caption">{item.distance}</Text>
                       </Row>
                     ))}
                   </>
+                ) : (
+                  <Text variant="caption">Choose a start and destination, or use your current location. To add more stops, choose a place on the map and tap Add stop.</Text>
                 )}
               </>
             )}
@@ -298,12 +378,8 @@ export function Maps({ data, onAction }: { data: any; onAction: (name: string) =
                   <Link href={data.selected.osm} external={true}>Place details on OpenStreetMap</Link>
                 )}
                 <Row>
-                  {data.routingAvailable && (
-                    <>
-                      <Button variant="text" onClick={() => onAction("start")}>Set start</Button>
-                      <Button variant="text" onClick={() => onAction("stop")}>Add stop</Button>
-                    </>
-                  )}
+                  <Button variant="text" onClick={() => onAction("start")}>Set start</Button>
+                  <Button variant="text" onClick={() => onAction("stop")}>Add stop</Button>
                   <Button variant="text" onClick={() => onAction("measure")}>Measure distance</Button>
                 </Row>
                 {data.selected.list && (

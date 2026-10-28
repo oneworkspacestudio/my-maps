@@ -1,5 +1,5 @@
 // Generated from screens/MapInstall.aui; edit the AUI source.
-import { Button, Card, Checkbox, Field, Grid, Heading, Icon, Input, Link, Page, Row, Select, Spinner, Stack, Text } from "@/components/ui"
+import { Button, Card, Checkbox, Field, Grid, Heading, Icon, Input, Link, Page, Row, Section, Select, Spinner, Stack, Text } from "@/components/ui"
 
 export function MapInstall({ data, onAction }: { data: any; onAction: (name: string) => void }) {
   return (
@@ -40,6 +40,9 @@ export function MapInstall({ data, onAction }: { data: any; onAction: (name: str
               {data.postcodeChoice && (
                 <Checkbox name="postcodes" label="Include UK postcode search within this coverage" />
               )}
+              {data.directionsChoice && (
+                <Checkbox name="includeDirections" label="Include local driving, walking and cycling directions (recommended)" />
+              )}
               <Text variant="caption">Place search includes mapped names and roads, larger towns and optional UK postcodes. This does not include every house address. Street detail provides the most nearby places.</Text>
               {data.canPlan && (
                 <Button variant="pill" onClick={() => onAction("plan")}>Check download size</Button>
@@ -59,6 +62,9 @@ export function MapInstall({ data, onAction }: { data: any; onAction: (name: str
             <Button variant="pill" onClick={() => onAction("install")}>Install selected map</Button>
           </Card>
         )}
+        {data.queueStage && (
+          <Text>{data.queueStage}</Text>
+        )}
         {data.progress && (
           <Card variant="install-progress">
             <Row>
@@ -74,18 +80,7 @@ export function MapInstall({ data, onAction }: { data: any; onAction: (name: str
             )}
           </Card>
         )}
-        {data.owner && (
-          <Card>
-            <Heading level={2}>Local directions (optional)</Heading>
-            <Text>Connect an OSRM driving service running on this machine. Directions and Start appear when it is connected.</Text>
-            <Field label="Local routing URL"><Input name="router" placeholder="http://127.0.0.1:5000" /></Field>
-            <Row>
-              <Button variant="soft-pill" onClick={() => onAction("connectRouter")}>Connect routing</Button>
-              <Button variant="text" onClick={() => onAction("disconnectRouter")}>Disconnect</Button>
-            </Row>
-            <Text variant="caption">{data.routerStatus}</Text>
-          </Card>
-        )}
+        <Section id="directions-download" />
         <Card>
           <Heading level={2}>Open data, stored locally</Heading>
           <Text>Map data: OpenStreetMap and Protomaps. Town names and UK postcodes: GeoNames. These sources are contacted for your chosen download; there is no Google data or public browsing fallback.</Text>

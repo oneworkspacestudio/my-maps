@@ -62,6 +62,10 @@ Page MapInstall
 
           Checkbox name=postcodes label="Include UK postcode search within this coverage"
 
+        If condition=$directionsChoice
+
+          Checkbox name=includeDirections label="Include local driving, walking and cycling directions (recommended)"
+
         Text variant=caption "Place search includes mapped names and roads, larger towns and optional UK postcodes. This does not include every house address. Street detail provides the most nearby places."
 
         If condition=$canPlan
@@ -88,6 +92,10 @@ Page MapInstall
 
         Button variant=pill action=install "Install selected map"
 
+    If condition=$queueStage
+
+      Text $queueStage
+
     If condition=$progress
 
       Card variant=install-progress
@@ -108,25 +116,7 @@ Page MapInstall
 
           Button variant=soft-pill action=cancel cancel=true "Cancel download"
 
-    If condition=$owner
-
-      Card
-
-        Heading level=2 "Local directions (optional)"
-
-        Text "Connect an OSRM driving service running on this machine. Directions and Start appear when it is connected."
-
-        Field label="Local routing URL"
-
-          Input name=router placeholder="http://127.0.0.1:5000"
-
-        Row
-
-          Button variant=soft-pill action=connectRouter "Connect routing"
-
-          Button variant=text action=disconnectRouter "Disconnect"
-
-        Text variant=caption $routerStatus
+    Section id=directions-download
 
     Card
 

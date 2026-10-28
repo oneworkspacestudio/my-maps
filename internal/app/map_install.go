@@ -60,6 +60,7 @@ type mapPlan struct {
 	TileCount     int        `json:"tileCount"`
 	DownloadBytes uint64     `json:"downloadBytes"`
 	RequiredBytes uint64     `json:"requiredBytes"`
+	FreeBytes     uint64     `json:"freeBytes"`
 	Source        string     `json:"source"`
 	Expires       time.Time  `json:"expires"`
 	archive       *mapdata.Archive
@@ -295,6 +296,7 @@ func (m *mapManager) makePlan(w http.ResponseWriter, r *http.Request) {
 		apphost.Problem(w, 409, "There is not enough free space for this download, its index and safe installation. Choose less detail.")
 		return
 	}
+	plan.FreeBytes = free
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	if m.progress.Busy {
@@ -502,7 +504,7 @@ func (m *mapManager) runInstall(ctx context.Context, plan *mapPlan) error {
 		os.Remove(final)
 		return ctx.Err()
 	}
-	_, err = m.app.H.DB.Exec("INSERT INTO map_install_config(singleton,pack,sha256) VALUES(1,?,?) ON CONFLICT(singleton) DO UPDATE SET pack=excluded.pack,sha256=excluded.sha256", id, hex.EncodeToString(hash.Sum(nil)))
+	_, err = m.app.H.DB.Exec("INSERT INTO map_install_config(singleton,pack,sha256,routing) VALUES(1,?,?,?) ON CONFLICT(singleton) DO UPDATE SET pack=excluded.pack,sha256=excluded.sha256", id, hex.EncodeToString(hash.Sum(nil)), m.routing)
 	if err != nil {
 		next.Close()
 		os.Remove(final)

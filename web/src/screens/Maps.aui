@@ -26,9 +26,8 @@ Page Maps
     Stack variant=map-controls
       Button variant=map-control action=locate aria-label="My location"
         Icon name=LocateFixed size=25
-      If condition=$routingAvailable
-        Button variant=directions-control action=directions aria-label="Directions"
-          Icon name=Navigation size=26
+      Button variant=directions-control action=directions aria-label="Directions"
+        Icon name=Navigation size=26
     Text variant=map-brand "My Maps"
     If condition=$measuring
       Row variant=measure-status
@@ -56,19 +55,40 @@ Page Maps
           Text variant=place-address $selected.address
           Text variant=caption $selected.categoryLabel
         Row variant=quick-actions
-          If condition=$routingAvailable
-            Button variant=pill action=toSelected
-              Icon name=CornerUpRight
-              Text "Directions"
-            Button variant=soft-pill action=quickStart
-              Icon name=Navigation
-              Text "Start"
+          Button variant=pill action=toSelected
+            Icon name=CornerUpRight
+            Text "Directions"
+          Button variant=soft-pill action=quickStart
+            Icon name=Navigation
+            Text "Start"
           Button variant=soft-pill action=share
             Icon name=Share2
             Text "Share"
           Button variant=soft-pill action=save
             Icon name=Bookmark
             Text $saveLabel
+      If condition=$routePreview
+        Stack variant=route-preview
+          Text variant=route-time $routePreviewTime
+          Text variant=caption $routePreviewSummary
+          Row variant=quick-actions
+            Button variant=pill action=navigate
+              Icon name=Navigation
+              Text $navigationLabel
+            Button variant=soft-pill action=addStops
+              Icon name=CirclePlus
+              Text "Add stops"
+            Button variant=soft-pill action=shareRoute
+              Icon name=Share2
+              Text "Share"
+      If condition=$navigationActive
+        Card variant=navigation-cue
+          Icon name=$navigationIcon size=28
+          Heading level=2 $nextInstruction
+          Text $remainingLabel
+          If condition=$offRoute
+            Button variant=pill action=reroute "Update route from here"
+          Button variant=soft-pill action=navigate "Exit navigation"
       Stack variant=sheet-content
         If condition=$exploringNearby
           If condition=$hasResults
@@ -150,52 +170,94 @@ Page Maps
           Heading level=2 "Your place notes"
           Text "Choose a place on the map, save it, and add your own private notes."
           Button variant=pill action=explore "Choose a place"
-        If condition=$routing
+        If condition=$planning
           Row variant=travel-modes
             For each=$modes
-              Button variant=$item.variant action=mode item=$item.key
+              Button variant=$item.variant action=mode item=$item.key aria-pressed=$item.active
                 Icon name=$item.icon
                 Text $item.label
-          Row
-            Icon name=CircleDot
-            Input name=startQuery placeholder="Choose starting point" action=findStart
-            Button variant=search-icon action=findStart aria-label="Find starting point"
-              Icon name=Search
-          Row
-            Icon name=MapPin
-            Input name=endQuery placeholder="Choose destination" action=findEnd
-            Button variant=search-icon action=findEnd aria-label="Find destination"
-              Icon name=Search
-          For each=$routeResults
-            Button variant=result action=routePlace item=$item.key
-              Text $item.name
-              Text variant=caption $item.address
+          If condition=$needsDirections
+            Section id=directions-download
+          Stack variant=route-inputs
+            Row
+              Icon name=CircleDot
+              Input name=startQuery placeholder="Choose starting point" action=findStart
+              Button variant=search-icon action=useLocation aria-label="Use my location as start"
+                Icon name=LocateFixed
+              Button variant=search-icon action=findStart aria-label="Find starting point"
+                Icon name=Search
+            Row
+              Icon name=MapPin
+              Input name=endQuery placeholder="Choose destination" action=findEnd
+              Button variant=search-icon action=findEnd aria-label="Find destination"
+                Icon name=Search
+            For each=$routeResults
+              Button variant=result action=routePlace item=$item.key
+                Text $item.name
+                Text variant=caption $item.address
+          Row variant=route-options-heading
+            Button variant=option-chip action=routeOptions aria-expanded=$optionsOpen
+              Icon name=Settings2
+              Text "Options & vehicle"
+            Button variant=text action=swapStops "Swap"
+            Button variant=text action=clearStops "Clear"
+          If condition=$optionsOpen
+            Card variant=route-options
+              Field label=$vehicleLabel
+                Select name=vehicle options=$vehicles
+              If condition=$driving
+                Field label="Route preference"
+                  Select name=preference options=$preferences
+                Checkbox name=avoidTolls label="Avoid tolls"
+                Checkbox name=avoidMotorways label="Avoid motorways"
+                Checkbox name=avoidUnpaved label="Avoid unpaved roads"
+                Text variant=caption "Vehicle type adjusts the local energy model. Battery range and charging stops are not calculated."
+              Checkbox name=alternatives label="Show alternative routes"
           For each=$stops
             Row variant=stop
               Text $item.label
               Spacer
               Button variant=search-icon action=removeStop item=$item.key aria-label="Remove stop"
                 Icon name=X
-          Row
-            Button variant=pill action=route disabled=$notEnoughStops "Find routes"
-            Button variant=text action=swapStops "Swap"
-            Button variant=text action=clearStops "Clear"
-          Text variant=caption "Or choose places on the map, then tap Set start or Add stop."
+          If condition=$routeBusy
+            Row variant=calculating-route
+              Spinner
+              Text "Calculating on your server..."
+              Button variant=text action=cancelRoute cancel=true "Cancel"
+          Else
+            Button variant=pill action=route disabled=$cannotRoute "Find routes"
           If condition=$hasRoutes
-            For each=$routes
-              Button variant=$item.variant action=chooseRoute item=$item.key
-                Icon name=Route
-                Text $item.summary
-            Row
-              Button variant=pill action=navigate $navigationLabel
-              Button variant=secondary action=exportRoute "Export GPX"
-            Text variant=caption "Route estimates exclude live traffic and road closures. Follow-location works while this page is open."
+            Stack variant=route-choices
+              For each=$routes
+                Button variant=$item.variant action=chooseRoute item=$item.key aria-pressed=$item.active
+                  Icon name=Route
+                  Stack
+                    Text variant=route-time $item.time
+                    Text variant=caption $item.summary
+            Text variant=caption $arrivalLabel
+            Row variant=route-actions
+              Button variant=pill action=navigate
+                Icon name=Navigation
+                Text $navigationLabel
+              Button variant=soft-pill action=addStops
+                Icon name=CirclePlus
+                Text "Add stops"
+              Button variant=soft-pill action=shareRoute
+                Icon name=Share2
+                Text "Share"
+              Button variant=soft-pill action=exportRoute
+                Icon name=Download
+                Text "GPX"
+            Text variant=caption "Estimates exclude live traffic and road closures. Navigation needs location permission and works while this page is open."
+            Heading level=2 "Directions"
             For each=$steps
               Row variant=step
-                Icon name=CornerUpRight
+                Icon name=$item.icon
                 Text $item.instruction
                 Spacer
                 Text variant=caption $item.distance
+          Else
+            Text variant=caption "Choose a start and destination, or use your current location. To add more stops, choose a place on the map and tap Add stop."
         If condition=$selected
           Card variant=place-detail
             Row
@@ -212,9 +274,8 @@ Page Maps
             If condition=$selected.osm
               Link href=$selected.osm external=true "Place details on OpenStreetMap"
             Row
-              If condition=$routingAvailable
-                Button variant=text action=start "Set start"
-                Button variant=text action=stop "Add stop"
+              Button variant=text action=start "Set start"
+              Button variant=text action=stop "Add stop"
               Button variant=text action=measure "Measure distance"
             If condition=$selected.list
               Text variant=caption "Saved in $selected.list"

@@ -1,5 +1,5 @@
 #requires -Version 7.0
-param([string]$Go='go',[string]$Npm='npm.cmd',[string]$Version='0.1.0-preview.11',[string]$Output='', [switch]$ReuseDependencies,[switch]$Release)
+param([string]$Go='go',[string]$Npm='npm.cmd',[string]$Version='0.1.0-preview.12',[string]$Output='', [switch]$ReuseDependencies,[switch]$Release)
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $contract=Get-Content -LiteralPath (Join-Path $root 'compatibility.json') -Raw|ConvertFrom-Json
@@ -11,6 +11,9 @@ New-Item -ItemType Directory -Force -Path $Output|Out-Null
 $env:GOWORK='off';$env:CGO_ENABLED='0';$env:GOOS='windows';$env:GOARCH='amd64'
 Push-Location $root
 try{
+ $bridgeRoot=Join-Path $root 'internal/directions/bridge'
+ $bridge=Get-Content -LiteralPath (Join-Path $bridgeRoot 'manifest.json') -Raw|ConvertFrom-Json
+ foreach($pair in @(@('MapsRoutingBridge.java',$bridge.sourceSHA256),@('MapsRoutingBridge.class',$bridge.classSHA256))){if((Get-FileHash -LiteralPath (Join-Path $bridgeRoot $pair[0]) -Algorithm SHA256).Hash.ToLowerInvariant() -ne $pair[1]){throw 'Routing bridge source/class changed; recompile and review its manifest'}}
  $safe='safe.directory='+$root.Replace('\','/')
  $source=(& git -c $safe rev-parse HEAD).Trim()
  if($Release){if($LASTEXITCODE -or $source -notmatch '^[a-f0-9]{40}$'){throw 'Commit release source before packaging'};if(& git -c $safe status --porcelain){throw 'Release builds require a clean committed source tree'}}
@@ -39,7 +42,11 @@ try{
  $goroot=(& $Go env GOROOT).Trim();[void]$notice.AppendLine('===== Go runtime =====').AppendLine([IO.File]::ReadAllText((Join-Path $goroot 'LICENSE')))
  $lock=Get-Content -LiteralPath (Join-Path $root 'web/package-lock.json') -Raw|ConvertFrom-Json -AsHashtable
  foreach($item in $lock.packages.GetEnumerator()){if(-not $item.Key){continue};$pkg=$item.Value;$name=$item.Key -replace '^.*node_modules/','';$components.Add(@{ecosystem='npm';name=$name;version=$pkg.version;dev=[bool]$pkg.dev;optional=[bool]$pkg.optional;license=$pkg.license;integrity=$pkg.integrity});$dir=Join-Path $root ('web/'+$item.Key);if($pkg.dev -and $name -ne '@codedia/parser'){continue};if(-not(Test-Path -LiteralPath $dir)){continue};$files=@(Get-ChildItem -LiteralPath $dir -File|Where-Object Name -Match '^(LICENSE|LICENCE|COPYING|NOTICE)');if($name -eq 'pdfjs-dist'){$files+=@(Get-ChildItem -LiteralPath $dir -File -Recurse|Where-Object {$_.FullName -notmatch '[\\/]node_modules[\\/].*[\\/]node_modules[\\/]' -and $_.Name -match '^(LICENSE|LICENCE|COPYING|NOTICE)'})};if(-not $files.Count -and $name -eq 'murmurhash-js' -and $pkg.version -eq '1.0.0'){$readme=Get-Item -LiteralPath (Join-Path $dir 'README.md');if([IO.File]::ReadAllText($readme.FullName) -notmatch '## License \(MIT\)'){throw 'MurmurHash README license is missing'};$files=@($readme)};if(-not $files.Count -and $name -in @('@protomaps/basemaps','pmtiles')){$sources=Get-Content -Raw (Join-Path $root 'docs/licenses/protomaps-sources.json')|ConvertFrom-Json;$licenseSource=@($sources|Where-Object {$_.name -eq $name -and $_.version -eq $pkg.version});if($licenseSource.Count -ne 1){throw ('Missing versioned upstream licence: '+$name)};$file=Get-Item -LiteralPath (Join-Path $root ('docs/licenses/'+$licenseSource[0].file));if((Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant() -ne $licenseSource[0].sha256){throw 'Upstream licence digest changed'};$files=@($file)};if(-not $files.Count){throw ('Missing browser dependency license: '+$name)};[void]$notice.AppendLine(('===== '+$name+' '+$pkg.version+' ====='));foreach($file in ($files|Sort-Object FullName -Unique)){[void]$notice.AppendLine([IO.File]::ReadAllText($file.FullName))}}
+ [void]$notice.AppendLine('===== Optional BRouter 1.7.10 local engine =====').AppendLine([IO.File]::ReadAllText((Join-Path $root 'docs/licenses/brouter-1.7.10.txt')))
+ [void]$notice.AppendLine('Optional Temurin21 JRE: complete GPL2/Classpath and bundled notices are retained in runtime/legal/ after download. Source links: docs/licenses/directions-sources.json. Routing data © OpenStreetMap contributors, ODbL; https://www.openstreetmap.org/copyright')
  [IO.File]::WriteAllText((Join-Path $stage 'THIRD-PARTY-LICENSES.txt'),$notice.ToString(),[Text.UTF8Encoding]::new($false))
+ $optional=Get-Content -LiteralPath (Join-Path $root 'docs/licenses/directions-sources.json') -Raw|ConvertFrom-Json
+ foreach($part in $optional.components){$components.Add(@{ecosystem='optional-local-runtime';name=$part.name;version=$part.version;license=$part.license;downloadSHA256=$part.downloadSHA256;source=$part.source})}
  [IO.File]::WriteAllText((Join-Path $stage 'dependencies.json'),(@{schema=1;application=$contract.name;version=$Version;components=$components}|ConvertTo-Json -Depth 12),[Text.UTF8Encoding]::new($false))
  if($source -isnot [string] -or $source -notmatch '^[a-f0-9]{40}$'){throw 'Release source commit metadata is invalid'}
  $foundation=(& $Go list -m github.com/oneworkspacestudio/one-workspace).Trim()
