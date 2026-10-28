@@ -72,3 +72,54 @@ under task/sdk96-source/one-workspace. Old95 helper must not be reused on primar
 Release templates/canonical maps92 four-package layout under tooling/maps-redesign-20261026.
 Own secondary updater Chrome3 tab585734444 authenticated; categories tab441 belongs
 to other task, do not claim. Browser use is available again. No external writes for12.
+
+## Published12 and software delivered; secondary data setup pending
+
+The earlier implementation/build-pending notes above are superseded by this section.
+Immutable12 source2cc3cf1eb1d22fd579caf55a3d7b12ff842710c6, tagv0.1.0-preview.12.
+EXE04d5af2b7c3cf7aeed00112e65448eb712629fa3f48ccfbbc0b979d067020d95;
+ZIP15e67b6e62a849e44277bce8736b4aec996836e5107f5f891521ca8bd3412c2d.
+All17 asset sizes/digests and anonymous EXE verified. Exact packaged native UI7
+interaction groups pass, including a new visible-mobile-Exit bounding check. Actual
+served JS/CSS/title/hash match. Public92–96 parser tests pass from byte-verified
+local NTFS source subsets (I source reads stalled). No Actions or asset/tag changes.
+Official channel promoted with c9f6b50/241398a after retaining concurrent97 channel
+7700484 and Shield4 pins; anonymous Maps12 entry/all17assets verified. Final public
+release: https://github.com/oneworkspacestudio/my-maps/releases/tag/v0.1.0-preview.12.
+
+Primary normal Maps-only11→12 update complete; matching public96 controller used,
+manager96/Shield4/all other30app contracts and process bytes/settings/secrets retained,
+29services running, exact accepted app/JS/CSS bytes served. Latest verified recovery
+update-20261028T215940-c617688861d6. Owner signed in privately in Chrome3 Maps tab449.
+Primary previously had no map data. Normal owner UI now installed UK regional map+
+postcodes (2853tiles,1852091 searchable places,575.8MiB) and UK local directions
+(612.1MiB), both ready. Open map verified with local Canvas/attribution and visible
+Directions control. No owner searches/records/GPS were development tests.
+
+Secondary own updater tab444 selected ONLY Maps12, submitted once. All9stages
+completed2m57s, all apps healthy; latest recovery update-20261028T215928-b3834bc283d6.
+Manager95/unselected app versions retained by selection, but a follow-up release
+check shows an empty choices table. Do not repeat Apply. New Maps tab453 redirects
+to accounts-2 sign-in. Async question asks owner to sign in there for UK routing
+setup; awaiting reply. Primary sign-in is separate and already completed. Keep tab453
+handoff. After sign-in, verify Maps12 and existing coverage, open Map downloads,
+install ONLY UK local directions (keep existing map pack), verify Ready, capture
+proof and29running services via authenticated UI/normal health page. Gateway protects
+/maps/healthz from anonymous access; do not bypass auth/extract cookies or claim a
+remote disk/credential audit. Secondary97/Shield4 updates belong to another task;
+leave them unchecked. Preserve current95/AI14/Chat10/Shield3 actual versions.
+
+Browser AX/native automation started timing out; browser-only DOM APIs work:
+getBrowser{id:'3'}, browser.user.claimTab/user.openTabs, tab.playwright.domSnapshot.
+Primary handle tab449, secondary handoff453, own updater444; old tab445 closed.
+Do not use categories441 or Shield tabs. Token-auth URLs are not history material.
+Both protected fixture apps/Job engines19315/19316 stopped and ports verified closed.
+Recursive deletion of C:/Projects/.cache/maps-routing-20261028 was rejected by
+approval review without detailed reason. Do not retry via another deletion/move
+mechanism. Synthetic data remains protected there; cleanup.json records it. Public
+source parser subsets C:/Projects/.cache/maps-parsers-20261028 are also retained.
+No preview is running. Tooling/public release artifacts remain on I.
+
+Next: finish secondary routing download once owner signs in; record sanitized
+both-PC receipts/health/directions-ready evidence and final histories, push doc-only
+handoffs, retain exact immutable12 source/assets and latest verified recoveries.

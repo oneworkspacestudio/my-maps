@@ -1,0 +1,95 @@
+{
+  "repository": "oneworkspacestudio/my-maps",
+  "tag": "v0.1.0-preview.12",
+  "sourceCommit": "2cc3cf1eb1d22fd579caf55a3d7b12ff842710c6",
+  "url": "https://github.com/oneworkspacestudio/my-maps/releases/tag/v0.1.0-preview.12",
+  "draft": false,
+  "allAssetSizesAndSHA256Verified": true,
+  "assets": [
+    {
+      "name": "ACCEPTANCE.md",
+      "size": 12305,
+      "sha256": "ac5862ce931d209c20485c345e17d5314ccaba93a7a0847884f9327048c37131"
+    },
+    {
+      "name": "build-info.json",
+      "size": 445,
+      "sha256": "9df1b21b6a8be8c7a72acbde64c4edb0276681595baade2edf99963588cc2973"
+    },
+    {
+      "name": "compatibility.json",
+      "size": 642,
+      "sha256": "db02992af8e50189c9af3a6ad3c58e99f6fe8970b051425a0b8a2a6c7d6d16d1"
+    },
+    {
+      "name": "dependencies.json",
+      "size": 23767,
+      "sha256": "a081c4e203f69996d2b8ccf798fe5d8baaeeda43cc0ff664444a6eb10586ca80"
+    },
+    {
+      "name": "FEATURES.md",
+      "size": 7353,
+      "sha256": "1232059dd45c15734cbd7de0c5beade78b23df1c24af7fc8932d71ebc5cff409"
+    },
+    {
+      "name": "LICENSE",
+      "size": 11558,
+      "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
+    },
+    {
+      "name": "Maps.exe",
+      "size": 15724032,
+      "sha256": "04d5af2b7c3cf7aeed00112e65448eb712629fa3f48ccfbbc0b979d067020d95"
+    },
+    {
+      "name": "my-maps-0.1.0-preview.12-windows-amd64.zip",
+      "size": 8797080,
+      "sha256": "15e67b6e62a849e44277bce8736b4aec996836e5107f5f891521ca8bd3412c2d"
+    },
+    {
+      "name": "my-maps-source.zip",
+      "size": 2339723,
+      "sha256": "0bc0ca6f978ab78742e977407c2a6fb965859784f639b749b3902ffc31403328"
+    },
+    {
+      "name": "NOTICE",
+      "size": 923,
+      "sha256": "150f2dbcc43d1f52343250ac814a363e643fee80b20afb667b14c0098262c58d"
+    },
+    {
+      "name": "README.md",
+      "size": 6433,
+      "sha256": "ad3254513fd2c770b3879023b47e3991b3dbfcac53bb29c40a3b8a6a955459df"
+    },
+    {
+      "name": "RELEASE-NOTES.md",
+      "size": 1873,
+      "sha256": "8e756f959cecac0ee2ea4cdbbeaa25df27710636b233a36e1a93d78d8accdc55"
+    },
+    {
+      "name": "SECURITY.md",
+      "size": 406,
+      "sha256": "e0fd0784ca27b8059b6675d54c9d58f98d5fe1746a3b0b94bbb581a08969dbcd"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "size": 1350,
+      "sha256": "67d1e24ea25865e869f054235640d380dc5dde5a4aad8cb25577d4b14b9cb987"
+    },
+    {
+      "name": "THIRD-PARTY-LICENSES.txt",
+      "size": 189324,
+      "sha256": "83ed50624043da9252287752b60901c0ab199e9f738ed95db47fa759f374e898"
+    },
+    {
+      "name": "UPDATE-MANIFEST-SHA256.txt",
+      "size": 89,
+      "sha256": "9996f6b3c2950027eed6cb1b1a96a1a34e24c888ee7b2f5a86396b4d4c66d450"
+    },
+    {
+      "name": "workspace-update.json",
+      "size": 1777,
+      "sha256": "19eb97fb7bbfa398d1252a225cefe3000c5a4d58ec3fccbf782927fd616f0d07"
+    }
+  ]
+}

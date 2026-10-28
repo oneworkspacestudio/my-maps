@@ -1,0 +1,16 @@
+{
+  "version": "0.1.0-preview.12",
+  "releasedManagers": [
+    92,
+    93,
+    94,
+    95,
+    96
+  ],
+  "fourRegisteredPackages": true,
+  "customPortRetained": true,
+  "unselectedAppsAndPackagesRetained": true,
+  "minimum92Enforced": true,
+  "historicalInvalidManifestStillRejected": true,
+  "sourceCopiesByteVerified": true
+}

@@ -1,0 +1,5 @@
+{
+  "compiler": "javac21.0.12+8 --release17 -g:none",
+  "releasedSourceCompilesToExactClass": true,
+  "classSHA256": "56a98e0269419b5552f6945bfee24aab121bf1e0d876f2eaf63329f0edaa2aa1"
+}

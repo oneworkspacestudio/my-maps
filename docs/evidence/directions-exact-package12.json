@@ -1,0 +1,18 @@
+{
+  "version": "0.1.0-preview.12",
+  "source": "2cc3cf1eb1d22fd579caf55a3d7b12ff842710c6",
+  "allServedAssetsMatch": true,
+  "correctBrowserTitle": true,
+  "visibleDirectionsEntry": true,
+  "assets": [
+    {
+      "name": "index-BpWrZerb.js",
+      "sha256": "5580f338637c98c665ebeb0d7a88c2e3c0d5fefc70866725125842f597279a34"
+    },
+    {
+      "name": "index-CImxgeaQ.css",
+      "sha256": "b2d23c8b339760fb626b8c222e71a00336039c61b3b7443ea672d14f7801370e"
+    }
+  ],
+  "executableSHA256": "04d5af2b7c3cf7aeed00112e65448eb712629fa3f48ccfbbc0b979d067020d95"
+}

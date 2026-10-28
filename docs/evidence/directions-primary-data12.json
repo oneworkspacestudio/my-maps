@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0-preview.12",
+  "normalOwnerUIInstall": true,
+  "map": {
+    "coverage": "uk",
+    "depth": "region",
+    "postcodes": true,
+    "tiles": 2853,
+    "searchablePlaces": 1852091,
+    "displayedMiB": 575.8
+  },
+  "directions": {
+    "coverage": "uk",
+    "driveWalkCycleReady": true,
+    "displayedMiB": 612.1
+  },
+  "openLocalMapVerified": true,
+  "ownerRecordsAsDevelopmentFixtures": false
+}

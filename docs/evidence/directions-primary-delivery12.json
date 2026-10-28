@@ -1,0 +1,14 @@
+{
+  "allOtherExecutableBytesRetained": true,
+  "appCount": 30,
+  "exactTestedBinariesInstalled": true,
+  "identityAndCredentialsRetained": true,
+  "managerSHA256": "bc11fb6bb68b93844ce0b47a627816f42f30f472a91719ef8769829e7661a10a",
+  "mapsSHA256": "04d5af2b7c3cf7aeed00112e65448eb712629fa3f48ccfbbc0b979d067020d95",
+  "mapsVersion": "0.1.0-preview.12",
+  "normalBackedUpUpdate": true,
+  "otherAppContractsAndPackagesRetained": true,
+  "ownerConfigurationRetained": true,
+  "previousVersion": "0.3.0-preview.96",
+  "version": "0.3.0-preview.96"
+}
